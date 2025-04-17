@@ -44,7 +44,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $route = route(get_setting('customer_registration_verify') === '1' ? 'registration.verification' : 'user.registration'); 
+        // $route = route(get_setting('customer_registration_verify') === '1' ? 'registration.verification' : 'user.registration');
         // dd( $route );
         $lang = get_system_language() ? get_system_language()->code : null;
         $featured_categories = Cache::rememberForever('featured_categories', function () {
@@ -62,9 +62,11 @@ class HomeController extends Controller
 
     public function load_newest_product_section()
     {
-        $newest_products = Cache::remember('newest_products', 3600, function () {
-            return filter_products(Product::latest())->limit(12)->get();
-        });
+        $newest_products =
+            Product::whereRaw('LOWER(added_by) = ?', ['seller'])
+                ->latest()
+                ->limit(12)
+                ->get();
 
         return view('frontend.' . get_setting('homepage_select') . '.partials.newest_products_section', compact('newest_products'));
     }
@@ -101,7 +103,7 @@ class HomeController extends Controller
     {
 
         // $preorder_products = Cache::remember('preorder_products', 3600, function () {
-            $preorder_products = PreorderProduct::where('is_published', 1)->where('is_featured',1)
+        $preorder_products = PreorderProduct::where('is_published', 1)->where('is_featured', 1)
             ->where(function ($query) {
                 $query->whereHas('user', function ($q) {
                     $q->where('user_type', 'admin');
@@ -131,7 +133,8 @@ class HomeController extends Controller
     }
 
 
-    public function verifyRegEmailorPhone(){
+    public function verifyRegEmailorPhone()
+    {
         $type = 'customer';
         if (Auth::check()) {
             if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'seller')) {
@@ -143,13 +146,13 @@ class HomeController extends Controller
                 return back();
             }
         } else {
-            return view('auth.'.get_setting('authentication_layout_select').'.reg_verification', compact('type'));
+            return view('auth.' . get_setting('authentication_layout_select') . '.reg_verification', compact('type'));
         }
     }
 
     public function registration(Request $request)
     {
-        if(get_setting('customer_registration_verify') === '1' ){
+        if (get_setting('customer_registration_verify') === '1') {
             abort(404);
         }
 
@@ -176,7 +179,7 @@ class HomeController extends Controller
         }
         $email = null;
         $phone = null;
-        return view('auth.' . get_setting('authentication_layout_select') . '.user_registration', compact('email','phone'));
+        return view('auth.' . get_setting('authentication_layout_select') . '.user_registration', compact('email', 'phone'));
     }
 
     public function cart_login(Request $request)
@@ -371,7 +374,7 @@ class HomeController extends Controller
                 $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
 
-            if(get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->user_type == 'customer'){
+            if (get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->user_type == 'customer') {
                 lastViewedProducts($detailedProduct->id, auth()->user()->id);
             }
 
@@ -479,7 +482,7 @@ class HomeController extends Controller
                     $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
                 }
 
-                $products = PreorderProduct::where('is_published',1)->where('user_id' , $shop->user->id);
+                $products = PreorderProduct::where('is_published', 1)->where('user_id', $shop->user->id);
 
                 if ($request->has('is_available') && $request->is_available !== null) {
                     $availability = $request->is_available;
@@ -490,19 +493,18 @@ class HomeController extends Controller
                         } else {
                             $query->where(function ($query) {
                                 $query->where('is_available', '!=', 1)
-                                      ->orWhereNull('is_available');
+                                    ->orWhereNull('is_available');
                             })
-                            ->where(function ($query) use ($currentDate) {
-                                $query->whereNull('available_date')
-                                      ->orWhere('available_date', '>', $currentDate);
-                            });
+                                ->where(function ($query) use ($currentDate) {
+                                    $query->whereNull('available_date')
+                                        ->orWhere('available_date', '>', $currentDate);
+                                });
                         }
                     });
-                
+
                     $is_available = $availability;
                 } else {
                     $is_available = null;
-
                 }
 
 
@@ -540,7 +542,7 @@ class HomeController extends Controller
 
                 $products = $products->paginate(24)->appends(request()->query());
 
-                return view('frontend.seller_shop', compact('shop', 'type', 'products', 'selected_categories', 'min_price', 'max_price', 'brand_id', 'sort_by', 'rating','is_available'));
+                return view('frontend.seller_shop', compact('shop', 'type', 'products', 'selected_categories', 'min_price', 'max_price', 'brand_id', 'sort_by', 'rating', 'is_available'));
             }
 
             return view('frontend.seller_shop', compact('shop', 'type'));
@@ -885,11 +887,11 @@ class HomeController extends Controller
         $sql_path = $request->file('sql_file')->store('uploads', 'local');
 
         $zip = new ZipArchive;
-        $zip->open(base_path('public/'.$upload_path));
+        $zip->open(base_path('public/' . $upload_path));
         $zip->extractTo('public/uploads/all');
 
         $zip1 = new ZipArchive;
-        $zip1->open(base_path('public/'.$sql_path));
+        $zip1->open(base_path('public/' . $sql_path));
         $zip1->extractTo('public/uploads');
 
         Artisan::call('cache:clear');

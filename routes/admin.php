@@ -45,6 +45,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\SellerPackageController;
 use App\Http\Controllers\SellerWithdrawRequestController;
 use App\Http\Controllers\SizeChartController;
 use App\Http\Controllers\StaffController;
@@ -124,10 +125,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/products/seller/{product_type}', 'seller_products')->name('products.seller');
         Route::get('/products/all', 'all_products')->name('products.all');
         Route::get('/products/create', 'create')->name('products.create');
+        Route::get('/products/createPos', 'create_pos')->name('products.createPos');
+        Route::get('/products/allPos', 'all_products_pos')->name('products.allPos');
         Route::post('/products/store/', 'store')->name('products.store');
+        Route::post('/products/storepos/', 'store_pos')->name('products.storePos');
         Route::get('/products/admin/{id}/edit', 'admin_product_edit')->name('products.admin.edit');
         Route::get('/products/seller/{id}/edit', 'seller_product_edit')->name('products.seller.edit');
+        Route::get('/products/admin/{id}/edit_pos', 'admin_product_edit_pos')->name('products.admin.edit_pos');
         Route::post('/products/update/{product}', 'update')->name('products.update');
+        Route::post('/products/update_pos/{product}', 'update_pos')->name('products.update_pos');
         Route::post('/products/todays_deal', 'updateTodaysDeal')->name('products.todays_deal');
         Route::post('/products/featured', 'updateFeatured')->name('products.featured');
         Route::post('/products/published', 'updatePublished')->name('products.published');
@@ -135,6 +141,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::post('/products/get_products_by_subcategory', 'get_products_by_subcategory')->name('products.get_products_by_subcategory');
         Route::get('/products/duplicate/{id}', 'duplicate')->name('products.duplicate');
         Route::get('/products/destroy/{id}', 'destroy')->name('products.destroy');
+        Route::get('/products/destroypos/{id}', 'destroy_pos')->name('products.destroypos');
         Route::post('/bulk-product-delete', 'bulk_product_delete')->name('bulk-product-delete');
 
         Route::post('/products/sku_combination', 'sku_combination')->name('products.sku_combination');
@@ -414,7 +421,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         // Order bulk export
         Route::get('/order-bulk-export', 'orderBulkExport')->name('order-bulk-export');
 
-        // 
+        //
         Route::post('order-payment-notification', 'unpaid_order_payment_notification_send')->name('unpaid_order_payment_notification');
     });
 
@@ -627,4 +634,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 
     Route::get('/admin-permissions', [RoleController::class, 'create_admin_permissions']);
+
+    // Direct access to Seller Packages
+    Route::get('/direct-seller-packages', function() {
+        return redirect()->route('seller_packages.index');
+    })->name('direct.seller_packages');
+
+    // Seller Packages
+    Route::resource('seller_packages', SellerPackageController::class);
+    Route::controller(SellerPackageController::class)->group(function () {
+        Route::get('/seller_packages/edit/{id}', 'edit')->name('seller_packages.edit');
+        Route::get('/seller_packages/destroy/{id}', 'destroy')->name('seller_packages.destroy');
+        Route::post('/seller_packages/update_status', 'update_status')->name('seller_packages.update_status');
+        Route::get('/seller_packages/purchase_history', 'purchase_history')->name('seller_packages.purchase_history');
+        Route::post('/seller_packages/offline-payment-approve', 'approve_offline_payment')->name('offline_seller_package_payments.approve');
+    });
 });

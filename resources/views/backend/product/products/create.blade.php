@@ -2,10 +2,7 @@
 
 @section('content')
 
-@php
-    CoreComponentRepository::instantiateShopRepository();
-    CoreComponentRepository::initializeCache();
-@endphp
+
 
 <div class="page-content">
     <div class="aiz-titlebar text-left mt-2 pb-2 px-3 px-md-2rem border-bottom border-gray">
@@ -236,10 +233,10 @@
                                                 </label>
                                             </div>
                                         </div>
-        
+
                                         <input type="hidden" name="refund_note_id" id="refund_note_id">
                                         <div id="refund_note" class="">
-        
+
                                         </div>
                                         <button
                                             type="button"
@@ -753,9 +750,9 @@
                                 <div class="form-group row">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-10">
-                                        <select class="form-control aiz-selectpicker" 
-                                            name="warranty_id" 
-                                            id="warranty_id" 
+                                        <select class="form-control aiz-selectpicker"
+                                            name="warranty_id"
+                                            id="warranty_id"
                                             data-live-search="true">
                                             <option value="">{{ translate('Select Warranty') }}</option>
                                             @foreach (\App\Models\Warranty::all() as $warranty)
@@ -764,7 +761,7 @@
                                         </select>
 
                                         <input type="hidden" name="warranty_note_id" id="warranty_note_id">
-                                        
+
                                         <h5 class="fs-14 fw-600 mb-3 mt-4 pb-3" style="border-bottom: 1px dashed #e4e5eb;">{{translate('Warranty Note')}}</h5>
                                         <div id="warranty_note" class="">
 
@@ -1076,7 +1073,7 @@
             $('.refund-block').addClass('d-none');
         }
     }
-    
+
     function noteModal(noteType){
         $.post('{{ route('get_notes') }}',{_token:'{{ @csrf_token() }}', note_type: noteType}, function(data){
             $('#note_modal #note_modal_content').html(data);

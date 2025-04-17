@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ProductTax;
+use App\Models\ProductTaxPos;
 
 class ProductTaxService
 {
@@ -13,6 +14,23 @@ class ProductTaxService
         if ($collection['tax_id']) {
             foreach ($collection['tax_id'] as $key => $val) {
                 $product_tax = new ProductTax();
+                $product_tax->tax_id = $val;
+                $product_tax->product_id = $collection['product_id'];
+                $product_tax->tax = $collection['tax'][$key];
+                $product_tax->tax_type = $collection['tax_type'][$key];
+                $product_tax->save();
+            }
+        }
+
+    }
+
+    public function store_pos(array $data)
+    {
+        $collection = collect($data);
+
+        if ($collection['tax_id']) {
+            foreach ($collection['tax_id'] as $key => $val) {
+                $product_tax = new ProductTaxPos();
                 $product_tax->tax_id = $val;
                 $product_tax->product_id = $collection['product_id'];
                 $product_tax->tax = $collection['tax'][$key];

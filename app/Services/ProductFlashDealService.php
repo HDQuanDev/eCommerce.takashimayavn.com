@@ -5,16 +5,17 @@ namespace App\Services;
 use App\Models\FlashDeal;
 use App\Models\FlashDealProduct;
 use App\Models\Product;
+use App\Models\ProductPos;
 
 class ProductFlashDealService
 {
-    public function store(array $data, Product $product)
+    public function store(array $data, Product|ProductPos $product)
     {
         $collection = collect($data);
 
         if ($collection['flash_deal_id']) {
             $flash_deal_product = FlashDealProduct::firstOrNew([
-                'flash_deal_id' => $collection['flash_deal_id'], 
+                'flash_deal_id' => $collection['flash_deal_id'],
                 'product_id' => $product->id]
                 );
             $flash_deal_product->flash_deal_id = $collection['flash_deal_id'];
