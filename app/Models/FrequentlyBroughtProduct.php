@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\PreventDemoModeChanges;
 
-class FrequentlyBoughtProduct extends Model
+class FrequentlyBroughtProduct extends Model
 {
     use HasFactory, PreventDemoModeChanges;
 

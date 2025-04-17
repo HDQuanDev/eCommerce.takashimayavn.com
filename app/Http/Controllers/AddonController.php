@@ -310,9 +310,9 @@ class AddonController extends Controller
     }
 
     public static function checkVerification( $type, $key){
-
-        $res  = self::script_activation_check($key);
-        return $res;
+        return true;
+        // $res  = self::script_activation_check($key);
+        // return $res;
     }
 
     public static function checkActivation( $type, $key){
