@@ -6,7 +6,9 @@ use AizPackages\CombinationGenerate\Services\CombinationService;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductPos;
 use App\Models\ProductTranslation;
+use App\Models\ProductTranslationPos;
 use App\Models\Category;
 use App\Models\AttributeValue;
 use App\Models\Cart;
@@ -52,11 +54,15 @@ class ProductController extends Controller
         // Staff Permission Check
         $this->middleware(['permission:add_new_product'])->only('create');
         $this->middleware(['permission:show_all_products'])->only('all_products');
+        $this->middleware(['permission:add_new_product_pos'])->only('create_pos');
+        $this->middleware(['permission:show_all_products_pos'])->only('all_products_pos');
         $this->middleware(['permission:show_in_house_products'])->only('admin_products');
         $this->middleware(['permission:show_seller_products'])->only('seller_products');
         $this->middleware(['permission:product_edit'])->only('admin_product_edit', 'seller_product_edit');
+        $this->middleware(['permission:product_edit_pos'])->only('admin_product_edit_pos');
         $this->middleware(['permission:product_duplicate'])->only('duplicate');
         $this->middleware(['permission:product_delete'])->only('destroy');
+        $this->middleware(['permission:product_delete_pos'])->only('destroy_pos');
         $this->middleware(['permission:set_category_wise_discount'])->only('categoriesWiseProductDiscount');
     }
     /**
@@ -170,6 +176,41 @@ class ProductController extends Controller
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
     }
 
+    public function all_products_pos(Request $request)
+    {
+        $col_name = null;
+        $query = null;
+        $seller_id = null;
+        $sort_search = null;
+        $products = ProductPos::where('auction_product', 0)->where('wholesale_product', 0);
+        if (get_setting('vendor_system_activation') != 1) {
+            $products = $products->where('added_by', 'admin');
+        }
+        if ($request->has('user_id') && $request->user_id != null) {
+            $products = $products->where('user_id', $request->user_id);
+            $seller_id = $request->user_id;
+        }
+        if ($request->search != null) {
+            $sort_search = $request->search;
+            $products = $products
+                ->where('name', 'like', '%' . $sort_search . '%')
+                ->orWhereHas('stocks', function ($q) use ($sort_search) {
+                    $q->where('sku', 'like', '%' . $sort_search . '%');
+                });
+        }
+        if ($request->type != null) {
+            $var = explode(",", $request->type);
+            $col_name = $var[0];
+            $query = $var[1];
+            $products = $products->orderBy($col_name, $query);
+            $sort_type = $request->type;
+        }
+
+        $products = $products->orderBy('created_at', 'desc')->paginate(15);
+        $type = 'All';
+
+        return view('backend.product.products.all_products_pos', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -186,6 +227,18 @@ class ProductController extends Controller
             ->get();
 
         return view('backend.product.products.create', compact('categories'));
+    }
+
+    public function create_pos()
+    {
+        CoreComponentRepository::initializeCache();
+
+        $categories = Category::where('parent_id', 0)
+            ->where('digital', 0)
+            ->with('childrenCategories')
+            ->get();
+
+        return view('backend.product.products.create_pos', compact('categories'));
     }
 
     public function add_more_choice_option(Request $request)
@@ -238,13 +291,13 @@ class ProductController extends Controller
         $this->frequentlyBoughtProductService->store($request->only([
             'product_id', 'frequently_bought_selection_type', 'fq_bought_product_ids', 'fq_bought_product_category_id'
         ]));
-       
+
         // Product Translations
         $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
-        ProductTranslation::create($request->only([
+        ProductTranslationPos::create($request->only([
             'lang', 'name', 'unit', 'description', 'product_id'
         ]));
-        
+
         flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
@@ -252,6 +305,54 @@ class ProductController extends Controller
 
         return redirect()->route('products.admin');
     }
+
+
+    public function store_pos(ProductRequest $request)
+    {
+        $product = $this->productService->store_pos($request->except([
+            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+        ]));
+        $request->merge(['product_id' => $product->id]);
+
+        //Product categories
+        $product->categories()->attach($request->category_ids);
+
+        //VAT & Tax
+        if ($request->tax_id) {
+            $this->productTaxService->store_pos($request->only([
+                'tax_id', 'tax', 'tax_type', 'product_id'
+            ]));
+        }
+
+        //Flash Deal
+        $this->productFlashDealService->store($request->only([
+            'flash_deal_id', 'flash_discount', 'flash_discount_type'
+        ]), $product);
+
+        //Product Stock
+        $this->productStockService->store_pos($request->only([
+            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+        ]), $product);
+
+        // Frequently Bought Products
+        $this->frequentlyBoughtProductService->store($request->only([
+            'product_id', 'frequently_bought_selection_type', 'fq_bought_product_ids', 'fq_bought_product_category_id'
+        ]));
+
+        // Product Translations
+        $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
+        ProductTranslationPos::create($request->only([
+            'lang', 'name', 'unit', 'description', 'product_id'
+        ]));
+
+        flash(translate('Product has been inserted successfully'))->success();
+
+        Artisan::call('view:clear');
+        Artisan::call('cache:clear');
+
+        return redirect()->route('products.allPos');
+    }
+
 
     /**
      * Display the specified resource.
@@ -288,6 +389,23 @@ class ProductController extends Controller
         return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
     }
 
+    public function admin_product_edit_pos(Request $request, $id)
+    {
+        CoreComponentRepository::initializeCache();
+
+        $product = ProductPos::findOrFail($id);
+        if ($product->digital == 1) {
+            return redirect('admin/digitalproducts/' . $id . '/edit');
+        }
+
+        $lang = $request->lang;
+        $tags = json_decode($product->tags);
+        $categories = Category::where('parent_id', 0)
+            ->where('digital', 0)
+            ->with('childrenCategories')
+            ->get();
+        return view('backend.product.products.edit_pos', compact('product', 'categories', 'tags', 'lang'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -377,6 +495,64 @@ class ProductController extends Controller
         return back();
     }
 
+    public function update_pos(ProductRequest $request, ProductPos $product)
+    {
+
+        //Product
+        $product = $this->productService->update_pos($request->except([
+            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+        ]), $product);
+
+        $request->merge(['product_id' => $product->id]);
+
+        //Product categories
+        $product->categories()->sync($request->category_ids);
+
+
+        //Product Stock
+        $product->stocks()->delete();
+        $this->productStockService->store_pos($request->only([
+            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+        ]), $product);
+
+        //Flash Deal
+        $this->productFlashDealService->store($request->only([
+            'flash_deal_id', 'flash_discount', 'flash_discount_type'
+        ]), $product);
+
+        //VAT & Tax
+        if ($request->tax_id) {
+            $product->taxes()->delete();
+            $this->productTaxService->store($request->only([
+                'tax_id', 'tax', 'tax_type', 'product_id'
+            ]));
+        }
+
+        // Frequently Bought Products
+        $product->frequently_bought_products()->delete();
+        $this->frequentlyBoughtProductService->store($request->only([
+            'product_id', 'frequently_bought_selection_type', 'fq_bought_product_ids', 'fq_bought_product_category_id'
+        ]));
+
+        // Product Translations
+        ProductTranslationPos::updateOrCreate(
+            $request->only([
+                'lang', 'product_id'
+            ]),
+            $request->only([
+                'name', 'unit', 'description'
+            ])
+        );
+
+        flash(translate('Product has been updated successfully'))->success();
+
+        Artisan::call('view:clear');
+        Artisan::call('cache:clear');
+        if($request->has('tab') && $request->tab != null){
+            return Redirect::to(URL::previous() . "#" . $request->tab);
+        }
+        return redirect()->route('products.allPos');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -396,6 +572,34 @@ class ProductController extends Controller
         $product->flash_deal_products()->delete();
         deleteProductReview($product);
         if (Product::destroy($id)) {
+            Cart::where('product_id', $id)->delete();
+            Wishlist::where('product_id', $id)->delete();
+
+            flash(translate('Product has been deleted successfully'))->success();
+
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+
+            return back();
+        } else {
+            flash(translate('Something went wrong'))->error();
+            return back();
+        }
+    }
+
+    public function destroy_pos($id)
+    {
+        $product = ProductPos::findOrFail($id);
+
+        $product->product_translations()->delete();
+        $product->categories()->detach();
+        $product->stocks()->delete();
+        $product->taxes()->delete();
+        $product->frequently_bought_products()->delete();
+        $product->last_viewed_products()->delete();
+        $product->flash_deal_products()->delete();
+        deleteProductReview($product);
+        if (ProductPos::destroy($id)) {
             Cart::where('product_id', $id)->delete();
             Wishlist::where('product_id', $id)->delete();
 
@@ -440,7 +644,7 @@ class ProductController extends Controller
 
         //VAT & Tax
         $this->productTaxService->product_duplicate_store($product->taxes, $product_new);
-        
+
         // Product Categories
         foreach($product->product_categories as $product_category){
             ProductCategory::insert([

@@ -2,10 +2,7 @@
 
 @section('content')
 
-@php
-    CoreComponentRepository::instantiateShopRepository();
-    CoreComponentRepository::initializeCache();
-@endphp
+
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <h5 class="mb-0 h6">{{translate('Add New Product')}}</h5>
@@ -82,14 +79,14 @@
                                 <input type="number"  class="form-control" name="min_qty" value="1" min="1" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row">
                             <label class="col-md-3 col-from-label">{{translate('Barcode')}}</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" name="barcode" placeholder="{{ translate('Barcode') }}">
                             </div>
                         </div>
-                        
+
 
 
                     </div>
@@ -185,7 +182,7 @@
                     <div class="card-body">
                     <div>
 
-                        
+
                         <label  class="fs-14 fw-700 mb-0 mb-4">{{translate('Price')}}</label>
                         <div class="form-group row">
                             <label class="col-md-3 col-from-label">{{translate('Price Type')}} </label>
@@ -219,7 +216,7 @@
                                         </div>
                                         <span>{{translate('In the place of price there will be a sticker Call for Price')}}</span>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -261,7 +258,7 @@
                                         <label for="fq_bought_select_products" class="fs-14 fw-700 mb-0 ml-2">{{translate('Needed only for Cash On Delivery')}}</label>
                                         </div>
                                         <span>{{translate('Select if the Prepayment is only for Cash On Delivery')}}</span>
-                                    </div>                           
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +299,7 @@
                                         <label for="fq_bought_select_products" class="fs-14 fw-700 mb-0 ml-2">{{translate('Use Call for Sample Price Sticker')}}</label>
                                         </div>
                                         <span>{{translate('In the place of sample price there will be a sticker Call for sample Price')}}</span>
-                                    </div>                           
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -360,7 +357,7 @@
                             <div class="col-md-3">
                                 <label class="col-from-label">{{translate('Wholesale Prices')}}</label>
                             </div>
-                           
+
                             <div class="col-md-9">
                                 <div class="row m-0 p-0">
                                     <div class="col-md-2 p-1">
@@ -419,7 +416,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <hr style="border-bottom: 1px dashed #e4e5eb;">
                     </div>
 <!-- ====================Discount Settings================= -->
@@ -528,7 +525,7 @@
                             </div>
                         </div>
 
-                        
+
                         <hr style="border-bottom: 1px dashed #e4e5eb;">
                     </div>
 <!-- ====================Coupons================= -->
@@ -628,7 +625,7 @@
                                         </div>
                                         <span>{{translate('Specify the benefits you want to give to customers')}}</span>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -663,7 +660,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
 
                     </div>
@@ -708,7 +705,7 @@
             <div class="col-lg-4">
 
                 {{-- Right side --}}
-                
+
 <!-- ====================Product Settings================= -->
 
                 <div class="card">
@@ -719,7 +716,7 @@
                     </div>
 
                     <div class="card-body">
-                       
+
                         <div class="form-group row">
                             <label class="col-md-6 col-from-label">{{translate('Published')}}</label>
                             <div class="col-md-6">
@@ -757,7 +754,7 @@
                                 </select>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
 <!-- ====================Refundable================= -->
@@ -769,7 +766,7 @@
                     </div>
 
                     <div class="card-body">
-                       
+
                         <div class="form-group row">
                             <label class="col-md-6 col-from-label">{{translate('Refundable')}}</label>
                             <div class="col-md-6">
@@ -779,21 +776,21 @@
                                 </label>
                             </div>
                         </div>
-                       
+
                         <div class="form-group row">
                             <div class="form-check col-md-12 ml-3">
-                                
+
                                 <input class="form-check-input" type="checkbox" name="show_refund_note" value="1" id="flexCheckChecked" checked>
-                               
+
                                 <label class="form-check-label" for="flexCheckChecked">
-                                    <b>{{translate('Show notes in refund section in product description page')}}</b> 
+                                    <b>{{translate('Show notes in refund section in product description page')}}</b>
                                 </label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label class="form-check-label" for="flexCheckChecked">
-                                    {{translate('Notes (Add from preset)')}} 
+                                    {{translate('Notes (Add from preset)')}}
                                 </label>
                             </div>
                         </div>
@@ -814,7 +811,7 @@
                                 </button>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
 <!-- ====================Club Point================= -->
@@ -896,19 +893,19 @@
                         </div>
                         <div class="form-group row">
                             <div class="form-check col-md-12 ml-3">
-                                
+
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                               
+
                                 <label class="form-check-label" for="flexCheckChecked">
-                                   <b> {{translate('Show estimated shipping time in product description page')}}</b> 
+                                   <b> {{translate('Show estimated shipping time in product description page')}}</b>
                                 </label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class=" form-check col-md-12 ml-3">
-                                
+
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                               
+
                                 <label class="form-check-label" for="flexCheckChecked">
                                     <b>{{translate('Show notes in shipping time section')}} </b>
                                 </label>
@@ -960,26 +957,26 @@
                         </div>
                         <div class="form-group row">
                             <div class="form-check col-md-12 ml-3">
-                                
+
                                 <input class="form-check-input" type="checkbox" value="1"   name="prepayment_needed">
-                               
+
                                 <label class="form-check-label text-orange" for="flexCheckChecked">
-                                   <b> {{translate('Prepayment needed for cash on delivery')}}</b> 
+                                   <b> {{translate('Prepayment needed for cash on delivery')}}</b>
                                 </label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="form-check col-md-12 ml-3">
-                                
+
                                 <input class="form-check-input" type="checkbox" value="1"  name="show_cod_note">
-                               
+
                                 <label class="form-check-label" for="flexCheckChecked">
-                                   <b> {{translate('Show note in cash on delivery section in product description page')}}</b> 
+                                   <b> {{translate('Show note in cash on delivery section in product description page')}}</b>
                                 </label>
                             </div>
                         </div>
-                       
-                      
+
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label class="form-check-label fw-bold" for="flexCheckChecked">
@@ -1115,7 +1112,7 @@
                                         <input type="text" class="form-control" name="final_order_quantity" placeholder="{{ translate('10') }}" required>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -1136,7 +1133,7 @@
                             <tbody>
                                 @foreach(\App\Models\Product::take(5)->get() as $product)
                                     <tr class="remove-parent">
-                                    
+
                                         <td class="w-80px pl-0" style="vertical-align: middle;">
                                             <p class="d-block size-48px">
                                                 <img src="{{ uploaded_asset($product->thumbnail_img) }}" alt="{{ translate('Image')}}"
@@ -1156,7 +1153,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                 
+
                                         <td class="text-right pr-0" style="vertical-align: middle;">
                                             <button type="button" class="mt-1 btn btn-icon btn-circle btn-sm btn-soft-danger" data-toggle="remove-parent" data-parent=".remove-parent">
                                                 <i class="las la-times"></i>
@@ -1195,7 +1192,7 @@
 
                     <div class="card-body">
                         <p>{{translate('This is a customised section in product description page where you can select end category or selected products as More Products to Preorder.')}}</p>
-                        
+
                         <div class="w-100">
                             <div class="d-flex mb-4">
                                 <div class="radio mar-btm mr-5 d-flex align-items-center">

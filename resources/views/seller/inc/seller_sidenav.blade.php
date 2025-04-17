@@ -311,6 +311,19 @@
                     </li>
                 @endif
 
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.seller_packages_list')}}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.seller_packages_list'])}}">
+                        <i class="las la-box aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Packages') }}</span>
+                    </a>
+                </li>
+
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.pos.index') }}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.pos.index', 'seller.pos.products'])}}">
+                        <i class="las la-cash-register aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
+                    </a>
+                </li>
 
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.shop.index') }}"

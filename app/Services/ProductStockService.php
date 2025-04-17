@@ -4,6 +4,7 @@ namespace App\Services;
 
 use AizPackages\CombinationGenerate\Services\CombinationService;
 use App\Models\ProductStock;
+use App\Models\ProductStockPos;
 use App\Utility\ProductUtility;
 
 class ProductStockService
@@ -13,10 +14,10 @@ class ProductStockService
         $collection = collect($data);
 
         $options = ProductUtility::get_attribute_options($collection);
-        
+
         //Generates the combinations of customer choice options
         $combinations = (new CombinationService())->generate_combination($options);
-        
+
         $variant = '';
         if (count($combinations) > 0) {
             $product->variant_product = 1;
@@ -39,8 +40,43 @@ class ProductStockService
             unset($collection['current_stock']);
 
             $data = $collection->merge(compact('variant', 'qty', 'price'))->toArray();
-            
+
             ProductStock::create($data);
+        }
+    }
+    public function store_pos(array $data, $product)
+    {
+        $collection = collect($data);
+
+        $options = ProductUtility::get_attribute_options($collection);
+
+        //Generates the combinations of customer choice options
+        $combinations = (new CombinationService())->generate_combination($options);
+
+        $variant = '';
+        if (count($combinations) > 0) {
+            $product->variant_product = 1;
+            $product->save();
+            foreach ($combinations as $key => $combination) {
+                $str = ProductUtility::get_combination_string($combination, $collection);
+                $product_stock = new ProductStockPos();
+                $product_stock->product_id = $product->id;
+                $product_stock->variant = $str;
+                $product_stock->price = request()['price_' . str_replace('.', '_', $str)];
+                $product_stock->sku = request()['sku_' . str_replace('.', '_', $str)];
+                $product_stock->qty = request()['qty_' . str_replace('.', '_', $str)];
+                $product_stock->image = request()['img_' . str_replace('.', '_', $str)];
+                $product_stock->save();
+            }
+        } else {
+            unset($collection['colors_active'], $collection['colors'], $collection['choice_no']);
+            $qty = $collection['current_stock'];
+            $price = $collection['unit_price'];
+            unset($collection['current_stock']);
+
+            $data = $collection->merge(compact('variant', 'qty', 'price'))->toArray();
+
+            ProductStockPos::create($data);
         }
     }
 

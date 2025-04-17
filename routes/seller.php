@@ -175,5 +175,22 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
 
     });
 
+    // Seller Package Purchase
+    Route::get('/seller-packages', [SellerPackageController::class, 'seller_packages_list'])->name('seller_packages_list');
+    Route::post('/seller-packages/purchase', [SellerPackageController::class, 'purchase_package'])->name('purchase_package');
+
+    // POS System
+    Route::controller(PosController::class)->group(function () {
+        Route::get('/pos', 'index')->name('pos.index');
+        Route::post('/pos/add-to-cart', 'addToCart')->name('pos.addToCart');
+        Route::post('/pos/update-quantity', 'updateQuantity')->name('pos.updateQuantity');
+        Route::post('/pos/remove-from-cart', 'removeFromCart')->name('pos.removeFromCart');
+        Route::get('/pos/get-cart', 'getCart')->name('pos.getCart');
+        Route::post('/pos/set-discount', 'setDiscount')->name('pos.setDiscount');
+        Route::post('/pos/set-shipping', 'setShipping')->name('pos.setShipping');
+        Route::post('/pos/checkout', 'checkout')->name('pos.checkout');
+        Route::get('/pos/products', 'productList')->name('pos.products');
+    });
+
 });
 

@@ -1,10 +1,7 @@
 @extends('backend.layouts.app')
 @section('content')
 
-@php
-    CoreComponentRepository::instantiateShopRepository();
-    CoreComponentRepository::initializeCache();
-@endphp
+
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <h5 class="mb-0 h6">{{translate('Add New Product')}}</h5>
@@ -77,7 +74,7 @@
                                 <input type="text" class="form-control aiz-tag-input" name="tags[]" placeholder="{{ translate('Type and hit enter to add a tag') }}">
                                 <small class="text-muted">{{translate('Add keywords to help customers find this product. [e.g. "wireless, headphones, audio"]')}}</small>
                             </div>
-                        </div>  
+                        </div>
 
                         {{-- Barcode --}}
                         @if (addon_is_activated('pos_system'))
@@ -237,7 +234,7 @@
                                             <input type="number" min="0" value="0" step="1"
                                                 placeholder="{{ translate('Discount Amount') }}" name="discount"
                                                 class="form-control">
-                                                
+
                                         </div>
                                         <div class="form-group col-md-3">
                                             <select class="form-control aiz-selectpicker" name="discount_type">
@@ -421,7 +418,7 @@
                                 {{translate('Indicate if the product is in stock and ready to ship.')}}
                             </small>
                         </div>
-                        
+
                         <div class="form-group row" id="available_date_group">
                             <label class="col col-from-label">{{translate('Available From')}}</label>
                             <div class="col col-from-label">
@@ -434,7 +431,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- ====================Refundable================= -->
                 @if (addon_is_activated('refund_request'))
                     <div class="card">
@@ -486,7 +483,7 @@
                         </div>
                     </div>
                 @endif
-                
+
 
                 <!-- ====================Shipping================= -->
                 <div class="card">
@@ -557,7 +554,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <input type="hidden" name="shipping_note_id" id="shipping_note_id">
                         <div id="shipping_note" class="">
 
@@ -591,7 +588,7 @@
                             </div>
                         </div>
                         <div id="codBlock" style="display: none">
-                            
+
                             <div class="form-group row" id="prepayment_needed_for_cod" style="display: none">
                                 <div class="form-check col-md-12 ml-3">
                                     <input class="form-check-input" type="checkbox" value="1" name="prepayment_needed">
@@ -693,7 +690,7 @@
 
                     </div>
                 </div>
-                
+
                 <!-- ====================Frequently Bought Products================= -->
                 <div class="card">
                     <div class="card-header">
@@ -782,7 +779,7 @@
 
     {{-- Pre Order Product Select Model --}}
     @include('preorder.common.models.pre_order_product_select_modal')
-    
+
     {{-- Note Modal --}}
     @include('modals.note_modal')
 @endsection
@@ -892,7 +889,7 @@
             AIZ.plugins.sectionFooTable('#pre-order-product-list');
         });
     }
-    
+
     function addPreOrderProduct() {
         var selectedProducts = [];
         $("input:checkbox[name=pre_order_product_id]:checked").each(function() {
@@ -913,7 +910,7 @@
     }
     // More Products to Preorder end
 
- 
+
     // Note modal
     function noteModal(note_type){
         $.post('{{ route('get_notes') }}',{_token:'{{ @csrf_token() }}', note_type: note_type}, function(data){
@@ -921,7 +918,7 @@
             $('#note_modal').modal('show', {backdrop: 'static'});
         });
     }
-    
+
     // show selected note and set Note ID
     function addNote(noteId, noteType){
         var noteDescription = $('#note_description_'+ noteId).val();
@@ -950,45 +947,45 @@
     });
 
 
-// prepayment section 
+// prepayment section
   const is_prepayment = document.getElementById('is_prepayment');
   const prepaymentBlock = document.getElementById('prepaymentBlock');
   const cod_block = document.getElementById('prepayment_needed_for_cod');
   is_prepayment.addEventListener('change', function() {
     if (is_prepayment.checked) {
-      prepaymentBlock.style.display = 'block'; 
-      cod_block.style.display = 'block'; 
+      prepaymentBlock.style.display = 'block';
+      cod_block.style.display = 'block';
     } else {
-      prepaymentBlock.style.display = 'none';  
-      cod_block.style.display = 'none';  
+      prepaymentBlock.style.display = 'none';
+      cod_block.style.display = 'none';
     }
   });
 
 
-  // Shipping days section 
+  // Shipping days section
   const show_shipping_days = document.getElementById('show_shipping_days');
   const show_shipping_days_block = document.getElementById('show_shipping_days_block');
   show_shipping_days.addEventListener('change', function() {
     if (show_shipping_days.checked) {
-        show_shipping_days_block.style.display = 'block'; 
+        show_shipping_days_block.style.display = 'block';
     } else {
-        show_shipping_days_block.style.display = 'none'; 
+        show_shipping_days_block.style.display = 'none';
     }
   });
 
-// CODsection 
+// CODsection
   const is_cod = document.getElementById('is_cod');
   const codBlock = document.getElementById('codBlock');
   is_cod.addEventListener('change', function() {
     if (is_cod.checked) {
-      codBlock.style.display = 'block'; 
+      codBlock.style.display = 'block';
     } else {
-      codBlock.style.display = 'none';  
+      codBlock.style.display = 'none';
     }
   });
 
 
-        // Refund section 
+        // Refund section
         const isRefundAddonActivated = {{ json_encode(addon_is_activated('refund_request')) }};
 
         if (isRefundAddonActivated) {
@@ -1005,16 +1002,16 @@
                     }
                 });
             }
-        } 
+        }
 
 // Coupon section
   const is_coupon = document.getElementById('is_coupon');
   const couponBlock = document.getElementById('couponBlock');
   is_coupon.addEventListener('change', function() {
     if (is_coupon.checked) {
-      couponBlock.style.display = 'block'; 
+      couponBlock.style.display = 'block';
     } else {
-      couponBlock.style.display = 'none';  
+      couponBlock.style.display = 'none';
     }
   });
 
@@ -1029,14 +1026,14 @@ $(document).ready(function() {
     });
 });
 
-// Generate coupon 
+// Generate coupon
 $(document).ready(function() {
     $('#generate-coupon').on('click', function() {
-        var couponCode = generateCouponCode(10); 
+        var couponCode = generateCouponCode(10);
         $('#coupon_code').val(couponCode);
     });
     function generateCouponCode(length) {
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         var result = '';
         for (var i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));

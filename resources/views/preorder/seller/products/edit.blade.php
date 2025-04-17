@@ -1,10 +1,7 @@
 @extends('seller.layouts.app')
 @section('panel_content')
 
-@php
-    CoreComponentRepository::instantiateShopRepository();
-    CoreComponentRepository::initializeCache();
-@endphp
+
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <h5 class="mb-0 h6">{{translate('Update Product Information')}}</h5>
@@ -43,7 +40,7 @@
                     <div class="card-body">
                         {{-- Product Name --}}
                         <div class="form-group row">
-                            <label class="col-md-3 col-from-label">{{translate('Product Name')}} 
+                            <label class="col-md-3 col-from-label">{{translate('Product Name')}}
                                 <span class="text-danger">*</span>  <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i>
                             </label>
                             <div class="col-md-8">
@@ -232,7 +229,7 @@
                             </div>
                             <hr style="border-bottom: 1px dashed #e4e5eb;">
                         </div>
- 
+
                         <!-- ====================Discount Settings================= -->
                         <div class="discount-settings">
                             <label class="fs-14 fw-700 mb-0 mb-4">{{translate('Discount Settings')}}</label>
@@ -311,8 +308,8 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 col-from-label">{{translate('Coupon Date Range')}}</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control aiz-date-range" name="coupon_date_range" 
-                                        @if($coupon?->coupon_start_date && $coupon?->coupon_end_date) value="{{ $start_date.' to '.$end_date }}" @endif 
+                                        <input type="text" class="form-control aiz-date-range" name="coupon_date_range"
+                                        @if($coupon?->coupon_start_date && $coupon?->coupon_end_date) value="{{ $start_date.' to '.$end_date }}" @endif
                                         placeholder="{{translate('Select Date')}}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
                                         <small class="text-muted">{{translate('Choose start and end dates for a coupon discount period. [e.g. "01/01/2024 - 01/15/2024"]')}}</small>
                                     </div>
@@ -444,20 +441,20 @@
                                 {{translate('Indicate if the product is in stock and ready to ship.')}}
                             </small>
                         </div>
-                        
+
                         <div class="form-group row" id="available_date_group" style="{{ $product->is_available == 1 ? 'display: none;' : 'display: flex;' }}">
                             <label class="col col-from-label">{{translate('Available From')}}</label>
                             <div class="col col-from-label">
-                                <input type="date" class="form-control aiz-date" name="available_date" placeholder="{{translate('Select Date')}}" 
+                                <input type="date" class="form-control aiz-date" name="available_date" placeholder="{{translate('Select Date')}}"
                                        value="{{ $product->available_date }}">
-                                       
+
                                 <span></span>
                             </div>
                             <small class="col-md-12 col-from-label text-muted">
                                 {{translate('Set a date when the product will become available. Example: "01/20/2024"')}}
                             </small>
                         </div>
-                        
+
 
                     </div>
                 </div>
@@ -576,7 +573,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row" >
                             <div class=" form-check col-md-12 ml-3">
 
@@ -596,7 +593,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <input type="hidden" name="shipping_note_id" id="shipping_note_id" value="{{$shipping?->note?->id}}">
                         <div id="shipping_note" class="">
                             @if($shipping?->note != null)
@@ -1043,7 +1040,7 @@
             AIZ.plugins.sectionFooTable('#pre-order-product-list');
         });
     }
-    
+
     function addPreOrderProduct() {
         var selectedProducts = [];
         $("input:checkbox[name=pre_order_product_id]:checked").each(function() {
@@ -1071,7 +1068,7 @@
             $('#note_modal').modal('show', {backdrop: 'static'});
         });
     }
-    
+
     // show selected note and set Note ID
     function addNote(noteId, noteType){
         var noteDescription = $('#note_description_'+ noteId).val();
@@ -1099,46 +1096,46 @@
 
 
 
-// prepayment section 
+// prepayment section
   const is_prepayment = document.getElementById('is_prepayment');
   const prepaymentBlock = document.getElementById('prepaymentBlock');
   const cod_block = document.getElementById('prepayment_needed_for_cod');
 
   is_prepayment.addEventListener('change', function() {
     if (is_prepayment.checked) {
-      prepaymentBlock.style.display = 'block'; 
-      cod_block.style.display = 'block'; 
+      prepaymentBlock.style.display = 'block';
+      cod_block.style.display = 'block';
     } else {
-      prepaymentBlock.style.display = 'none';  
-      cod_block.style.display = 'none';  
+      prepaymentBlock.style.display = 'none';
+      cod_block.style.display = 'none';
     }
   });
 
 
-// Shipping days section 
+// Shipping days section
   const show_shipping_days = document.getElementById('show_shipping_days');
   const show_shipping_days_block = document.getElementById('show_shipping_days_block');
   show_shipping_days.addEventListener('change', function() {
     if (show_shipping_days.checked) {
-        show_shipping_days_block.style.display = 'block'; 
+        show_shipping_days_block.style.display = 'block';
     } else {
-        show_shipping_days_block.style.display = 'none';  
+        show_shipping_days_block.style.display = 'none';
     }
   });
 
 
-// CODsection 
+// CODsection
   const is_cod = document.getElementById('is_cod');
   const codBlock = document.getElementById('codBlock');
   is_cod.addEventListener('change', function() {
     if (is_cod.checked) {
-      codBlock.style.display = 'block'; 
+      codBlock.style.display = 'block';
     } else {
-      codBlock.style.display = 'none';  
+      codBlock.style.display = 'none';
     }
   });
 
-        // Refund section 
+        // Refund section
         const isRefundAddonActivated = {{ json_encode(addon_is_activated('refund_request')) }};
 
         if (isRefundAddonActivated) {
@@ -1158,7 +1155,7 @@
         }
 
 
-// Coupon section 
+// Coupon section
   // Get the radio button and the hidden div
   const is_coupon = document.getElementById('is_coupon');
   const couponBlock = document.getElementById('couponBlock');
@@ -1166,14 +1163,14 @@
   // Function to show/hide div based on radio button checked state
   is_coupon.addEventListener('change', function() {
     if (is_coupon.checked) {
-      couponBlock.style.display = 'block'; 
+      couponBlock.style.display = 'block';
     } else {
-      couponBlock.style.display = 'none';  
+      couponBlock.style.display = 'none';
     }
   });
 
 
-//Whole sale Add functionality for adding and deleting rows. 
+//Whole sale Add functionality for adding and deleting rows.
 $(document).ready(function() {
     // Add new wholesale price row when 'Add More' button is clicked
     $('.add-more-row').on('click', function() {
@@ -1189,7 +1186,7 @@ $(document).ready(function() {
     });
 });
 
-//Discount Period Add functionality for adding and deleting rows. 
+//Discount Period Add functionality for adding and deleting rows.
 $(document).ready(function() {
     // Add new discount row when 'Add More' button is clicked
     $('.add-more-discount-row').on('click', function() {
@@ -1205,7 +1202,7 @@ $(document).ready(function() {
     });
 });
 
-// Generate coupon 
+// Generate coupon
 $(document).ready(function() {
     $('#generate-coupon').on('click', function() {
         // Function to generate a random alphanumeric coupon code
