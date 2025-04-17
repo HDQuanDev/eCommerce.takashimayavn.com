@@ -18397,7 +18397,7 @@
          */ 
         public static function initializeCache()
         {
-                        return \MehediIitdu\CoreComponentRepository\CoreComponentRepository::initializeCache();
+                        // return \MehediIitdu\CoreComponentRepository\CoreComponentRepository::initializeCache();
         }
                     /**
          * 
