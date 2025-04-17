@@ -18406,7 +18406,7 @@
          */ 
         public static function finalizeCache($addon)
         {
-                        return \MehediIitdu\CoreComponentRepository\CoreComponentRepository::finalizeCache($addon);
+                        // return \MehediIitdu\CoreComponentRepository\CoreComponentRepository::finalizeCache($addon);
         }
          
     }
