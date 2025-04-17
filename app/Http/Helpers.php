@@ -51,6 +51,7 @@ use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\ClubPointController;
 use App\Http\Controllers\CommissionController;
 use AizPackages\ColorCodeConverter\Services\ColorCodeConverter;
+use App\Models\Blog;
 use App\Models\CustomerPackagePayment;
 use App\Models\EmailTemplate;
 use App\Models\FlashDealProduct;
@@ -1361,8 +1362,8 @@ if (!function_exists('checkout_done')) {
             $order->save();
 
             // Order paid notification to Customer, Seller, & Admin
-            EmailUtility::order_email($order, 'paid'); 
-            
+            EmailUtility::order_email($order, 'paid');
+
             try {
                 NotificationUtility::sendOrderPlacedNotification($order);
                 calculateCommissionAffilationClubPoint($order);
@@ -2069,6 +2070,17 @@ if (!function_exists('get_user_wishlist')) {
     }
 }
 
+//Get newest blogs
+if (!function_exists('get_newest_blogs'))
+{
+    function get_newest_blogs($limit = '')
+    {
+        return Cache::remember('newest_blogs', 86400, function () use ($limit) {
+            return Blog::orderBy('created_at', 'desc')->take($limit)->get();
+        });
+    }
+}
+
 //Get best seller
 if (!function_exists('get_best_sellers')) {
     function get_best_sellers($limit = '')
@@ -2765,10 +2777,10 @@ if (!function_exists('timezones')) {
 function formatToArray($input) {
     // Remove extra quotes from the string
     $cleanedString = trim($input, '"');
-    
+
     // Split the string by commas to get each element
     $values = explode(',', $cleanedString);
-    
+
     // Filter out "NaN" and non-numeric values, convert to integers
     $result = array_filter($values, function($value) {
         return is_numeric($value);
@@ -2776,7 +2788,7 @@ function formatToArray($input) {
 
     // Convert numeric values to integers
     $result = array_map('intval', $result);
-    
+
     return $result;
 }
 
@@ -2788,7 +2800,7 @@ if (!function_exists('preorder_product_availability_check')) {
         if($product->is_available){
             return true;
         }
-        $publishDate = Carbon::parse($product->available_date); 
+        $publishDate = Carbon::parse($product->available_date);
         if (Carbon::today()->greaterThanOrEqualTo($publishDate)) {
             return true;
         }
@@ -2802,11 +2814,11 @@ if (!function_exists('preorder_fill_color')) {
     function preorder_fill_color($current_order_status, $previous_order_status = 0)
     {
         $color = match (true) {
-            $current_order_status === 2 => '#28a745', 
-            $current_order_status === 3 => '#dc3545', 
-            $current_order_status === 1 || $previous_order_status == 2 => '#FF6002', 
-            $current_order_status === 0 => '#9d9da6', 
-            default => '#000000', 
+            $current_order_status === 2 => '#28a745',
+            $current_order_status === 3 => '#dc3545',
+            $current_order_status === 1 || $previous_order_status == 2 => '#FF6002',
+            $current_order_status === 0 => '#9d9da6',
+            default => '#000000',
         };
         return $color;
     }
@@ -2960,7 +2972,7 @@ if (!function_exists('preorder_payment_type')) {
     }
 }
 
-// preorder product 
+// preorder product
 if (!function_exists('filter_preorder_product')) {
     function filter_preorder_product($products)
     {
@@ -2991,8 +3003,8 @@ function filter_single_preorder_product($product)
         }
         // Return the product if the user is not a seller (e.g., admin)
         return $product;
-    } 
-    
+    }
+
     // If vendor system is not activated, return the product directly
     return $product;
 }

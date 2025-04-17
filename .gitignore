@@ -26,5 +26,6 @@ install.zip
 /nbproject/private/
 /nbproject
 public/uploads.zip
+public/public/
 .env
 

@@ -544,6 +544,64 @@
         @endif
     @endif
 
+    <!-- New Blogs -->
+    @php
+        $newest_blogs = get_newest_blogs(3);
+    @endphp
+    <section class="mb-2 mb-md-3 mt-2 mt-md-3">
+        <div class="container">
+            <!-- Top Section -->
+            <div class="d-flex mb-2 mb-md-3 align-items-baseline justify-content-between">
+                <!-- Title -->
+                <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
+                    <span class="pb-3">{{ translate('Newest Blogs') }}</span>
+                </h3>
+                <!-- Links -->
+                <div class="d-flex">
+                    <a class="text-blue fs-10 fs-md-12 fw-700 hov-text-primary animate-underline-primary"
+                        href="{{ route('blog') }}">{{ translate('View All Blogs') }}</a>
+                </div>
+            </div>
+            <!-- Blogs Section -->
+            <div class="blog card-columns">
+                @foreach ($newest_blogs as $blog)
+                    <div class="card mb-4 overflow-hidden shadow-none border rounded-0 hov-scale-img p-3">
+                        <a href="{{ url("blog").'/'. $blog->slug }}" class="text-reset d-block overflow-hidden h-180px">
+                            <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
+                                data-src="{{ uploaded_asset($blog->banner) }}"
+                                alt="{{ $blog->title }}"
+                                class="img-fit lazyload h-100 has-transition">
+                        </a>
+                        <div class="py-3">
+                            <h2 class="fs-16 fw-700 mb-3 h-35px text-truncate-2">
+                                <a href="{{ url("blog").'/'. $blog->slug }}" class="text-reset hov-text-primary" title="{{ $blog->title }}">
+                                    {{ $blog->title }}
+                                </a>
+                            </h2>
+                            <p class="opacity-70 mb-3 h-60px text-truncate-3" title="{{ $blog->short_description }}">
+                                {{ $blog->short_description }}
+                            </p>
+                            <div>
+                                <small class="fs-12 fw-400 opacity-60">{{ date('M d, Y',strtotime($blog->created_at)) }}</small>
+                            </div>
+                            @if($blog->category != null)
+                                <div>
+                                    <small class="fs-12 fw-400 text-blue">{{ $blog->category->category_name }}</small>
+                                </div>
+                            @endif
+                            <div class="mt-3 text-primary">
+                                <a href="{{ url("blog").'/'. $blog->slug }}" class="fs-14 fw-700 text-primary has-transition d-flex align-items-center hov-column-gap-1">
+                                    {{ translate('Read Full Blog') }}
+                                    <i class="las las-2x la-arrow-right fs-24 ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- Top Sellers -->
     @if (get_setting('vendor_system_activation') == 1)
         @php
