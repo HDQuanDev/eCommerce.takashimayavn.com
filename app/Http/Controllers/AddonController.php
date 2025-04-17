@@ -310,13 +310,12 @@ class AddonController extends Controller
     }
 
     public static function checkVerification( $type, $key){
-        return true;
-        // $res  = self::script_activation_check($key);
-        // return $res;
+
+        $res  = self::script_activation_check($key);
+        return $res;
     }
 
     public static function checkActivation( $type, $key){
-
         if($type == 'item'){
             $url = "https://activation.activeitzone.com/item_info/".$key;
         }else{
