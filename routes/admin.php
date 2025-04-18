@@ -45,6 +45,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\SellerDepositRequestController;
 use App\Http\Controllers\SellerWithdrawRequestController;
 use App\Http\Controllers\SizeChartController;
 use App\Http\Controllers\StaffController;
@@ -207,6 +208,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/withdraw_requests_all', 'index')->name('withdraw_requests_all');
         Route::post('/withdraw_request/payment_modal', 'payment_modal')->name('withdraw_request.payment_modal');
         Route::post('/withdraw_request/message_modal', 'message_modal')->name('withdraw_request.message_modal');
+    });
+
+    // Seller Deposit Request
+    Route::resource('/deposit_requests', SellerDepositRequestController::class);
+    Route::controller(SellerDepositRequestController::class)->group(function () {
+        Route::get('/deposit_requests_all', 'index')->name('deposit_requests_all');
+        Route::post('/deposit_request/approve', 'approve')->name('deposit_request.approve');
+        Route::post('/deposit_request/reject', 'reject')->name('deposit_request.reject');
+        Route::post('/deposit_request/message_modal', 'message_modal')->name('deposit_request.message_modal');
     });
 
     // Customer
@@ -414,7 +424,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         // Order bulk export
         Route::get('/order-bulk-export', 'orderBulkExport')->name('order-bulk-export');
 
-        // 
+        //
         Route::post('order-payment-notification', 'unpaid_order_payment_notification_send')->name('unpaid_order_payment_notification');
     });
 

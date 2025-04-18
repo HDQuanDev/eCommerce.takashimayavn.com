@@ -91,12 +91,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     Route::controller(InvoiceController::class)->group(function () {
         Route::get('/invoice/{order_id}', 'invoice_download')->name('invoice.download');
     });
-    
+
     //Review
     Route::controller(ReviewController::class)->group(function () {
         Route::get('/product-reviews', 'index')->name('product-reviews');
         Route::get('/product/detail-reviews/{id}', 'detailReviews')->name('detail-reviews');
-        
+
     });
 
     //Shop
@@ -131,6 +131,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     Route::controller(SellerWithdrawRequestController::class)->group(function () {
         Route::get('/money-withdraw-requests', 'index')->name('money_withdraw_requests.index');
         Route::post('/money-withdraw-request/store', 'store')->name('money_withdraw_request.store');
+    });
+
+    // Money Deposit Requests
+    Route::controller(SellerDepositRequestController::class)->group(function () {
+        Route::get('/money-deposit-requests', 'index')->name('money_deposit_requests.index');
+        Route::post('/money-deposit-request/store', 'store')->name('money_deposit_request.store');
     });
 
     // Commission History

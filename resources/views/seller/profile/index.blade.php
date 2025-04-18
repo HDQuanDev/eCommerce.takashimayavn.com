@@ -123,7 +123,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <label class="col-md-3 col-form-label" for="bank_routing_no">{{ translate('Bank Routing Number') }}</label>
                     <div class="col-md-9">
                         <input type="number" name="bank_routing_no" value="{{ $user->shop->bank_routing_no }}" id="bank_routing_no" lang="en" class="form-control mb-3" placeholder="{{ translate('Bank Routing Number')}}">
@@ -131,7 +131,7 @@
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
