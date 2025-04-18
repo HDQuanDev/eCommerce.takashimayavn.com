@@ -97,29 +97,8 @@
                     <h5 class="modal-title" id="exampleModalLabel">{{ translate('Send A Withdraw Request') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 @if (Auth::user()->shop->admin_to_pay > 5)
-                <div class="px-3 py-3">
-                    <p>{{ translate('Edit payment information') }}:<a class="btn btn-sm btn-link" href="{{ route('seller.profile.index') }}">{{ translate('here') }}</a></p>
-                    <table class="table table-striped table-bordered">
-                        <tbody>
-                            <tr>
-                                <td>{{ translate('Bank Name') }}</td>
-                                <td>{{ $shop->bank_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ translate('Bank Account Name') }}</td>
-                                <td>{{ $shop->bank_acc_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ translate('Bank Account Number') }}</td>
-                                <td>{{ $shop->bank_acc_no }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                    <form id="withdraw-form" class="" action="{{ route('seller.money_withdraw_request.store') }}"
-                        method="post">
+                    <form class="" action="{{ route('seller.money_withdraw_request.store') }}" method="post">
                         @csrf
                         <div class="modal-body gry-bg px-3 pt-3">
                             <div class="row">
