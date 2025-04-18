@@ -254,7 +254,7 @@
                                 @endif
                             </td>
                         @endif
-                        
+
                     </tr>
                 @endforeach
                 </tbody>
@@ -518,7 +518,7 @@
             }
         }
 
-        
+
         // Edit seller custom followers
         function editCustomFollowers(shop_id, custom_followers){
             $('#shop_id').val(shop_id);

@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code'
+        'name', 'email', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code', 'commission_package_id'
     ];
 
     /**
@@ -168,4 +168,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Preorder::class);
     }
+
+    public function commission_package()
+    {
+        return $this->belongsToMany(CommissionPackage::class, 'commission_package_user', 'user_id', 'commission_package_id')->withPivot('price', 'start_date', 'end_date');
+    }
+
 }

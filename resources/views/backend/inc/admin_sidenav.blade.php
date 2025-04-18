@@ -286,7 +286,7 @@
 
                 {{-- Preorder --}}
                 @if (addon_is_activated('preorder'))
-                    @canany(['preorder_dashboard', 'add_preorder_product', 'view_all_preorder_products', 'view_all_preorders', 'view_all_inhouse_preorders', 
+                    @canany(['preorder_dashboard', 'add_preorder_product', 'view_all_preorder_products', 'view_all_preorders', 'view_all_inhouse_preorders',
                             'view_all_seller_preorders', 'view_all_delayed_prepayment_preorders', 'view_all_final_preorders', 'view_preorder_seller_commission_history',
                             'preorder_settings', 'view_all_preorder_product_conversations','view_all_preorder_product_queries', 'view_all_preorder_product_reviews',
                             'view_all_faqs', 'view_all_preorder_notification_types'])
@@ -427,7 +427,7 @@
                                     @if (get_setting('conversation_system') == 1)
                                         @php
                                             $preorderConversation = get_non_viewed_preorder_conversations();
-                                        @endphp   
+                                        @endphp
                                         <li class="aiz-side-nav-item">
                                             <a href="{{ route('preorder-conversations.admin_index') }}"
                                                 class="aiz-side-nav-link {{ areActiveRoutes(['preorder-conversations.admin_index','preorder-conversations.admin_show']) }}">
@@ -999,6 +999,11 @@
                             </a>
                         </li>
                         @endcan
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('commission-packages.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Commission Packages') }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endcanany
@@ -1235,7 +1240,7 @@
                             </ul>
                         </li>
                         @endcan
-                        
+
                         @can('send_newsletter')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('newsletters.index')}}" class="aiz-side-nav-link">
@@ -1973,7 +1978,7 @@
                                         <span class="aiz-side-nav-text">{{translate('Facebook Chat')}}</span>
                                     </a>
                                 </li>
-                                
+
                                 @endcan --}}
 
                                 @can('whatsapp_chat')

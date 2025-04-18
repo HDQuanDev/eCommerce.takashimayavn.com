@@ -13,7 +13,9 @@ use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\CommisionPackageController;
 use App\Http\Controllers\CommissionController;
+use App\Http\Controllers\CommissionPackageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\CountryController;
@@ -414,7 +416,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         // Order bulk export
         Route::get('/order-bulk-export', 'orderBulkExport')->name('order-bulk-export');
 
-        // 
+        //
         Route::post('order-payment-notification', 'unpaid_order_payment_notification_send')->name('unpaid_order_payment_notification');
     });
 
@@ -622,6 +624,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/notification-type/destroy/{id}', 'destroy')->name('notification-type.destroy');
         Route::post('/notification-type/bulk_delete', 'bulkDelete')->name('notifications-type.bulk_delete');
         Route::post('/notification-type.get-default-text', 'getDefaulText')->name('notification_type.get_default_text');
+    });
+
+    Route::controller(CommisionPackageController::class)->group(function () {
+        Route::get('/commission-packages', 'index')->name('commission-packages.index');
+        Route::get('/commission-packages/create', 'create')->name('commission-packages.create');
+        Route::post('/commission-packages/create', 'store')->name('commission-packages.store');
+        Route::get('/commission-packages/edit/{id}', 'edit')->name('commission-packages.edit');
+        Route::post('/commission-packages/update/{id}', 'update')->name('commission-packages.update');
+        Route::get('/commission-packages/destroy/{id}', 'destroy')->name('commission-packages.destroy');
     });
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
