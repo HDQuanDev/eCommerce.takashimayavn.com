@@ -20,9 +20,10 @@ class SellerWithdrawRequestController extends Controller
     public function index()
     {
         $seller_withdraw_requests = SellerWithdrawRequest::where('user_id', Auth::user()->id)->latest()->paginate(9);
-        return view('seller.money_withdraw_requests.index', compact('seller_withdraw_requests'));
+        $total_withdraw_amount = SellerWithdrawRequest::where('user_id', Auth::user()->id)->sum('amount');
+        $shop = Auth::user()->shop;
+        return view('seller.money_withdraw_requests.index', compact('seller_withdraw_requests', 'total_withdraw_amount', 'shop'));
     }
-
 
     /**
      * Store a newly created resource in storage.

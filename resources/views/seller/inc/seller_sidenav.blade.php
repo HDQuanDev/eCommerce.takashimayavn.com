@@ -121,7 +121,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller.preorder-settings') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{translate("Preorder Settings")}}</span>
@@ -138,7 +138,7 @@
                                 <li class="aiz-side-nav-item">
                                     @php
                                         $preorderConversation = get_non_viewed_preorder_conversations();
-                                    @endphp    
+                                    @endphp
                                     <a href="{{ route('seller.preorder-conversations.index') }}"
                                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.preorder-conversations.index','seller.preorder-conversations.show']) }}">
                                         <span class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
@@ -333,6 +333,14 @@
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
                         <i class="las la-money-bill-wave-alt aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
+                    </a>
+                </li>
+
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.money_deposit_requests.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_deposit_requests.index']) }}">
+                        <i class="las la-wallet aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Money Deposit') }}</span>
                     </a>
                 </li>
 

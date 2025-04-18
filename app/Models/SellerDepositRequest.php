@@ -17,4 +17,8 @@ class SellerDepositRequest extends Model
     {
         return $this->belongsTo(Shop::class);
     }
+    public function payment_method()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
 }
