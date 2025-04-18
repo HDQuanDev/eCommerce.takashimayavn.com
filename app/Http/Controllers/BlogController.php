@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BlogCategory;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Cache;
 
 class BlogController extends Controller
 {
@@ -81,6 +82,7 @@ class BlogController extends Controller
         $blog->save();
 
         flash(translate('Blog post has been created successfully'))->success();
+        Cache::forget('newest_blogs');
         return redirect()->route('blog.index');
     }
 
@@ -137,6 +139,7 @@ class BlogController extends Controller
         $blog->save();
 
         flash(translate('Blog post has been updated successfully'))->success();
+        Cache::forget('newest_blogs');
         return redirect()->route('blog.index');
     }
 
@@ -180,10 +183,10 @@ class BlogController extends Controller
             $case1 = $search . '%';
             $case2 = '%' . $search . '%';
 
-            $blogs->orderByRaw("CASE 
-                WHEN title LIKE '$case1' THEN 1 
-                WHEN title LIKE '$case2' THEN 2 
-                ELSE 3 
+            $blogs->orderByRaw("CASE
+                WHEN title LIKE '$case1' THEN 1
+                WHEN title LIKE '$case2' THEN 2
+                ELSE 3
                 END");
         }
 
