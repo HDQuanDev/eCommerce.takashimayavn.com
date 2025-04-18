@@ -18,4 +18,8 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
     return false;
 }
 
-require_once __DIR__.'/public/index.php';
+if (getenv('APP_ENV') === 'local') {
+    require_once __DIR__.'/index.php';
+} else {
+    require_once __DIR__.'/public/index.php';
+}

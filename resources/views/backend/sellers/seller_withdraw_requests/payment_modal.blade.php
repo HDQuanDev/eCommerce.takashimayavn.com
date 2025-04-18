@@ -71,12 +71,12 @@
                 </div>
             </div>
             
-            <div class="form-group row" id="txn_div">
+            {{-- <div class="form-group row" id="txn_div">
                 <label class="col-md-3 col-from-label" for="txn_code">{{translate('Txn Code')}}</label>
                 <div class="col-md-9">
                     <input type="text" name="txn_code" id="txn_code" class="form-control">
                 </div>
-            </div>
+            </div> --}}
         @endif
 
     </div>
@@ -90,17 +90,17 @@
 
 <script>
 $(document).ready(function(){
-    $('#payment_option').on('change', function() {
-      if ( this.value == 'bank_payment')
-      {
-        $("#txn_div").show();
-      }
-      else
-      {
-        $("#txn_div").hide();
-      }
-    });
-    $("#txn_div").hide();
+    // $('#payment_option').on('change', function() {
+    //   if ( this.value == 'bank_payment')
+    //   {
+    //     $("#txn_div").show();
+    //   }
+    //   else
+    //   {
+    //     $("#txn_div").hide();
+    //   }
+    // });
+    // $("#txn_div").hide();
     AIZ.plugins.bootstrapSelect('refresh');
 });
 </script>

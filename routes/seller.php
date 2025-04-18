@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\Seller\DashboardController;
 
 //Upload
 Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user', 'prevent-back-history'], 'as' => 'seller.'], function () {
