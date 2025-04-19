@@ -113,7 +113,7 @@ Route::controller(ShopController::class)->group(function () {
     Route::post('/shop/registration/verification-code-send', 'sendRegVerificationCode')->name('shop-reg.verification_code_send');
     Route::get('/shop/registration/verify-code/{id}', 'regVerifyCode')->name('shop-reg.verify_code');
     Route::post('/shop/registration/verification-code-confirmation', 'regVerifyCodeConfirmation')->name('shop-reg.verify_code_confirmation');
-    
+
 });
 
 Route::controller(HomeController::class)->group(function () {
@@ -384,7 +384,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(NoteController::class)->group(function () {
         Route::post('/get-notes', 'getNotes')->name('get_notes');
         Route::get('/get-single-note/{id}', 'getSingleNote')->name('get-single-note');
-        
+
     });
 });
 
@@ -490,3 +490,5 @@ Route::controller(PageController::class)->group(function () {
 Route::controller(ContactController::class)->group(function () {
     Route::post('/contact', 'contact')->name('contact');
 });
+
+
