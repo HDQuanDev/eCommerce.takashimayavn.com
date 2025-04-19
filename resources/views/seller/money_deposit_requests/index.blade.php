@@ -101,65 +101,57 @@
                     <h5 class="modal-title" id="exampleModalLabel">{{ translate('Send A Deposit Request') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
-                @if (Auth::user()->shop->admin_to_pay > 5)
-                    <form id="deposit-form" class="" action="{{ route('seller.money_deposit_request.store') }}"
-                        method="post">
-                        @csrf
-                        <div class="modal-body gry-bg px-3 pt-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>{{ translate('Payment Method') }} <span class="text-danger">*</span></label>
-                                </div>
-                                @foreach ($payment_methods as $payment_method)
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                                                <label class="btn btn-outline-primary {{ $loop->first ? 'active' : '' }}"
-                                                    data-toggle="button">
-                                                    <input type="radio" name="payment_method_id"
-                                                        value="{{ $payment_method->id }}"
-                                                        {{ $loop->first ? 'checked' : '' }} required>
-                                                    <img src="{{ static_asset('assets/img/cards/' . $payment_method->name . '.png') }}"
-                                                        height="30">
-                                                    {{ ucfirst(translate($payment_method->name)) }}
-                                                </label>
-                                            </div>
+                <form id="deposit-form" class="" action="{{ route('seller.money_deposit_request.store') }}"
+                    method="post">
+                    @csrf
+                    <div class="modal-body gry-bg px-3 pt-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <label>{{ translate('Payment Method') }} <span class="text-danger">*</span></label>
+                            </div>
+                            @foreach ($payment_methods as $payment_method)
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                                            <label class="btn btn-outline-primary {{ $loop->first ? 'active' : '' }}"
+                                                data-toggle="button">
+                                                <input type="radio" name="payment_method_id"
+                                                    value="{{ $payment_method->id }}" {{ $loop->first ? 'checked' : '' }}
+                                                    required>
+                                                <img src="{{ static_asset('assets/img/cards/' . $payment_method->name . '.png') }}"
+                                                    height="30">
+                                                {{ ucfirst(translate($payment_method->name)) }}
+                                            </label>
                                         </div>
                                     </div>
-                                @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>{{ translate('Amount') }} <span class="text-danger">*</span></label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label>{{ translate('Amount') }} <span class="text-danger">*</span></label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="number" lang="en" class="form-control mb-3" name="amount"
-                                        min="{{ get_setting('minimum_seller_amount_deposit') }}"
-                                        max="{{ Auth::user()->shop->admin_to_pay }}"
-                                        placeholder="{{ translate('Amount') }}" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label>{{ translate('Deposit Code') }}</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" name="message" class="form-control mb-3">
-                                </div>
-                            </div>
-                            <div class="form-group text-right">
-                                <button type="submit" id="deposit-submit"
-                                    class="btn btn-sm btn-primary">{{ translate('Send') }}</button>
+                            <div class="col-md-9">
+                                <input type="number" lang="en" class="form-control mb-3" name="amount"
+                                    min="{{ get_setting('minimum_seller_amount_deposit') }}"
+                                    max="{{ Auth::user()->shop->admin_to_pay }}" placeholder="{{ translate('Amount') }}"
+                                    required>
                             </div>
                         </div>
-                    </form>
-                @else
-                    <div class="modal-body gry-bg px-3 pt-3">
-                        <div class="p-5 heading-3">
-                            {{ translate('You do not have enough balance to send deposit request') }}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>{{ translate('Deposit Code') }}</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="message" class="form-control mb-3">
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" id="deposit-submit"
+                                class="btn btn-sm btn-primary">{{ translate('Send') }}</button>
                         </div>
                     </div>
-                @endif
+                </form>
             </div>
         </div>
     </div>
