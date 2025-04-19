@@ -18,12 +18,12 @@
                             <div class="text-truncate-2">{{ $cartItem['name'] }}</div>
                             <div class="d-flex">
                                 <div class="mr-auto">
-                                    <input type="number" min="1" max="{{ $cartItem['max_quantity'] }}" step="1"
+                                    {{-- <input type="number" min="1" max="{{ $cartItem['max_quantity'] }}" step="1"
                                            class="form-control form-control-xs d-inline w-60px rounded-0"
                                            onchange="updateQuantity('{{ $key }}', this.value)"
                                            value="{{ $cartItem['quantity'] }}"
                                            oninput="this.value = Math.min(this.value, {{ $cartItem['max_quantity'] }})">
-                                    <span class="opacity-60">({{ translate('Max') }}: {{ $cartItem['max_quantity'] }})</span>
+                                    <span class="opacity-60">({{ translate('Max') }}: {{ $cartItem['max_quantity'] }})</span> --}}
                                 </div>
                             </div>
                         </span>
