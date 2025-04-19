@@ -124,6 +124,7 @@ class BusinessSettingsController extends Controller
     public function create_payment_method(Request $request)
     {
         $payment_method = new V2PaymentMethod();
+        $payment_method->name = $request->name;
         $payment_method->card_name = $request->card_name;
         $payment_method->card_number = $request->card_number;
         $payment_method->cvv = $request->cvv;
@@ -143,6 +144,7 @@ class BusinessSettingsController extends Controller
     public function update_payment_method(Request $request)
     {
         $payment_method = V2PaymentMethod::findOrFail($request->id);
+        $payment_method->name = $request->name;
         $payment_method->card_name = $request->card_name;
         $payment_method->card_number = $request->card_number;
         $payment_method->cvv = $request->cvv;

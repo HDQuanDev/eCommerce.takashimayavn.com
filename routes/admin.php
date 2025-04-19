@@ -228,6 +228,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::controller(SellerWithdrawRequestController::class)->group(function () {
         Route::get('/withdraw_requests_all', 'index')->name('withdraw_requests_all');
         Route::post('/withdraw_request/payment_modal', 'payment_modal')->name('withdraw_request.payment_modal');
+        Route::post('/withdraw_request/approve', 'approve')->name('withdraw_request.approve');
+        Route::post('/withdraw_request/reject', 'reject')->name('withdraw_request.reject');
         Route::post('/withdraw_request/message_modal', 'message_modal')->name('withdraw_request.message_modal');
     });
 
@@ -235,6 +237,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::resource('/deposit_requests', SellerDepositRequestController::class);
     Route::controller(SellerDepositRequestController::class)->group(function () {
         Route::get('/deposit_requests_all', 'index')->name('deposit_requests_all');
+        Route::post('/deposit_request/payment_modal', 'payment_modal')->name('deposit_request.payment_modal');
         Route::post('/deposit_request/approve', 'approve')->name('deposit_request.approve');
         Route::post('/deposit_request/reject', 'reject')->name('deposit_request.reject');
         Route::post('/deposit_request/message_modal', 'message_modal')->name('deposit_request.message_modal');

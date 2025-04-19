@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\SellerWithdrawRequest;
 use App\Models\User;
@@ -59,49 +60,44 @@ class SellerWithdrawRequestController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function approve(Request $request)
     {
-        //
+        $seller_withdraw_request = SellerWithdrawRequest::where('id', $request->seller_withdraw_request_id)->first();
+        $seller_withdraw_request->reply = $request->reply;
+        $seller_withdraw_request->status = '1';
+        $seller_withdraw_request->viewed = '1';
+        $seller_withdraw_request->save();
+
+        $user = User::findOrFail($seller_withdraw_request->user_id);
+
+        if ($user->balance >= $seller_withdraw_request->amount) {
+            $user->balance -= $seller_withdraw_request->amount;
+            $user->save();
+        } else {
+            flash(translate('Insufficient balance'))->error();
+            return back();
+        }
+
+        $payment = new Payment();
+        $payment->seller_id = $user->id;
+        $payment->amount = $seller_withdraw_request->amount;
+        $payment->payment_method = 'Withdraw';
+        $payment->save();
+
+        flash(translate('Request has been approved successfully'))->success();
+        return back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function reject(Request $request)
     {
-        //
-    }
+        $seller_withdraw_request = SellerWithdrawRequest::where('id', $request->seller_withdraw_request_id)->first();
+        $seller_withdraw_request->reply = $request->reply;
+        $seller_withdraw_request->status = '2';
+        $seller_withdraw_request->viewed = '1';
+        $seller_withdraw_request->save();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        flash(translate('Request has been rejected successfully'))->success();
+        return back();
     }
 
     public function payment_modal(Request $request)

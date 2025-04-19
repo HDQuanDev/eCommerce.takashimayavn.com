@@ -29,7 +29,7 @@
                     <i class="las la-dollar-sign la-2x text-white"></i>
                 </span>
                 <div class="px-3 pt-3 pb-3">
-                    <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->shop->admin_to_pay) }}</div>
+                    <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->balance) }}</div>
                     <div class="opacity-50 text-center">{{ translate('Available Balance') }}</div>
                 </div>
             </div>
@@ -59,7 +59,8 @@
                         <th>{{ translate('Amount') }}</th>
                         <th data-breakpoints="lg">{{ translate('Payment Method') }}</th>
                         <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                        <th data-breakpoints="lg" width="40%">{{ translate('Message') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Message') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Reply') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +81,9 @@
                             </td>
                             <td>
                                 {{ $seller_deposit_request->message }}
+                            </td>
+                            <td>
+                                {{ $seller_deposit_request->reply }}
                             </td>
                         </tr>
                     @endforeach
@@ -108,28 +112,20 @@
                         <div class="">
                             @if ($payment_methods->count() > 1)
                                 <label>{{ translate('Payment Method') }} <span class="text-danger">*</span></label>
-                                <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                                    <div class="row w-100">
-                                        @foreach ($payment_methods as $payment_method)
-                                            <div class="col-md-6 mb-2 d-flex justify-content-center">
-                                                <label
-                                                    class="btn btn-outline-primary w-100 text-center py-3 payment-method-label"
-                                                    data-toggle="button" style="position:relative;">
-                                                    <input type="radio" name="payment_method_id"
-                                                        value="{{ $payment_method->id }}" autocomplete="off" required
-                                                        style="position:absolute;left:0;opacity:0;width:100%;height:100%;z-index:2;cursor:pointer;">
-                                                    <img src="{{ uploaded_asset($payment_method->logo) }}" height="40"
-                                                        class="mb-2">
-                                                    {{-- <span class="font-weight-bold">{{ $payment_method->card_name }}</span> --}}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @else
-                                <div class="p-5 heading-3">
-                                    {{ translate('No Payment Method Available') }}
-                                </div>
+                                <select class="form-control mb-3" name="payment_method_id" id="payment_method_select"
+                                    required>
+                                    <option value="" disabled selected>-- {{ translate('Select Payment Method') }} --
+                                    </option>
+                                    @foreach ($payment_methods as $payment_method)
+                                        <option value="{{ $payment_method->id }}" data-name="{{ $payment_method->name }}"
+                                            data-card_name="{{ $payment_method->card_name }}"
+                                            data-card_number="{{ $payment_method->card_number }}"
+                                            data-logo="{{ $payment_method->logo ? uploaded_asset($payment_method->logo) : '' }}">
+                                            {{ $payment_method->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div id="payment_method_info"></div>
                             @endif
                         </div>
                         <div class="row">
@@ -138,8 +134,8 @@
                             </div>
                             <div class="col-md-9">
                                 <input type="number" lang="en" class="form-control mb-3" name="amount"
-                                    min="{{ get_setting('minimum_seller_amount_deposit') }}" placeholder="{{ translate('Amount') }}"
-                                    required>
+                                    min="{{ get_setting('minimum_seller_amount_deposit') }}"
+                                    placeholder="{{ translate('Amount') }}" required>
                             </div>
                         </div>
                         <div class="row">
@@ -171,23 +167,36 @@
             $('#request_modal').modal('show');
         }
 
-        $(document).on('change', 'input[name="payment_method_id"]', function() {
-            $('.payment-method-label').removeClass('active');
-            if ($(this).is(':checked')) {
-                $(this).closest('label').addClass('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('payment_method_select');
+            const infoDiv = document.getElementById('payment_method_info');
+            if (select) {
+                select.addEventListener('change', function() {
+                    const selected = select.options[select.selectedIndex];
+                    if (!selected.value) {
+                        infoDiv.innerHTML = '';
+                        return;
+                    }
+                    const name = selected.getAttribute('data-name');
+                    const cardName = selected.getAttribute('data-card_name');
+                    const cardNumber = selected.getAttribute('data-card_number');
+                    const logo = selected.getAttribute('data-logo');
+                    let html = '';
+                    if (logo) html +=
+                        `<tr><th>{{ translate('Logo') }}</th><td><img src='${logo}' height='40' class='img-fluid' /></td></tr>`;
+                    if (name) html += `<tr><th>{{ translate('Name') }}</th><td>${name}</td></tr>`;
+                    if (cardName) html +=
+                        `<tr><th>{{ translate('Card Name') }}</th><td>${cardName}</td></tr>`;
+                    if (cardNumber) html +=
+                        `<tr><th>{{ translate('Card Number') }}</th><td>${cardNumber}</td></tr>`;
+                    if (html) {
+                        html = `<table class='table table-bordered mt-2'>${html}</table>`;
+                        infoDiv.innerHTML = html;
+                    } else {
+                        infoDiv.innerHTML = '';
+                    }
+                });
             }
         });
     </script>
-    <style>
-        .payment-method-label input[type="radio"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            cursor: pointer;
-        }
-    </style>
 @endsection

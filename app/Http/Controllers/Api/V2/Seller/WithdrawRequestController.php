@@ -20,7 +20,6 @@ class WithdrawRequestController extends Controller
         return SellerWithdrawResource::collection($seller_withdraw_requests);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -29,7 +28,6 @@ class WithdrawRequestController extends Controller
      */
     public function store(Request $request)
     {
-
         if (auth()->user()->shop->admin_to_pay > 5) {
             if ($request->amount >= get_setting('minimum_seller_amount_withdraw') && $request->amount <= Auth::user()->shop->admin_to_pay) {
                 $seller_withdraw_request = new SellerWithdrawRequest;
