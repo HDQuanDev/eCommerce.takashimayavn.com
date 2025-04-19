@@ -118,13 +118,13 @@
                                     <span class="slider round"></span>
                                 </label>
                             </td>
-                            <td>
-                                @if(auth()->user()->can('edit_commission_package'))
-                                <a href="javascript:void(0);" onclick="show_edit_package_modal({{ $package->id }})" class="btn btn-primary btn-sm">{{ translate('Edit') }}</a>
-                                @endif
-                                @if(auth()->user()->can('delete_commission_package'))
-                                    <a href="{{ route('commission-packages.destroy', $package->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package?')">{{ translate('Delete') }}</a>
-                                @endif
+                            <td class="text-right">
+                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="javascript:void(0);" onclick="show_edit_package_modal({{ $package->id }})" title="{{ translate('Edit') }}">
+                                    <i class="las la-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('commission-packages.destroy', $package->id)}}" title="{{ translate('Delete') }}">
+                                    <i class="las la-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     @endforeach
