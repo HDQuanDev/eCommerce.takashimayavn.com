@@ -194,6 +194,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/pos/products', 'productList')->name('pos.products');
     });
 
+
  //Commision Package
  Route::prefix('commission-packages')->group(function () {
     Route::get('/', [CommisionPackageController::class, 'index'])->name('commission-packages.index');
