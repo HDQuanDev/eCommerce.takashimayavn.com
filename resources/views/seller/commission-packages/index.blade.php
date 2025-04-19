@@ -22,7 +22,7 @@
                         <div class="description">
                             {{ $package->description }}
                         </div>
-                        <a href="{{$currentPackage->id == $package->id ? '#': route('seller.commission-packages.register', $package->id) }}" class="btn btn-outline-primary btn-lg w-100 mt-4 {{$currentPackage->id == $package->id ? 'disabled ' : ''}}">{{$currentPackage->id == $package->id ? translate('Current Package') : translate('Get Started') }}</a>
+                        <a href="{{$currentPackage && $currentPackage->id == $package->id ? '#': route('seller.commission-packages.register', $package->id) }}" class="btn btn-outline-primary btn-lg w-100 mt-4 {{$currentPackage && $currentPackage->id == $package->id ? 'disabled ' : ''}}">{{$currentPackage && $currentPackage->id == $package->id ? translate('Current Package') : translate('Get Started') }}</a>
                     </div>
                 </div>
             </div>
