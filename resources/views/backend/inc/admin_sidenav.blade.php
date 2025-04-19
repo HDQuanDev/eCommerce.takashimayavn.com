@@ -1135,6 +1135,11 @@
                         </li>
                         @endcan
                         <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller_packages_list') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Seller Packages') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
                             <a href="{{ route('commission-packages.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Commission Packages') }}</span>
                             </a>
@@ -1144,6 +1149,7 @@
                                 <span class="aiz-side-nav-text">{{ translate('Commission Packages History') }}</span>
                             </a>
                         </li>
+
                     </ul>
                 </li>
                 @endcanany
