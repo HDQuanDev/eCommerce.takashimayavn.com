@@ -15,6 +15,7 @@
                         <th data-breakpoints="lg" width="10%">{{ translate('Payment Method') }}</th>
                         <th data-breakpoints="lg" width="30%">{{ translate('Message') }}</th>
                         <th data-breakpoints="lg">{{ translate('Status') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Reply') }}</th>
                         <th data-breakpoints="lg" width="15%" class="text-right">{{ translate('Options') }}</th>
                     </tr>
                 </thead>
@@ -33,6 +34,9 @@
                                     {{ $seller_deposit_request->message }}
                                 </td>
                                 <td>
+                                    {{ $seller_deposit_request->reply }}
+                                </td>
+                                <td>
                                     @if ($seller_deposit_request->status == 1)
                                         <span class="badge badge-inline badge-success">{{ translate('Approved') }}</span>
                                     @elseif($seller_deposit_request->status == 2)
@@ -43,26 +47,11 @@
                                 </td>
                                 <td class="text-right">
                                     @if ($seller_deposit_request->status == 0)
-                                        <form action="{{ route('deposit_request.approve') }}" method="POST"
-                                            class="d-inline-block">
-                                            @csrf
-                                            <input type="hidden" name="seller_deposit_request_id"
-                                                value="{{ $seller_deposit_request->id }}">
-                                            <button type="submit" class="btn btn-soft-warning btn-icon btn-circle btn-sm"
-                                                title="{{ translate('Approved Now') }}">
-                                                <i class="las la-money-bill"></i>
-                                            </button>
-                                        </form>
-                                        <form action="{{ route('deposit_request.reject') }}" method="POST"
-                                            class="d-inline-block">
-                                            @csrf
-                                            <input type="hidden" name="seller_deposit_request_id"
-                                                value="{{ $seller_deposit_request->id }}">
-                                            <button type="submit" class="btn btn-soft-danger btn-icon btn-circle btn-sm"
-                                                title="{{ translate('Rejected Now') }}">
-                                                <i class="las la-times"></i>
-                                            </button>
-                                        </form>
+                                        <a onclick="show_seller_payment_modal('{{ $seller_deposit_request->user_id }}','{{ $seller_deposit_request->id }}');"
+                                            class="btn btn-soft-warning btn-icon btn-circle btn-sm"
+                                            href="javascript:void(0);" title="{{ translate('Info') }}">
+                                            <i class="las la-money-bill"></i>
+                                        </a>
                                     @endif
                                     @can('pay_to_seller')
                                         <a onclick="show_message_modal('{{ $seller_deposit_request->id }}');"
@@ -93,13 +82,13 @@
 
 @section('modal')
     <!-- payment Modal -->
-    {{-- <div class="modal fade" id="payment_modal">
-  <div class="modal-dialog">
-    <div class="modal-content" id="payment-modal-content">
+    <div class="modal fade" id="payment_modal">
+        <div class="modal-dialog">
+            <div class="modal-content" id="payment-modal-content">
 
+            </div>
+        </div>
     </div>
-  </div>
-</div> --}}
 
 
     <!-- Message View Modal -->
@@ -116,6 +105,19 @@
 
 @section('script')
     <script type="text/javascript">
+        function show_seller_payment_modal(id, seller_deposit_request_id) {
+            $.post('{{ route('deposit_request.payment_modal') }}', {
+                _token: '{{ @csrf_token() }}',
+                id: id,
+                seller_deposit_request_id: seller_deposit_request_id
+            }, function(data) {
+                $('#payment-modal-content').html(data);
+                $('#payment_modal').modal('show', {
+                    backdrop: 'static'
+                });
+            });
+        }
+
         function show_message_modal(id) {
             $.post('{{ route('deposit_request.message_modal') }}', {
                 _token: '{{ @csrf_token() }}',

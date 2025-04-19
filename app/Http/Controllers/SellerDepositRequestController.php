@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\SellerDepositRequest;
 use App\Models\User;
@@ -41,30 +42,39 @@ class SellerDepositRequestController extends Controller
     {
         $seller_deposit_request = SellerDepositRequest::where('id', $request->seller_deposit_request_id)->first();
         $seller_deposit_request->status = '1';
+        $seller_deposit_request->viewed = '1';
+        $seller_deposit_request->save();
+
         $user = User::findOrFail($seller_deposit_request->user_id);
         $user->balance += $seller_deposit_request->amount;
+        $user->save();
 
-        if ($seller_deposit_request->save() && $user->save()) {
-            flash(translate('Request has been approved successfully'))->success();
-            return redirect()->route('deposit_requests_all');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+        $payment = new Payment();
+        $payment->seller_id = $user->id;
+        $payment->amount = $seller_deposit_request->amount;
+        $payment->payment_method = 'Deposit';
+        $payment->save();
+
+        flash(translate('Request has been approved successfully'))->success();
+        return back();
     }
 
     public function reject(Request $request)
     {
         $seller_deposit_request = SellerDepositRequest::where('id', $request->seller_deposit_request_id)->first();
         $seller_deposit_request->status = '2';
+        $seller_deposit_request->viewed = '1';
+        $seller_deposit_request->save();
 
-        if ($seller_deposit_request->save()) {
-            flash(translate('Request has been rejected successfully'))->success();
-            return redirect()->route('deposit_requests_all');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+        flash(translate('Request has been rejected successfully'))->success();
+        return back();
+    }
+
+    public function payment_modal(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $seller_deposit_request = SellerDepositRequest::where('id', $request->seller_deposit_request_id)->first();
+        return view('backend.sellers.seller_deposit_requests.payment_modal', compact('user', 'seller_deposit_request'));
     }
 
     public function message_modal(Request $request)

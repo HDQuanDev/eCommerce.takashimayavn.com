@@ -29,7 +29,7 @@
                     <i class="las la-dollar-sign la-2x text-white"></i>
                 </span>
                 <div class="px-3 pt-3 pb-3">
-                    <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->shop->admin_to_pay) }}</div>
+                    <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->balance) }}</div>
                     <div class="opacity-50 text-center">{{ translate('Available Balance') }}</div>
                 </div>
             </div>
@@ -58,7 +58,8 @@
                         <th>{{ translate('Date') }}</th>
                         <th>{{ translate('Amount') }}</th>
                         <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                        <th data-breakpoints="lg" width="60%">{{ translate('Message') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Message') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Reply') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,13 +70,18 @@
                             <td>{{ single_price($seller_withdraw_request->amount) }}</td>
                             <td>
                                 @if ($seller_withdraw_request->status == 1)
-                                    <span class=" badge badge-inline badge-success">{{ translate('Paid') }}</span>
+                                    <span class="badge badge-inline badge-success">{{ translate('Paid') }}</span>
+                                @elseif($seller_withdraw_request->status == 2)
+                                    <span class="badge badge-inline badge-danger">{{ translate('Rejected') }}</span>
                                 @else
-                                    <span class=" badge badge-inline badge-info">{{ translate('Pending') }}</span>
+                                    <span class="badge badge-inline badge-info">{{ translate('Pending') }}</span>
                                 @endif
                             </td>
                             <td>
                                 {{ $seller_withdraw_request->message }}
+                            </td>
+                            <td>
+                                {{ $seller_withdraw_request->reply }}
                             </td>
                         </tr>
                     @endforeach
@@ -98,7 +104,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                @if (Auth::user()->shop->admin_to_pay > 5)
+                @if (Auth::user()->balance)
                     <form class="" action="{{ route('seller.money_withdraw_request.store') }}" method="post">
                         @csrf
                         <div class="modal-body gry-bg px-3 pt-3">
@@ -109,8 +115,8 @@
                                 <div class="col-md-9">
                                     <input type="number" lang="en" class="form-control mb-3" name="amount"
                                         min="{{ get_setting('minimum_seller_amount_withdraw') }}"
-                                        max="{{ Auth::user()->shop->admin_to_pay }}"
-                                        placeholder="{{ translate('Amount') }}" required>
+                                        max="{{ Auth::user()->balance }}" placeholder="{{ translate('Amount') }}"
+                                        required>
                                 </div>
                             </div>
                             <div class="row">
