@@ -25,6 +25,7 @@ class ConversationController extends Controller
             flash(translate('Conversation is disabled at this moment'))->warning();
             return back();
         }
+
     }
 
     /**
