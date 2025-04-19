@@ -298,13 +298,8 @@ class PosController extends Controller
                     DB::table('product_translations')->insert($translationData);
                 }
 
-                // Cập nhật số lượng hàng còn lại của admin sau khi seller mua
-                DB::table('product_stocks_pos')
-                    ->where('id', $cartItem['stock_id'])
-                    ->update([
-                        'qty' => DB::raw('qty - ' . $cartItem['quantity']),
-                        'updated_at' => now()
-                    ]);
+                // Không cần update số lượng ở bảng product_stocks_pos của admin nữa
+                // Đã removed phần code này để thực hiện yêu cầu không trừ số lượng sản phẩm của admin
             }
 
             // Xóa giỏ hàng sau khi thêm sản phẩm thành công
