@@ -138,8 +138,7 @@
                             </div>
                             <div class="col-md-9">
                                 <input type="number" lang="en" class="form-control mb-3" name="amount"
-                                    min="{{ get_setting('minimum_seller_amount_deposit') }}"
-                                    max="{{ Auth::user()->shop->admin_to_pay }}" placeholder="{{ translate('Amount') }}"
+                                    min="{{ get_setting('minimum_seller_amount_deposit') }}" placeholder="{{ translate('Amount') }}"
                                     required>
                             </div>
                         </div>
