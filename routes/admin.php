@@ -41,6 +41,7 @@ use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReferralCodeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
@@ -414,7 +415,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         // Order bulk export
         Route::get('/order-bulk-export', 'orderBulkExport')->name('order-bulk-export');
 
-        // 
+        //
         Route::post('order-payment-notification', 'unpaid_order_payment_notification_send')->name('unpaid_order_payment_notification');
     });
 
@@ -622,6 +623,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/notification-type/destroy/{id}', 'destroy')->name('notification-type.destroy');
         Route::post('/notification-type/bulk_delete', 'bulkDelete')->name('notifications-type.bulk_delete');
         Route::post('/notification-type.get-default-text', 'getDefaulText')->name('notification_type.get_default_text');
+    });
+
+    // Referral Codes
+    Route::resource('referral-codes', ReferralCodeController::class);
+    Route::controller(ReferralCodeController::class)->group(function () {
+        Route::get('/referral-codes/destroy/{id}', 'destroy')->name('referral-codes.destroy');
+        Route::post('/referral-codes/update_status', 'updateStatus')->name('referral-codes.update_status');
+        Route::post('/bulk-referral-code-delete', 'bulk_referral_code_delete')->name('bulk-referral-code-delete');
+    });
+
+    Route::group(['prefix' => 'referral-codes', 'middleware' => ['permission:edit_general_setting']], function () {
+        Route::get('/', 'ReferralCodeController@index')->name('referral-codes.index');
+        Route::get('/create', 'ReferralCodeController@create')->name('referral-codes.create');
+        Route::post('/', 'ReferralCodeController@store')->name('referral-codes.store');
+        Route::get('/{id}/edit', 'ReferralCodeController@edit')->name('referral-codes.edit');
+        Route::patch('/{id}', 'ReferralCodeController@update')->name('referral-codes.update');
+        Route::post('/update_status', 'ReferralCodeController@updateStatus')->name('referral-codes.update_status');
+        Route::get('/destroy/{id}', 'ReferralCodeController@destroy')->name('referral-codes.destroy');
+        Route::post('/bulk-delete', 'ReferralCodeController@bulk_referral_code_delete')->name('bulk-referral-code-delete');
     });
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');

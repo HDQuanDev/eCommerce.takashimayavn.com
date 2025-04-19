@@ -16,11 +16,19 @@ class Shop extends Model
   {
     return $this->belongsTo(User::class);
   }
-  
+
   public function seller_package(){
     return $this->belongsTo(SellerPackage::class);
   }
   public function followers(){
     return $this->hasMany(FollowSeller::class);
+  }
+
+  /**
+   * Get the referral code used at registration.
+   */
+  public function referralCode()
+  {
+    return $this->belongsTo(ReferralCode::class);
   }
 }
