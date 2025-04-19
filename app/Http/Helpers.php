@@ -116,6 +116,7 @@ if (!function_exists('convert_to_kes')) {
     function convert_to_kes($amount)
     {
         $currency = Currency::find(get_setting('system_default_currency'));
+
         return (floatval($amount) / floatval($currency->exchange_rate)) * Currency::where('code', 'KES')->first()->exchange_rate;
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Seller\DashboardController;
+use App\Http\Controllers\Seller\CommisionPackageController;
 
 //Upload
 Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user', 'prevent-back-history'], 'as' => 'seller.'], function () {
@@ -192,5 +193,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/pos/products', 'productList')->name('pos.products');
     });
 
+ //Commision Package
+ Route::prefix('commission-packages')->group(function () {
+    Route::get('/', [CommisionPackageController::class, 'index'])->name('commission-packages.index');
+    Route::get('/register/{id}', [CommisionPackageController::class, 'register'])->name('commission-packages.register');
 });
 
+});

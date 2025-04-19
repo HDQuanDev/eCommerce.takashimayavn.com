@@ -348,7 +348,12 @@
                         <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
                     </a>
                 </li>
-
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.commission-packages.index') }}" class="aiz-side-nav-link">
+                        <i class="las la-trophy aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Commission Packages') }}</span>
+                    </a>
+                </li>
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.money_deposit_requests.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_deposit_requests.index']) }}">

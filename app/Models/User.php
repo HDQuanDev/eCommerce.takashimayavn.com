@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code'
+        'name', 'email', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code', 'commission_package_id'
     ];
 
     /**
@@ -38,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+    protected $appends = ['commission_percentage'];
 
     public function wishlists()
     {
@@ -168,4 +169,24 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Preorder::class);
     }
+
+    public function getCommissionPercentageAttribute()
+    {
+        $now = now();
+        $package = $this->commission_package()
+            ->wherePivot('end_date', '>=', $now)
+            ->orderBy('commission_percentage', 'desc')
+            ->first();
+
+        if ($package) {
+            return $package->commission_percentage;
+        }
+        return 0;
+    }
+
+    public function commission_package()
+    {
+        return $this->belongsToMany(CommissionPackage::class, 'commission_package_user', 'user_id', 'commission_package_id')->withPivot('price', 'start_date', 'end_date');
+    }
+
 }

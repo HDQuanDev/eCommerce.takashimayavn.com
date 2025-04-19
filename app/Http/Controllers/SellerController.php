@@ -342,8 +342,8 @@ class SellerController extends Controller
         $data = array();
         $data['shop'] = $shop;
         $data['status'] = $status;
-        $data['notification_type_id'] = $status == 'approved' ? 
-                                        get_notification_type('shop_verify_request_approved', 'type')->id : 
+        $data['notification_type_id'] = $status == 'approved' ?
+                                        get_notification_type('shop_verify_request_approved', 'type')->id :
                                         get_notification_type('shop_verify_request_rejected', 'type')->id;
 
         Notification::send($users, new ShopVerificationNotification($data));
