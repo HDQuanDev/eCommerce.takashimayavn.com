@@ -68,8 +68,8 @@ class PosController extends Controller
         $data['id'] = $product->id;
         $data['name'] = $product->name;
         $data['price'] = $product->unit_price;
-        $data['quantity'] = 1;
-        $data['max_quantity'] = $defaultStock->qty; // Sử dụng qty từ product_stocks_pos
+        $data['quantity'] = $defaultStock->qty; // Sử dụng toàn bộ số lượng có sẵn
+        $data['max_quantity'] = $defaultStock->qty;
         $data['stock_id'] = $defaultStock->id; // Lưu ID của stock record
         $data['variant'] = $defaultStock->variant; // Lưu variant
         $data['category_id'] = $product->category_id;
@@ -298,13 +298,8 @@ class PosController extends Controller
                     DB::table('product_translations')->insert($translationData);
                 }
 
-                // Cập nhật số lượng hàng còn lại của admin sau khi seller mua
-                DB::table('product_stocks_pos')
-                    ->where('id', $cartItem['stock_id'])
-                    ->update([
-                        'qty' => DB::raw('qty - ' . $cartItem['quantity']),
-                        'updated_at' => now()
-                    ]);
+                // Không cần update số lượng ở bảng product_stocks_pos của admin nữa
+                // Đã removed phần code này để thực hiện yêu cầu không trừ số lượng sản phẩm của admin
             }
 
             // Xóa giỏ hàng sau khi thêm sản phẩm thành công
