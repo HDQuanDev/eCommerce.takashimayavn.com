@@ -68,7 +68,7 @@ class PosController extends Controller
         $data['id'] = $product->id;
         $data['name'] = $product->name;
         $data['price'] = $product->unit_price;
-        $data['quantity'] = 1;
+        $data['quantity'] = $defaultStock->qty;
         $data['max_quantity'] = $defaultStock->qty; // Sử dụng qty từ product_stocks_pos
         $data['stock_id'] = $defaultStock->id; // Lưu ID của stock record
         $data['variant'] = $defaultStock->variant; // Lưu variant
