@@ -28,7 +28,7 @@
                                 <td>{{ $seller_deposit_request->created_at }}</td>
                                 <td>{{ $user->name }} ({{ $user->shop->name }})</td>
                                 <td>{{ single_price($seller_deposit_request->amount) }}</td>
-                                <td>{{ ucfirst($seller_deposit_request->payment_method->name) }}</td>
+                                <td>{{ ucfirst($seller_deposit_request->payment_method->card_name) }}</td>
                                 <td>
                                     {{ $seller_deposit_request->message }}
                                 </td>

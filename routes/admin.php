@@ -290,6 +290,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/general-setting', 'general_setting')->name('general_setting.index');
         Route::get('/activation', 'activation')->name('activation.index');
         Route::get('/payment-method', 'payment_method')->name('payment_method.index');
+        Route::post('/payment-method/create', 'create_payment_method')->name('v2_payment_method.store');
+        Route::post('/payment-method/update', 'update_payment_method')->name('v2_payment_method.update');
         Route::get('/file_system', 'file_system')->name('file_system.index');
         Route::get('/social-login', 'social_login')->name('social_login.index');
         Route::get('/smtp-settings', 'smtp_settings')->name('smtp_settings.index');

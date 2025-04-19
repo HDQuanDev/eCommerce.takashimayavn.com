@@ -19,6 +19,6 @@ class SellerDepositRequest extends Model
     }
     public function payment_method()
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->belongsTo(V2PaymentMethod::class, 'payment_method_id', 'id');
     }
 }
