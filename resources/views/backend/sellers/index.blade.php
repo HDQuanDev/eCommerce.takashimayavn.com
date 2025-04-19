@@ -202,9 +202,9 @@
                                             </a>
                                         @endcan
                                         @can('seller_commission_configuration')
-                                            <a href="javascript:void();" onclick="set_commission('{{ $shop->id }}');" class="dropdown-item">
+                                            {{-- <a href="javascript:void();" onclick="set_commission('{{ $shop->id }}');" class="dropdown-item">
                                                 {{translate('Set Commission')}}
-                                            </a>
+                                            </a> --}}
                                         @endcan
                                         @can('edit_seller')
                                             <a href="{{route('sellers.edit', encrypt($shop->id))}}" class="dropdown-item">

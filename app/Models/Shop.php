@@ -12,11 +12,18 @@ class Shop extends Model
 
   protected $with = ['user'];
 
+
+  protected $appends = ['commission_percentage'];
+
+  public function getCommissionPercentageAttribute(){
+    return $this->user->commission_percentage;
+  }
+
   public function user()
   {
     return $this->belongsTo(User::class);
   }
-  
+
   public function seller_package(){
     return $this->belongsTo(SellerPackage::class);
   }

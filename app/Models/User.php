@@ -38,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+    protected $appends = ['commission_percentage'];
 
     public function wishlists()
     {
@@ -167,6 +168,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function preorders()
     {
         return $this->hasMany(Preorder::class);
+    }
+
+    public function getCommissionPercentageAttribute()
+    {
+        $now = now();
+        $package = $this->commission_package()
+            ->wherePivot('end_date', '>=', $now)
+            ->orderBy('commission_percentage', 'desc')
+            ->first();
+
+        if ($package) {
+            return $package->commission_percentage;
+        }
+        return 0;
     }
 
     public function commission_package()
