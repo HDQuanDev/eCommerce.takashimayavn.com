@@ -1135,7 +1135,7 @@
                         </li>
                         @endcan
                         <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.seller_packages_list') }}" class="aiz-side-nav-link">
+                            <a href="{{ route('seller_packages.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Seller Packages') }}</span>
                             </a>
                         </li>
