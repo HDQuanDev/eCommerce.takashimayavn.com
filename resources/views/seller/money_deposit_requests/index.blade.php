@@ -68,7 +68,7 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ date('d-m-Y', strtotime($seller_deposit_request->created_at)) }}</td>
                             <td>{{ single_price($seller_deposit_request->amount) }}</td>
-                            <td>{{ ucfirst(translate($seller_deposit_request->payment_method->name)) }}</td>
+                            <td>{{ $seller_deposit_request->payment_method->card_name }}</td>
                             <td>
                                 @if ($seller_deposit_request->status == 1)
                                     <span class=" badge badge-inline badge-success">{{ translate('Approved') }}</span>
@@ -105,27 +105,32 @@
                     method="post">
                     @csrf
                     <div class="modal-body gry-bg px-3 pt-3">
-                        <div class="row">
-                            <div class="col-12">
+                        <div class="">
+                            @if ($payment_methods->count() > 1)
                                 <label>{{ translate('Payment Method') }} <span class="text-danger">*</span></label>
-                            </div>
-                            @foreach ($payment_methods as $payment_method)
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                                            <label class="btn btn-outline-primary {{ $loop->first ? 'active' : '' }}"
-                                                data-toggle="button">
-                                                <input type="radio" name="payment_method_id"
-                                                    value="{{ $payment_method->id }}" {{ $loop->first ? 'checked' : '' }}
-                                                    required>
-                                                <img src="{{ static_asset('assets/img/cards/' . $payment_method->name . '.png') }}"
-                                                    height="30">
-                                                {{ ucfirst(translate($payment_method->name)) }}
-                                            </label>
-                                        </div>
+                                <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                                    <div class="row w-100">
+                                        @foreach ($payment_methods as $payment_method)
+                                            <div class="col-md-6 mb-2 d-flex justify-content-center">
+                                                <label
+                                                    class="btn btn-outline-primary w-100 text-center py-3 payment-method-label"
+                                                    data-toggle="button" style="position:relative;">
+                                                    <input type="radio" name="payment_method_id"
+                                                        value="{{ $payment_method->id }}" autocomplete="off" required
+                                                        style="position:absolute;left:0;opacity:0;width:100%;height:100%;z-index:2;cursor:pointer;">
+                                                    <img src="{{ uploaded_asset($payment_method->logo) }}" height="40"
+                                                        class="mb-2">
+                                                    {{-- <span class="font-weight-bold">{{ $payment_method->card_name }}</span> --}}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @endforeach
+                            @else
+                                <div class="p-5 heading-3">
+                                    {{ translate('No Payment Method Available') }}
+                                </div>
+                            @endif
                         </div>
                         <div class="row">
                             <div class="col-md-3">
@@ -167,17 +172,23 @@
             $('#request_modal').modal('show');
         }
 
-        // function show_message_modal(id) {
-        //     route = 'deposit_request.message_modal'
-        //     $.post(route, {
-        //         _token: '{{ @csrf_token() }}',
-        //         id: id
-        //     }, function(data) {
-        //         $('#message_modal .modal-content').html(data);
-        //         $('#message_modal').modal('show', {
-        //             backdrop: 'static'
-        //         });
-        //     });
-        // }
+        $(document).on('change', 'input[name="payment_method_id"]', function() {
+            $('.payment-method-label').removeClass('active');
+            if ($(this).is(':checked')) {
+                $(this).closest('label').addClass('active');
+            }
+        });
     </script>
+    <style>
+        .payment-method-label input[type="radio"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+        }
+    </style>
 @endsection

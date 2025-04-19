@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PayoutNotification;
 use App\Models\SellerDepositRequest;
 use App\Models\User;
+use App\Models\V2PaymentMethod;
 use App\Utility\EmailUtility;
 use Auth;
 
@@ -22,7 +22,7 @@ class SellerDepositRequestController extends Controller
     {
         $seller_deposit_requests = SellerDepositRequest::where('user_id', Auth::user()->id)->latest()->paginate(9);
         $total_deposit_amount = SellerDepositRequest::where('user_id', Auth::user()->id)->sum('amount');
-        $payment_methods = PaymentMethod::where('active', 1)->get();
+        $payment_methods = V2PaymentMethod::where('active', 1)->get();
         return view('seller.money_deposit_requests.index', compact('seller_deposit_requests', 'total_deposit_amount', 'payment_methods'));
     }
 
@@ -57,7 +57,7 @@ class SellerDepositRequestController extends Controller
 
             // Seller payout request email to admin & seller
             $emailIdentifiers = ['seller_deposit_request_email_to_admin', 'seller_deposit_request_email_to_seller'];
-            EmailUtility::seller_payout($emailIdentifiers, $seller, $request->amount,  PaymentMethod::find($request->payment_method_id)->name);
+            EmailUtility::seller_payout($emailIdentifiers, $seller, $request->amount,  V2PaymentMethod::find($request->payment_method_id)->card_name);
 
             flash(translate('Request has been sent successfully'))->success();
             return redirect()->route('seller.money_deposit_requests.index');

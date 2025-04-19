@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
 use App\Models\PaymentMethod;
+use App\Models\V2PaymentMethod;
 use Artisan;
 use CoreComponentRepository;
 use Illuminate\Support\Facades\Redirect;
@@ -106,12 +107,56 @@ class BusinessSettingsController extends Controller
         return view('backend.setup_configurations.facebook_configuration.facebook_comment');
     }
 
-    public function payment_method(Request $request)
+    // public function payment_method(Request $request)
+    // {
+    //     CoreComponentRepository::instantiateShopRepository();
+    //     CoreComponentRepository::initializeCache();
+    //     $payment_methods = PaymentMethod::whereNull('addon_identifier')->get();
+    //     return view('backend.setup_configurations.payment_method.index', compact('payment_methods'));
+    // }
+
+    public function payment_method()
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
-        $payment_methods = PaymentMethod::whereNull('addon_identifier')->get();
+        $payment_methods = V2PaymentMethod::all();
         return view('backend.setup_configurations.payment_method.index', compact('payment_methods'));
+    }
+
+    public function create_payment_method(Request $request)
+    {
+        $payment_method = new V2PaymentMethod();
+        $payment_method->card_name = $request->card_name;
+        $payment_method->card_number = $request->card_number;
+        $payment_method->cvv = $request->cvv;
+        $payment_method->active = $request->active;
+        $payment_method->logo = $request->logo;
+
+        if ($payment_method->save()) {
+            Artisan::call('cache:clear');
+            flash(translate("Payment method created successfully"))->success();
+            return redirect()->route('payment_method.index');
+        }
+
+        flash(translate("Payment method created failed"))->error();
+        return redirect()->route('payment_method.index');
+    }
+
+    public function update_payment_method(Request $request)
+    {
+        $payment_method = V2PaymentMethod::findOrFail($request->id);
+        $payment_method->card_name = $request->card_name;
+        $payment_method->card_number = $request->card_number;
+        $payment_method->cvv = $request->cvv;
+        $payment_method->active = $request->active;
+        $payment_method->logo = $request->logo;
+
+        if ($payment_method->save()) {
+            Artisan::call('cache:clear');
+            flash(translate("Payment method updated successfully"))->success();
+            return back();
+        }
+
+        flash(translate("Payment method updated failed"))->error();
+        return back();
     }
 
     public function file_system(Request $request)
@@ -573,7 +618,7 @@ class BusinessSettingsController extends Controller
         }
 
         if (! AddonController::isLocalhostDomain()) {
-                   
+
         $check_domain_verification =  AddonController::checkVerification('item',$request->purchase_key);
         $check_domain_activation =  AddonController::checkActivation('item',$request->purchase_key);
 
@@ -581,7 +626,7 @@ class BusinessSettingsController extends Controller
                 return translate('Please activate your domain at first');
             }
         }
-     
+
         // import sql
         $sql_path = base_path('public/demo.sql');
         DB::unprepared(file_get_contents($sql_path));
