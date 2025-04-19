@@ -20,6 +20,38 @@
 
 <div class="card">
     <form class="" id="sort_commission_packages" action="" method="GET">
+        <div class="card-header row gutters-5">
+            <div class="col">
+                <h5 class="mb-md-0 h6">{{ translate('Commission Packages') }}</h5>
+            </div>
+
+                <div class="dropdown mb-2 mb-md-0">
+                    <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                        {{translate('Bulk Action')}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @can('delete_seller')
+                            <a class="dropdown-item confirm-alert" href="javascript:void(0)"  data-target="#bulk-delete-modal">{{translate('Delete selection')}}</a>
+                        @endcan
+                        @can('seller_commission_configuration')
+                            <a class="dropdown-item confirm-alert" onclick="set_bulk_commission()">{{translate('Set Bulk Commission')}}</a>
+                        @endcan
+                    </div>
+                </div>
+
+                <div class="col-md-2 ml-auto">
+                    <select class="form-control aiz-selectpicker" name="status" id="status" onchange="sort_commission_packages()">
+                        <option value="">{{translate('Filter by Status')}}</option>
+                        <option value="active"  @isset($status) @if($status == 'active') selected @endif @endisset>{{translate('Active')}}</option>
+                        <option value="inactive"  @isset($status) @if($status == 'inactive') selected @endif @endisset>{{translate('Inactive')}}</option>
+                    </select>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                  <input type="text" class="form-control" id="search" name="sort_search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
@@ -39,23 +71,67 @@
                         @endif
                     </th>
                     <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                    <th data-breakpoints="lg">{{translate('Email Address')}}</th>
-                        <th data-breakpoints="lg">{{translate('Verification Info')}}</th>
-                        <th data-breakpoints="lg">{{translate('Approval')}}</th>
-                        <th data-breakpoints="lg">{{ translate('Num. of Products') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Due to seller') }}</th>
-                        <th data-breakpoints="lg">{{translate('Email Verification')}}</th>
-                        <th data-breakpoints="lg">{{ translate('Status') }}</th>
+                    <th >{{translate('Duration')}}</th>
+                    <th >{{translate('Price')}}</th>
+                    <th >{{translate('Commission Percentage')}}</th>
+                    <th data-breakpoints="lg">{{translate('Description')}}</th>
+                    <th data-breakpoints="lg">{{translate('Image')}}</th>
+                    <th >{{translate('Status')}}</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>
                 </thead>
                 <tbody>
-
+                    @foreach($packages as $package)
+                        <tr>
+                            <td>
+                                @if(auth()->user()->can('delete_commission_package'))
+                                    <div class="form-group">
+                                        <div class="aiz-checkbox-inline">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check" name="id[]" value="{{ $package->id }}">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                @else
+                                    {{ $package->id }}
+                                @endif
+                            </td>
+                            <td>{{ $package->name }}</td>
+                            <td>{{ $package->duration }}</td>
+                            <td>{{number_format(convert_price($package->price), 2) }} {{ currency_symbol() }}</td>
+                            <td>{{ $package->commission_percentage }}</td>
+                            <td>{{ $package->description }}</td>
+                            <td>
+                                @if($package->image)
+                                    <img src="{{ uploaded_asset($package->image) }}" alt="{{ $package->name }}" width="50">
+                                @endif
+                            </td>
+                            <td>
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input
+                                        @can('approve_seller') onchange="update_status(this)" @endcan
+                                        value="{{ $package->id }}" type="checkbox"
+                                        <?php if($package->status == 'active') echo "checked";?>
+                                        @cannot('approve_seller') disabled @endcan
+                                    >
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <td>
+                                @if(auth()->user()->can('edit_commission_package'))
+                                <a href="javascript:void(0);" onclick="show_edit_package_modal({{ $package->id }})" class="btn btn-primary btn-sm">{{ translate('Edit') }}</a>
+                                @endif
+                                @if(auth()->user()->can('delete_commission_package'))
+                                    <a href="{{ route('commission-packages.destroy', $package->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package?')">{{ translate('Delete') }}</a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
             <div class="aiz-pagination">
-
+                {{ $packages->links() }}
             </div>
         </div>
     </form>
@@ -220,24 +296,25 @@
                 $('#create_package_modal').modal('show', {backdrop: 'static'});
             });
         }
+        function show_edit_package_modal(id) {
+    $.get('{{ route('commission-packages.edit', '') }}/' + id, function(data) {
+
+        $('#create_package_modal_content').html(data);
+        $('#create_package_modal').modal('show');
+    });
+}
 
 
-
-        function update_approved(el){
-            if('{{env('DEMO_MODE')}}' == 'On'){
-                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
-                return;
-            }
-
+        function update_status(el){
             if(el.checked){
-                var status = 1;
+                var status = 'active';
             }
             else{
-                var status = 0;
+                var status = 'inactive';
             }
-            $.post('{{ route('sellers.approved') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+            $.post('{{ route('commission-packages.update_status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Approved sellers updated successfully') }}');
+                    AIZ.plugins.notify('success', '{{ translate('Status updated successfully') }}');
                 }
                 else{
                     AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
@@ -245,8 +322,8 @@
             });
         }
 
-        function sort_sellers(el){
-            $('#sort_sellers').submit();
+        function sort_commission_packages(el){
+            $('#sort_commission_packages').submit();
         }
 
         function confirm_ban(url)
@@ -272,12 +349,12 @@
         }
 
         function bulk_delete() {
-            var data = new FormData($('#sort_sellers')[0]);
+            var data = new FormData($('#sort_commission_packages')[0]);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{route('bulk-seller-delete')}}",
+                url: "{{route('commission-packages.bulk_delete')}}",
                 type: 'POST',
                 data: data,
                 cache: false,

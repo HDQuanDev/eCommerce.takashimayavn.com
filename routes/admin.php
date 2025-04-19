@@ -629,11 +629,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::controller(CommisionPackageController::class)->group(function () {
         Route::get('/commission-packages', 'index')->name('commission-packages.index');
         Route::get('/commission-packages/create', 'create')->name('commission-packages.create');
+        Route::get('/commission-package-history', 'commissionPackageHistory')->name('commission-package-history');
         Route::post('/commission-packages/create', 'store')->name('commission-packages.store');
         Route::get('/commission-packages/edit/{id}', 'edit')->name('commission-packages.edit');
         Route::post('/commission-packages/update/{id}', 'update')->name('commission-packages.update');
         Route::get('/commission-packages/destroy/{id}', 'destroy')->name('commission-packages.destroy');
+        Route::post('/commission-packages/update-status', 'updateStatus')->name('commission-packages.update_status');
+        Route::post('/commission-packages/bulk-delete', 'bulkDelete')->name('commission-packages.bulk_delete');
     });
+
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 

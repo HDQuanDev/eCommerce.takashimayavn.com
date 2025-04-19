@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommissionPackage extends Model
 {
-    use HasFactory;
     use PreventDemoModeChanges;
 
     protected $fillable = [
-        'user_id', 'name', 'duration', 'commission_percentage', 'description', 'image', 'status'
+        'user_id', 'name', 'duration', 'commission_percentage', 'description', 'image', 'status', 'price'
     ];
 
     public function users(){

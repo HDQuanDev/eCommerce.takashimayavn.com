@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('duration');
             $table->integer('commission_percentage');
-            $table->string('description');
-            $table->string('image');
+            $table->string('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('status');
         });
     }
