@@ -11,6 +11,7 @@
                 <div class="col text-md-left text-center">
                 </div>
                 @php
+
                     $delivery_status = $order->delivery_status;
                     $payment_status = $order->payment_status;
                     $admin_user_id = get_admin()->id;

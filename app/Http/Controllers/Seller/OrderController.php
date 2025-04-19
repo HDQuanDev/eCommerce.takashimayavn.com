@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Models\Order;
 use App\Models\ProductStock;
+use App\Models\Seller;
 use App\Models\SmsTemplate;
 use App\Models\User;
 use App\Utility\NotificationUtility;
@@ -72,7 +73,7 @@ class OrderController extends Controller
 
     // Update Delivery Status
     public function update_delivery_status(Request $request)
-    {   
+    {
         $authUser = Auth::user();
         $order = Order::findOrFail($request->order_id);
         $order->delivery_viewed = '0';
@@ -106,9 +107,9 @@ class OrderController extends Controller
                 product_restock($orderDetail);
             }
         }
-        
+
         // Delivery Status change email notification to Admin, seller, Customer
-        EmailUtility::order_email($order, $request->status); 
+        EmailUtility::order_email($order, $request->status);
 
 
         // Delivery Status change SMS notification
@@ -158,7 +159,7 @@ class OrderController extends Controller
             $orderDetail->payment_status = $request->status;
             $orderDetail->save();
         }
-        
+
         $status = 'paid';
         foreach ($order->orderDetails as $key => $orderDetail) {
             if ($orderDetail->payment_status != 'paid') {
@@ -175,7 +176,7 @@ class OrderController extends Controller
 
         // Payment Status change email notification to Admin, seller, Customer
         if($request->status == 'paid'){
-            EmailUtility::order_email($order, $request->status);  
+            EmailUtility::order_email($order, $request->status);
         }
 
         //Sends Firebase Notifications to Admin, seller, Customer
@@ -212,4 +213,66 @@ class OrderController extends Controller
         return back();
     }
 
+    public function processOrder(Request $request)
+{
+    try {
+        $order_id = $request->order_id;
+        $user_id = auth()->user()->id ?? null;
+        $amount = floatval($request->amount);
+
+        // 1. Lấy đơn hàng và kiểm tra quyền sở hữu + trạng thái xử lý
+        $order = Order::where('id', $order_id)
+            ->where('seller_id', $user_id)
+            ->first();
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => translate('Order not found or you do not have permission to process it!')]);
+        }
+
+        if ($order->seller_process_status == 1) {
+            return response()->json(['success' => false, 'message' => translate('This order has been processed before!')]);
+        }
+
+        // 2. Kiểm tra số dư seller
+        $seller = Seller::find(auth()->user()->seller->id);
+        if (!$seller) {
+            return response()->json(['success' => false, 'message' => translate('Seller account not found!')]);
+        }
+        $current_balance = floatval($seller->user->balance);
+
+        if ($current_balance < $amount) {
+            return response()->json([
+                'success' => false,
+                'message' => translate('Insufficient balance. Current balance: ') . number_format($current_balance, 2) . ' đ'
+            ]);
+        }
+
+        // 3. Bắt đầu transaction
+        DB::beginTransaction();
+
+        // Trừ tiền seller
+        $user = $seller->user;
+        $user->balance -= $amount;
+        $user->save();
+
+        // Đánh dấu đơn đã xử lý
+        $order->seller_process_status = 1;
+        $order->payment_status = 'paid';
+        $order->delivery_status = 'confirmed';
+        $order->save();
+
+        \DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Xử lý đơn hàng thành công!',
+            'new_balance' => number_format($seller->money, 2)
+        ]);
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return response()->json([
+            'success' => false,
+            'message' => 'Có lỗi xảy ra: ' . $e->getMessage()
+        ]);
+    }
+}
 }

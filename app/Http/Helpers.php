@@ -2282,6 +2282,12 @@ if (!function_exists('get_all_manual_payment_methods')) {
         return $manual_payment_methods_query->get();
     }
 }
+if (!function_exists('get_v2_payment_methods')) {
+    function get_v2_payment_methods()
+    {
+        return App\Models\V2PaymentMethod::where('active', 1)->get();
+    }
+}
 
 // Get all blog category
 if (!function_exists('get_all_blog_categories')) {
