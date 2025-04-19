@@ -344,10 +344,12 @@
 
                 {{-- Preorder --}}
                 @if (addon_is_activated('preorder'))
-                    @canany(['preorder_dashboard', 'add_preorder_product', 'view_all_preorder_products', 'view_all_preorders', 'view_all_inhouse_preorders',
-                            'view_all_seller_preorders', 'view_all_delayed_prepayment_preorders', 'view_all_final_preorders', 'view_preorder_seller_commission_history',
-                            'preorder_settings', 'view_all_preorder_product_conversations','view_all_preorder_product_queries', 'view_all_preorder_product_reviews',
-                            'view_all_faqs', 'view_all_preorder_notification_types'])
+                    @canany(['preorder_dashboard', 'add_preorder_product', 'view_all_preorder_products',
+                        'view_all_preorders', 'view_all_inhouse_preorders', 'view_all_seller_preorders',
+                        'view_all_delayed_prepayment_preorders', 'view_all_final_preorders',
+                        'view_preorder_seller_commission_history', 'preorder_settings',
+                        'view_all_preorder_product_conversations', 'view_all_preorder_product_queries',
+                        'view_all_preorder_product_reviews', 'view_all_faqs', 'view_all_preorder_notification_types'])
                         <li class="aiz-side-nav-item">
                             <a href="#" class="aiz-side-nav-link">
                                 <div class="aiz-side-nav-icon">

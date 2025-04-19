@@ -47,6 +47,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\SellerPackageController;
 use App\Http\Controllers\SellerDepositRequestController;
 use App\Http\Controllers\SellerWithdrawRequestController;
 use App\Http\Controllers\SizeChartController;
