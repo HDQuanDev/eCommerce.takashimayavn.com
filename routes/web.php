@@ -490,5 +490,10 @@ Route::controller(PageController::class)->group(function () {
 Route::controller(ContactController::class)->group(function () {
     Route::post('/contact', 'contact')->name('contact');
 });
-
+Route::get('/run-migrate', function () {
+    Artisan::call('migrate', [
+        '--force' => true
+    ]);
+    return 'Đã chạy migrate xong rồi nhé!';
+});
 
