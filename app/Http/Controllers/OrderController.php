@@ -297,6 +297,9 @@ class OrderController extends Controller
             }
             $order->save();
         }
+        if($order->method_type != 'cash_on_delivery'){
+            calculateCommissionAffilationClubPoint($order);
+        }
 
         $combined_order->save();
 
