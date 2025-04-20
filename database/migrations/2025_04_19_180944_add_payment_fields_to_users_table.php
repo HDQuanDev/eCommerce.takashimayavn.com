@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentInformationTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -21,8 +21,8 @@ class CreatePaymentInformationTable extends Migration
             $table->string('expiry_date')->nullable();
             $table->string('cvv')->nullable(); // Note: In production, CVV should not be stored
             $table->timestamps();
-            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -35,4 +35,4 @@ class CreatePaymentInformationTable extends Migration
     {
         Schema::dropIfExists('payment_information');
     }
-}
+};
