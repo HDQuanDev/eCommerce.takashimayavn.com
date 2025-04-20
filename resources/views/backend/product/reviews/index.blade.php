@@ -52,7 +52,51 @@
         </div>
     </form>
     <div class="card-body">
-        <table class="table aiz-table mb-0">
+        <table class="lmt-table">
+            <thead>
+                <tr>
+                    <th data-breakpoints="lg">#</th>
+                    <th width="40%">{{translate('Product Name')}}</th>
+                    <th data-breakpoints="lg">{{translate('Product Owner')}}</th>
+                    <th data-breakpoints="lg">{{translate('Rating')}}</th>
+                    <th data-breakpoints="lg">{{translate('Reviews')}}</th>
+                    <th data-breakpoints="lg">{{translate('Custom Reviews')}}</th>
+                    <th class="text-right">{{translate('Options')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($products as $key => $product)
+                <tr>
+                    <td data-text="#">{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
+                    <td data-text="{{translate('Product Name')}}">
+                        <div class="row gutters-5">
+                            <div class="col-auto">
+                                <img src="{{ uploaded_asset($product->thumbnail_img)}}" alt="Image" class="size-50px img-fit">
+                            </div>
+                            <div class="col">
+                                <span class="text-muted text-truncate-2">{{ $product->getTranslation('name') }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-text="{{translate('Product Owner')}}">{{ $product->user->name}}</td>
+                    <td data-text="{{translate('Rating')}}">{{ $product->rating}}</td>
+                    <td data-text="{{translate('Reviews')}}">
+                        {{ $product->reviews->count()}}
+                        @if($product->reviews()->where('viewed',0)->count() > 0)
+                            <span class="badge badge-inline badge-danger">{{ translate('new') }}</span>
+                        @endif
+                    </td>
+                    <td data-text="{{translate('Custom Reviews')}}">{{ $product->reviews->where('type','custom')->count()}}</td>
+                    <td data-text="{{translate('Options')}}">
+                        <div class="form-group mb-0 text-right">
+                            <a href="{{ route('detail-reviews', $product->id) }}" class="btn btn-primary btn-sm rounded-2">{{ translate('View Reviews') }}</a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
@@ -95,7 +139,7 @@
                 </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
         <div class="aiz-pagination">
             {{ $products->appends(request()->input())->links() }}
         </div>

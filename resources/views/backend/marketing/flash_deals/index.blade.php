@@ -31,7 +31,65 @@
         </div>
     </div>
     <div class="card-body">
-        <table class="table aiz-table mb-0" >
+        <table class="lmt-table" >
+            <thead>
+                <tr>
+                    <th data-breakpoints="lg">#</th>
+                    <th>{{translate('Title')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Banner') }}</th>
+                    <th data-breakpoints="lg">{{ translate('Start Date') }}</th>
+                    <th data-breakpoints="lg">{{ translate('End Date') }}</th>
+                    <th data-breakpoints="lg">{{ translate('Status') }}</th>
+                    <th data-breakpoints="lg">{{ translate('Featured') }}</th>
+                    <th data-breakpoints="lg">{{ translate('Page Link') }}</th>
+                    <th class="text-right" style="width:10%">{{translate('Options')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($flash_deals as $key => $flash_deal)
+                    <tr>
+                        <td data-text="#">{{ ($key+1) + ($flash_deals->currentPage() - 1)*$flash_deals->perPage() }}</td>
+                        <td data-text="{{translate('Title')}}">{{ $flash_deal->getTranslation('title') }}</td>
+                        <td data-text="{{translate('Banner')}}"><img src="{{ uploaded_asset($flash_deal->banner) }}" alt="banner" class="h-50px"></td>
+                        <td data-text="{{translate('Start Date')}}">{{ date('d-m-Y H:i:s', $flash_deal->start_date) }}</td>
+                        <td data-text="{{translate('End Date')}}">{{ date('d-m-Y H:i:s', $flash_deal->end_date) }}</td>
+                        <td data-text="{{translate('Status')}}">
+							<label class="aiz-switch aiz-switch-success mb-0">
+								<input onchange="update_flash_deal_status(this)" value="{{ $flash_deal->id }}" type="checkbox" <?php if($flash_deal->status == 1) echo "checked";?> >
+								<span class="slider round"></span>
+							</label>
+						</td>
+						<td data-text="{{translate('Featured')}}">
+							<label class="aiz-switch aiz-switch-success mb-0">
+								<input
+                                    @can('publish_flash_deal') onchange="update_flash_deal_feature(this)" @endcan
+                                    value="{{ $flash_deal->id }}" type="checkbox"
+                                    <?php if($flash_deal->featured == 1) echo "checked";?>
+                                    @cannot('publish_flash_deal') disabled @endcan
+                                >
+								<span class="slider round"></span>
+							</label>
+						</td>
+						<td data-text="{{translate('Page Link')}}">{{ url('flash-deal/'.$flash_deal->slug) }}</td>
+						<td class="text-right" data-text="{{translate('Options')}}">
+                            <div class="">
+                                @can('edit_flash_deal')
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('flash_deals.edit', ['id'=>$flash_deal->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                                        <i class="las la-edit"></i>
+                                    </a>
+                                @endcan
+                                @can('delete_flash_deal')
+                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('flash_deals.destroy', $flash_deal->id)}}" title="{{ translate('Delete') }}">
+                                        <i class="las la-trash"></i>
+                                    </a>
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- <table class="table aiz-table mb-0" >
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
@@ -86,7 +144,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
         <div class="clearfix">
             <div class="pull-right">
                 {{ $flash_deals->appends(request()->input())->links() }}

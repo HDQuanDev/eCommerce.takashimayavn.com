@@ -27,7 +27,87 @@
         </div>
     </div>
     <div class="card-body">
-        <table class="table aiz-table mb-0">
+        <table class="lmt-table">
+            <thead>
+                <tr>
+                    <th data-breakpoints="lg">#</th>
+                    <th width="30%">{{translate('Name')}}</th>
+                    @if($type == 'Seller')
+                        <th data-breakpoints="lg">{{translate('Added By')}}</th>
+                    @endif
+                    <th data-breakpoints="lg">{{translate('Photo')}}</th>
+                    <th data-breakpoints="lg">{{translate('Base Price')}}</th>
+                    <th data-breakpoints="lg">{{translate('Todays Deal')}}</th>
+                    <th data-breakpoints="lg">{{translate('Published')}}</th>
+                    @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
+                        <th data-breakpoints="lg">{{translate('Approved')}}</th>
+                    @endif
+                    <th data-breakpoints="lg">{{translate('Featured')}}</th>
+                    <th data-breakpoints="lg" class="text-right">{{translate('Options')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($products as $key => $product)
+                    <tr>
+                        <td data-text="#">{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
+                        <td data-text="{{translate('Name')}}"><a href="{{ route('product', $product->slug) }}" class="text-muted" target="_blank"><b>{{ $product->getTranslation('name') }}</b></a></td>
+                        @if($type == 'Seller')
+                            <td data-text="{{translate('Added By')}}">{{ optional($product->user)->name }}</td>
+                        @endif
+                        <td data-text="{{translate('Photo')}}">
+                            <img src="{{ uploaded_asset($product->thumbnail_img)}}" alt="Image" class="w-50px">
+                        </td>
+                        <td data-text="{{translate('Base Price')}}">{{ number_format($product->unit_price,2) }}</td>
+                        <td data-text="{{translate('Todays Deal')}}">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->todays_deal == 1) echo "checked";?> >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td data-text="{{translate('Published')}}">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
+                            <td data-text="{{translate('Approved')}}">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input onchange="update_approved(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->approved == 1) echo "checked"; ?> >
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                        @endif
+                        <td data-text="{{translate('Featured')}}">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->featured == 1) echo "checked";?> >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td class="text-right" data-text="{{translate('Options')}}">
+                            <div class="">
+                                @can('add_digital_product')
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                                        <i class="las la-edit"></i>
+                                    </a>
+                                @endcan
+                                @can('add_digital_product')
+                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('digitalproducts.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                                        <i class="las la-trash"></i>
+                                    </a>
+                                @endcan
+                                @can('add_digital_product')
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($product->id))}}" title="{{ translate('Download') }}">
+                                        <i class="las la-download"></i>
+                                    </a>
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
@@ -104,7 +184,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
         <div class="aiz-pagination">
             {{ $products->appends(request()->input())->links() }}
         </div>

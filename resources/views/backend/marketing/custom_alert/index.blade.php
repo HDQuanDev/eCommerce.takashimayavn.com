@@ -124,7 +124,104 @@
         </div>
 
         <div class="card-body">
-            <table class="table aiz-table mb-0">
+            <table class="lmt-table">
+                <thead>
+                    <tr>
+                        @can('delete_custom_alerts')
+                            <th width="40">
+                                <div class="form-group">
+                                    <div class="aiz-checkbox-inline">
+                                        <label class="aiz-checkbox">
+                                            <input type="checkbox" class="check-all">
+                                            <span class="aiz-square-check"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </th>
+                        @endcan
+                        <th>{{translate('Image')}}</th>
+                        <th data-breakpoints="lg">{{translate('Text')}}</th>
+                        <th data-breakpoints="lg">{{translate('Link')}}</th>
+                        <th data-breakpoints="lg">{{translate('Type')}}</th>
+                        <th data-breakpoints="lg">{{translate('Trigger')}}</th>
+                        <th class="text-right">{{translate('Actions')}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($custom_alerts as $key => $custom_alert)
+                    <tr>
+                        @can('delete_custom_alerts')
+                            <td>
+                                @if($custom_alert->id != 1)
+                                    <div class="form-group">
+                                        <div class="aiz-checkbox-inline">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check-one" name="id[]" value="{{$custom_alert->id}}">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+                                        <path id="df12b5039313fc3798dfa93cfb504acd" d="M17,9V7A5,5,0,0,0,7,7V9a2.946,2.946,0,0,0-3,3v7a2.946,2.946,0,0,0,3,3H17a2.946,2.946,0,0,0,3-3V12A2.946,2.946,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm4.1,8.5-.1.1V17a1,1,0,0,1-2,0V15.6a1.487,1.487,0,1,1,2.1-.1Z" transform="translate(-4 -2)" fill="#9d9da6"/>
+                                    </svg>
+                                @endif
+                            </td>
+                            </td>
+                        @endcan
+                        <td data-text="{{translate('Image')}}">
+                            <div class="size-64px rounded-2 overflow-hidden">
+                                <img class="h-100 img-fit" src="{{ uploaded_asset($custom_alert->banner) }}" alt="">
+                            </div>
+                        </td>
+                        <td class="fs-13 fw-700" data-text="{{translate('Text')}}">{!! $custom_alert->description !!}</td>
+                        <td data-text="{{translate('Link')}}">{{ $custom_alert->link }}</td>
+                        <td data-text="{{translate('Type')}}">
+                            @if($custom_alert->id != 1)
+                                @if($custom_alert->type == 'small')
+                                    <span class="bg-primary text-white px-3 py-2 rounded-2">{{ translate('Small') }}</span>
+                                @else
+                                    <span class="bg-danger text-white px-3 py-2 rounded-2">{{ translate('Large') }}</span>
+                                @endif
+                            @else
+                                <span class="bg-secondary text-white px-3 py-2 rounded-2">{{ translate('Default') }}</span>
+                            @endif
+                        </td>
+                        <td data-text="{{translate('Trigger')}}">
+                            <label class="aiz-switch aiz-switch-primary mb-0">
+								<input
+                                    @can('publish_custom_alerts') onchange="trigger_alert(this)" @endcan
+                                    value="{{ $custom_alert->id }}" id="trigger_alert_{{ $custom_alert->id }}" type="checkbox" @if($custom_alert->status == 1) checked @endif
+                                    @cannot('publish_custom_alerts') disabled @endcan
+                                >
+								<span class="slider round"></span>
+							</label>
+                        </td>
+                        <td data-text="{{translate('Actions')}}">
+                            <div class="dropdown float-right">
+                                <button class="btn btn-light size-40px action-toggle dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs">
+                                    @can('edit_custom_alerts')
+                                        <a class="dropdown-item" href="{{route('custom-alerts.edit', $custom_alert->id)}}">
+                                            {{translate('Edit')}}
+                                        </a>
+                                    @endcan
+                                    @if($custom_alert->id != 1)
+                                        @can('delete_custom_alerts')
+                                            <a class="dropdown-item confirm-delete" href="javascript:void(0)" data-href="{{route('custom-alerts.destroy', $custom_alert->id)}}">
+                                                {{translate('Delete')}}
+                                            </a>
+                                        @endcan
+                                    @endif
+                                </div>
+                              </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{-- <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
                         @can('delete_custom_alerts')
@@ -220,7 +317,7 @@
                     </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
             <div class="aiz-pagination mt-3">
                 {{ $custom_alerts->appends(request()->input())->links() }}
             </div>

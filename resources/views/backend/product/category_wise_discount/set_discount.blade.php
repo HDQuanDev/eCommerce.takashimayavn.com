@@ -23,7 +23,78 @@
         </form>
     </div>
     <div class="card-body">
-        <table class="table aiz-table mb-0">
+        <table class="lmt-table">
+            <thead>
+                <tr>
+                    <th data-breakpoints="lg">#</th>
+                    <th data-breakpoints="lg">{{translate('Icon')}}</th>
+                    <th>{{translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Parent Category') }}</th>
+                    <th data-breakpoints="lg" width="15%">{{ translate('Discount') }}</th>
+                    <th data-breakpoints="lg" width="20%">{{ translate('Discount Date Range') }}</th>
+                    <th data-breakpoints="lg" class="text-center" width="10%">{{ translate('Seller Products?') }}</th>
+                    <th data-breakpoints="lg" class="text-right">{{ translate('Action') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($categories as $key => $category)
+                    <tr>
+                        <td data-text="#">{{ ($key+1) + ($categories->currentPage() - 1)*$categories->perPage() }}</td>
+                        <td data-text="{{translate('Icon')}}">
+                            @if($category->icon != null)
+                                <span class="avatar avatar-square avatar-xs">
+                                    <img src="{{ uploaded_asset($category->icon) }}" alt="{{translate('icon')}}">
+                                </span>
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td data-text="{{translate('Name')}}">
+                            <div class="">
+                                {{ $category->getTranslation('name') }}
+                            @if($category->digital == 1)
+                                <img src="{{ static_asset('assets/img/digital_tag.png') }}" alt="{{translate('Digital')}}" class="ml-2 h-25px" style="cursor: pointer;" title="DIgital">
+                            @endif
+                            </div>
+                         </td>
+                        <td class="fw-600" data-text="{{ translate('Parent Category') }}">
+                            @php
+                                $parent = \App\Models\Category::where('id', $category->parent_id)->first();
+                            @endphp
+                            @if ($parent != null)
+                                {{ $parent->getTranslation('name') }}
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td data-text="{{ translate('Discount') }}" class="lmt-fix">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="discount_{{ $category->id }}" step="0.01" value="0" min="0" placeholder="{{translate('Discount')}}"
+                                    style="border-radius: 8px 0 0 8px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-left-0" id="inputGroupPrepend" style="border-radius: 0 8px 8px 0;">%</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-text="{{ translate('Discount Date Range') }}" class="lmt-fix">
+                            <input type="text" class="form-control aiz-date-range rounded-2" id="date_range_{{ $category->id }}" placeholder="{{translate('Select Date')}}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
+                        </td>
+                        <td class="text-center" data-text="{{ translate('Seller Products?') }}">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input id="seller_product_discount_{{ $category->id }}" type="checkbox" >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td class="text-right" data-text="{{ translate('Action') }}">
+                            <div class="form-group mb-0 text-right">
+                                <button type="button" onclick="trigger_alert({{ $category->id }})" class="btn btn-primary btn-sm rounded-2 w-120px">{{translate('Set')}}</button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
@@ -91,7 +162,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
         <div class="aiz-pagination">
             {{ $categories->appends(request()->input())->links() }}
         </div>
