@@ -10,11 +10,11 @@
             <h1 class="h3">{{translate('All products')}}</h1>
         </div>
         @if($type != 'Seller' && auth()->user()->can('add_new_product'))
-            <div class="col text-right">
-                <a href="{{ route('products.createPos') }}" class="btn btn-circle btn-info">
-                    <span>{{translate('Add New Product')}}</span>
-                </a>
-            </div>
+        <div class="col text-right">
+            <a href="{{ route('products.createPos') }}" class="btn btn-circle btn-info">
+                <span>{{translate('Add New Product')}}</span>
+            </a>
+        </div>
         @endif
     </div>
 </div>
@@ -28,14 +28,14 @@
             </div>
 
             @can('product_delete')
-                <div class="dropdown mb-2 mb-md-0">
-                    <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                        {{translate('Bulk Action')}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item confirm-alert" href="javascript:void(0)"  data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
-                    </div>
+            <div class="dropdown mb-2 mb-md-0">
+                <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                    {{translate('Bulk Action')}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item confirm-alert" href="javascript:void(0)" data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
                 </div>
+            </div>
             @endcan
 
             @if($type == 'Seller')
@@ -43,9 +43,9 @@
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
                     <option value="">{{ translate('All Sellers') }}</option>
                     @foreach (App\Models\User::where('user_type', '=', 'seller')->get() as $key => $seller)
-                        <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>
-                            {{ $seller->shop?->name }} ({{ $seller->name }})
-                        </option>
+                    <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>
+                        {{ $seller->shop?->name }} ({{ $seller->name }})
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -54,26 +54,26 @@
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
                     <option value="">{{ translate('All Sellers') }}</option>
-                        @foreach (App\Models\User::where('user_type', '=', 'admin')->orWhere('user_type', '=', 'seller')->get() as $key => $seller)
-                            <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>{{ $seller->name }}</option>
-                        @endforeach
+                    @foreach (App\Models\User::where('user_type', '=', 'admin')->orWhere('user_type', '=', 'seller')->get() as $key => $seller)
+                    <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>{{ $seller->name }}</option>
+                    @endforeach
                 </select>
             </div>
             @endif
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type" onchange="sort_products()">
                     <option value="">{{ translate('Sort By') }}</option>
-                    <option value="rating,desc" @isset($col_name , $query) @if($col_name == 'rating' && $query == 'desc') selected @endif @endisset>{{translate('Rating (High > Low)')}}</option>
-                    <option value="rating,asc" @isset($col_name , $query) @if($col_name == 'rating' && $query == 'asc') selected @endif @endisset>{{translate('Rating (Low > High)')}}</option>
-                    <option value="num_of_sale,desc" @isset($col_name , $query) @if($col_name == 'num_of_sale' && $query == 'desc') selected @endif @endisset>{{translate('Num of Sale (High > Low)')}}</option>
-                    <option value="num_of_sale,asc" @isset($col_name , $query) @if($col_name == 'num_of_sale' && $query == 'asc') selected @endif @endisset>{{translate('Num of Sale (Low > High)')}}</option>
-                    <option value="unit_price,desc" @isset($col_name , $query) @if($col_name == 'unit_price' && $query == 'desc') selected @endif @endisset>{{translate('Base Price (High > Low)')}}</option>
-                    <option value="unit_price,asc" @isset($col_name , $query) @if($col_name == 'unit_price' && $query == 'asc') selected @endif @endisset>{{translate('Base Price (Low > High)')}}</option>
+                    <option value="rating,desc" @isset($col_name , $query) @if($col_name=='rating' && $query=='desc' ) selected @endif @endisset>{{translate('Rating (High > Low)')}}</option>
+                    <option value="rating,asc" @isset($col_name , $query) @if($col_name=='rating' && $query=='asc' ) selected @endif @endisset>{{translate('Rating (Low > High)')}}</option>
+                    <option value="num_of_sale,desc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='desc' ) selected @endif @endisset>{{translate('Num of Sale (High > Low)')}}</option>
+                    <option value="num_of_sale,asc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='asc' ) selected @endif @endisset>{{translate('Num of Sale (Low > High)')}}</option>
+                    <option value="unit_price,desc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='desc' ) selected @endif @endisset>{{translate('Base Price (High > Low)')}}</option>
+                    <option value="unit_price,asc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='asc' ) selected @endif @endisset>{{translate('Base Price (Low > High)')}}</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <div class="form-group mb-0">
-                    <input type="text" class="form-control form-control-sm" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type & Enter') }}">
+                    <input type="text" class="form-control form-control-sm" id="search" name="search" @isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type & Enter') }}">
                 </div>
             </div>
         </div>
@@ -83,29 +83,29 @@
                 <thead>
                     <tr>
                         @if(auth()->user()->can('product_delete'))
-                            <th>
-                                <div class="form-group">
-                                    <div class="aiz-checkbox-inline">
-                                        <label class="aiz-checkbox">
-                                            <input type="checkbox" class="check-all">
-                                            <span class="aiz-square-check"></span>
-                                        </label>
-                                    </div>
+                        <th>
+                            <div class="form-group">
+                                <div class="aiz-checkbox-inline">
+                                    <label class="aiz-checkbox">
+                                        <input type="checkbox" class="check-all">
+                                        <span class="aiz-square-check"></span>
+                                    </label>
                                 </div>
-                            </th>
+                            </div>
+                        </th>
                         @else
-                            <th data-breakpoints="lg">#</th>
+                        <th data-breakpoints="lg">#</th>
                         @endif
                         <th>{{translate('Name')}}</th>
                         @if($type == 'Seller' || $type == 'All')
-                            <th data-breakpoints="lg">{{translate('Added By')}}</th>
+                        <th data-breakpoints="lg">{{translate('Added By')}}</th>
                         @endif
                         <th data-breakpoints="sm">{{translate('Info')}}</th>
                         <th data-breakpoints="md">{{translate('Total Stock')}}</th>
                         <th data-breakpoints="lg">{{translate('Todays Deal')}}</th>
                         <th data-breakpoints="lg">{{translate('Published')}}</th>
                         @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
-                            <th data-breakpoints="lg">{{translate('Approved')}}</th>
+                        <th data-breakpoints="lg">{{translate('Approved')}}</th>
                         @endif
                         <th data-breakpoints="lg">{{translate('Featured')}}</th>
                         <th data-breakpoints="sm" class="text-right">{{translate('Options')}}</th>
@@ -115,16 +115,16 @@
                     @foreach($products as $key => $product)
                     <tr>
                         @if(auth()->user()->can('product_delete'))
-                            <td>
-                                <div class="form-group d-inline-block">
-                                    <label class="aiz-checkbox">
-                                        <input type="checkbox" class="check-one" name="id[]" value="{{$product->id}}">
-                                        <span class="aiz-square-check"></span>
-                                    </label>
-                                </div>
-                            </td>
+                        <td>
+                            <div class="form-group d-inline-block">
+                                <label class="aiz-checkbox">
+                                    <input type="checkbox" class="check-one" name="id[]" value="{{$product->id}}">
+                                    <span class="aiz-square-check"></span>
+                                </label>
+                            </div>
+                        </td>
                         @else
-                            <td>{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
+                        <td>{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
                         @endif
                         <td>
                             <div class="row gutters-5 w-200px w-md-300px mw-100">
@@ -137,7 +137,7 @@
                             </div>
                         </td>
                         @if($type == 'Seller' || $type == 'All')
-                            <td>{{ optional($product->user)->name }}</td>
+                        <td>{{ optional($product->user)->name }}</td>
                         @endif
                         <td>
                             <strong>{{translate('Num of Sale')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
@@ -148,62 +148,69 @@
                             @if($product->digital == 1)
                             <span class="badge badge-inline badge-info">{{ translate('Digital Product') }}</span>
                             @else
-                                @php
-                                    $qty = 0;
-                                    if($product->variant_product) {
-                                        foreach ($product->stocks as $key => $stock) {
-                                            $qty += $stock->qty;
-                                            echo $stock->variant.' - '.$stock->qty.'<br>';
-                                        }
-                                    }
-                                    else {
-                                        //$qty = $product->current_stock;
-                                        $qty = optional($product->stocks->first())->qty;
-                                        echo $qty;
-                                    }
-                                @endphp
-                                @if($qty <= $product->low_stock_quantity)
-                                    <span class="badge badge-inline badge-danger">{{ translate('Low') }}</span>
+                            @php
+                            $qty = 0;
+                            if($product->variant_product) {
+                            echo '<strong>'.$product->stocks.'</strong><br>';
+                            foreach ($product->stocks as $key => $stock) {
+                            $qty += $stock->qty;
+                            if ($stock->variant) {
+                            echo $stock->variant . ' - ' . $stock->qty . '<br>';
+                            } else {
+                            echo $stock->qty . '<br>';
+                            }
+
+                            }
+                            }
+                            else {
+                            echo '<strong>'.$product->stocks->first().'</strong><br>';
+                            //$qty = $product->current_stock;
+                            $qty = optional($product->stocks->first())->qty;
+                            echo $qty;
+                            }
+                            @endphp
+                            @if($qty <= $product->low_stock_quantity)
+                                <span class="badge badge-inline badge-danger">{{ translate('Low') }}</span>
                                 @endif
-                            @endif
+                                @endif
 
                         </td>
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->todays_deal == 1) echo "checked"; ?> >
+                                <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->todays_deal == 1) echo "checked"; ?>>
                                 <span class="slider round"></span>
                             </label>
                         </td>
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->published == 1) echo "checked"; ?> >
+                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->published == 1) echo "checked"; ?>>
                                 <span class="slider round"></span>
                             </label>
                         </td>
                         @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
-                            <td>
-                                <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input onchange="update_approved(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->approved == 1) echo "checked"; ?> >
-                                    <span class="slider round"></span>
-                                </label>
-                            </td>
+                        <td>
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input onchange="update_approved(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->approved == 1) echo "checked"; ?>>
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
                         @endif
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->featured == 1) echo "checked"; ?> >
+                                <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->featured == 1) echo "checked"; ?>>
                                 <span class="slider round"></span>
                             </label>
                         </td>
                         <td class="text-right">
                             @can('product_edit_pos')
-                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('products.admin.edit_pos', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
-                                        <i class="las la-edit"></i>
-                                    </a>
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('products.admin.edit_pos', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                                <i class="las la-edit"></i>
+                            </a>
                             @endcan
                             @can('product_delete_pos')
-                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('products.destroypos', $product->id)}}" title="{{ translate('Delete') }}">
-                                    <i class="las la-trash"></i>
-                                </a>
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('products.destroypos', $product->id)}}" title="{{ translate('Delete') }}">
+                                <i class="las la-trash"></i>
+                            </a>
                             @endcan
                         </td>
                     </tr>
@@ -220,152 +227,182 @@
 @endsection
 
 @section('modal')
-    <!-- Delete modal -->
-    @include('modals.delete_modal')
-    <!-- Bulk Delete modal -->
-    @include('modals.bulk_delete_modal')
+<!-- Delete modal -->
+@include('modals.delete_modal')
+<!-- Bulk Delete modal -->
+@include('modals.bulk_delete_modal')
 @endsection
 
 
 @section('script')
-    <script type="text/javascript">
+<script type="text/javascript">
+    $(document).on("change", ".check-all", function() {
+        if (this.checked) {
+            // Iterate each checkbox
+            $('.check-one:checkbox').each(function() {
+                this.checked = true;
+            });
+        } else {
+            $('.check-one:checkbox').each(function() {
+                this.checked = false;
+            });
+        }
 
-        $(document).on("change", ".check-all", function() {
-            if(this.checked) {
-                // Iterate each checkbox
-                $('.check-one:checkbox').each(function() {
-                    this.checked = true;
-                });
-            } else {
-                $('.check-one:checkbox').each(function() {
-                    this.checked = false;
-                });
+    });
+
+    $(document).ready(function() {
+        //$('#container').removeClass('mainnav-lg').addClass('mainnav-sm');
+    });
+
+    function update_todays_deal(el) {
+
+        if ('{{env('
+            DEMO_MODE ')}}' == 'On') {
+            AIZ.plugins.notify('info', '{{ translate('
+                Data can not change in demo mode.
+                ') }}');
+            return;
+        }
+
+        if (el.checked) {
+            var status = 1;
+        } else {
+            var status = 0;
+        }
+        $.post('{{ route('
+            products.todays_deal ') }}', {
+                _token: '{{ csrf_token() }}',
+                id: el.value,
+                status: status
+            },
+            function(data) {
+                if (data == 1) {
+                    AIZ.plugins.notify('success', '{{ translate('
+                        Todays Deal updated successfully ') }}');
+                } else {
+                    AIZ.plugins.notify('danger', '{{ translate('
+                        Something went wrong ') }}');
+                }
+            });
+    }
+
+    function update_published(el) {
+
+        if ('{{env('
+            DEMO_MODE ')}}' == 'On') {
+            AIZ.plugins.notify('info', '{{ translate('
+                Data can not change in demo mode.
+                ') }}');
+            return;
+        }
+
+        if (el.checked) {
+            var status = 1;
+        } else {
+            var status = 0;
+        }
+        $.post('{{ route('
+            products.published ') }}', {
+                _token: '{{ csrf_token() }}',
+                id: el.value,
+                status: status
+            },
+            function(data) {
+                if (data == 1) {
+                    AIZ.plugins.notify('success', '{{ translate('
+                        Published products updated successfully ') }}');
+                } else {
+                    AIZ.plugins.notify('danger', '{{ translate('
+                        Something went wrong ') }}');
+                }
+            });
+    }
+
+    function update_approved(el) {
+
+        if ('{{env('
+            DEMO_MODE ')}}' == 'On') {
+            AIZ.plugins.notify('info', '{{ translate('
+                Data can not change in demo mode.
+                ') }}');
+            return;
+        }
+
+        if (el.checked) {
+            var approved = 1;
+        } else {
+            var approved = 0;
+        }
+        $.post('{{ route('
+            products.approved ') }}', {
+                _token: '{{ csrf_token() }}',
+                id: el.value,
+                approved: approved
+            },
+            function(data) {
+                if (data == 1) {
+                    AIZ.plugins.notify('success', '{{ translate('
+                        Product approval update successfully ') }}');
+                } else {
+                    AIZ.plugins.notify('danger', '{{ translate('
+                        Something went wrong ') }}');
+                }
+            });
+    }
+
+    function update_featured(el) {
+        if ('{{env('
+            DEMO_MODE ')}}' == 'On') {
+            AIZ.plugins.notify('info', '{{ translate('
+                Data can not change in demo mode.
+                ') }}');
+            return;
+        }
+
+        if (el.checked) {
+            var status = 1;
+        } else {
+            var status = 0;
+        }
+        $.post('{{ route('
+            products.featured ') }}', {
+                _token: '{{ csrf_token() }}',
+                id: el.value,
+                status: status
+            },
+            function(data) {
+                if (data == 1) {
+                    AIZ.plugins.notify('success', '{{ translate('
+                        Featured products updated successfully ') }}');
+                } else {
+                    AIZ.plugins.notify('danger', '{{ translate('
+                        Something went wrong ') }}');
+                }
+            });
+    }
+
+    function sort_products(el) {
+        $('#sort_products').submit();
+    }
+
+    function bulk_delete() {
+        var data = new FormData($('#sort_products')[0]);
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{route('bulk-product-delete')}}",
+            type: 'POST',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response == 1) {
+                    location.reload();
+                }
             }
-
         });
-
-        $(document).ready(function(){
-            //$('#container').removeClass('mainnav-lg').addClass('mainnav-sm');
-        });
-
-        function update_todays_deal(el){
-
-            if('{{env('DEMO_MODE')}}' == 'On'){
-                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
-                return;
-            }
-
-            if(el.checked){
-                var status = 1;
-            }
-            else{
-                var status = 0;
-            }
-            $.post('{{ route('products.todays_deal') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
-                if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Todays Deal updated successfully') }}');
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-
-        function update_published(el){
-
-            if('{{env('DEMO_MODE')}}' == 'On'){
-                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
-                return;
-            }
-
-            if(el.checked){
-                var status = 1;
-            }
-            else{
-                var status = 0;
-            }
-            $.post('{{ route('products.published') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
-                if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-
-        function update_approved(el){
-
-            if('{{env('DEMO_MODE')}}' == 'On'){
-                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
-                return;
-            }
-
-            if(el.checked){
-                var approved = 1;
-            }
-            else{
-                var approved = 0;
-            }
-            $.post('{{ route('products.approved') }}', {
-                _token      :   '{{ csrf_token() }}',
-                id          :   el.value,
-                approved    :   approved
-            }, function(data){
-                if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Product approval update successfully') }}');
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-
-        function update_featured(el){
-            if('{{env('DEMO_MODE')}}' == 'On'){
-                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
-                return;
-            }
-
-            if(el.checked){
-                var status = 1;
-            }
-            else{
-                var status = 0;
-            }
-            $.post('{{ route('products.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
-                if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Featured products updated successfully') }}');
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-
-        function sort_products(el){
-            $('#sort_products').submit();
-        }
-
-        function bulk_delete() {
-            var data = new FormData($('#sort_products')[0]);
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{route('bulk-product-delete')}}",
-                type: 'POST',
-                data: data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    if(response == 1) {
-                        location.reload();
-                    }
-                }
-            });
-        }
-
-    </script>
+    }
+</script>
 @endsection
