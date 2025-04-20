@@ -43,8 +43,7 @@
                         </li>
 
                         <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.categories_wise_product_discount') }}"
-                                class="aiz-side-nav-link">
+                            <a href="{{ route('seller.categories_wise_product_discount') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Category-Wise Discount') }}</span>
                             </a>
                         </li>
@@ -70,7 +69,7 @@
                     </ul>
                 </li>
 
-                @if (addon_is_activated('preorder') && (get_setting('seller_preorder_product') == 1))
+                @if (addon_is_activated('preorder') && get_setting('seller_preorder_product') == 1)
                     <li class="aiz-side-nav-item sl-preorder">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-clock aiz-side-nav-icon"></i>
@@ -80,14 +79,12 @@
                         <!--Submenu-->
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('seller.preorder.dashboard') }}"
-                                    class="aiz-side-nav-link">
+                                <a href="{{ route('seller.preorder.dashboard') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Dashboard') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('seller.preorder-product.create') }}"
-                                    class="aiz-side-nav-link">
+                                <a href="{{ route('seller.preorder-product.create') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Add New Preorder Product') }}</span>
                                 </a>
                             </li>
@@ -100,23 +97,28 @@
 
                             <li class="aiz-side-nav-item">
                                 <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Orders (Preorder)')}}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Orders (Preorder)') }}</span>
                                     <span class="aiz-side-nav-arrow"></span>
                                 </a>
                                 <ul class="aiz-side-nav-list level-3">
                                     <li class="aiz-side-nav-item">
-                                        <a href="{{ route('seller.all_preorder.list') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.preorder-order.show'])}} }}">
-                                            <span class="aiz-side-nav-text">{{translate('All Orders')}}</span>
+                                        <a href="{{ route('seller.all_preorder.list') }}"
+                                            class="aiz-side-nav-link {{ areActiveRoutes(['seller.preorder-order.show']) }} }}">
+                                            <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
                                         </a>
                                     </li>
                                     <li class="aiz-side-nav-item">
-                                        <a href="{{ route('seller.delayed_prepayment_preorders.list') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Delayed Prepayment Orders')}}</span>
+                                        <a href="{{ route('seller.delayed_prepayment_preorders.list') }}"
+                                            class="aiz-side-nav-link">
+                                            <span
+                                                class="aiz-side-nav-text">{{ translate('Delayed Prepayment Orders') }}</span>
                                         </a>
                                     </li>
                                     <li class="aiz-side-nav-item">
-                                        <a href="{{ route('seller.delayed_final_orders.list') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Delayed Final Orders')}}</span>
+                                        <a href="{{ route('seller.delayed_final_orders.list') }}"
+                                            class="aiz-side-nav-link">
+                                            <span
+                                                class="aiz-side-nav-text">{{ translate('Delayed Final Orders') }}</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -124,13 +126,15 @@
 
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller.preorder-settings') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate("Preorder Settings")}}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Preorder Settings') }}</span>
                                 </a>
                             </li>
 
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('seller.preorder-commission-history') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate("Preorder Commission History")}}</span>
+                                <a href="{{ route('seller.preorder-commission-history') }}"
+                                    class="aiz-side-nav-link">
+                                    <span
+                                        class="aiz-side-nav-text">{{ translate('Preorder Commission History') }}</span>
                                 </a>
                             </li>
 
@@ -140,8 +144,9 @@
                                         $preorderConversation = get_non_viewed_preorder_conversations();
                                     @endphp
                                     <a href="{{ route('seller.preorder-conversations.index') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.preorder-conversations.index','seller.preorder-conversations.show']) }}">
-                                        <span class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.preorder-conversations.index', 'seller.preorder-conversations.show']) }}">
+                                        <span
+                                            class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
                                         @if ($preorderConversation > 0)
                                             <span class="badge badge-danger">({{ $preorderConversation }})</span>
                                         @endif
@@ -151,7 +156,7 @@
                             @if (get_setting('product_query_activation') == 1)
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('seller.preorder_product_query.index') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['preorder_product_query.index','preorder_product_query.show']) }}">
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['preorder_product_query.index', 'preorder_product_query.show']) }}">
                                         <span class="aiz-side-nav-text">{{ translate('Product Queries') }}</span>
                                     </a>
                                 </li>
@@ -170,30 +175,35 @@
                 <li class="aiz-side-nav-item sl-notes">
                     <a href="#" class="aiz-side-nav-link">
                         <div class="aiz-side-nav-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16.001" viewBox="0 0 16 16.001">
-                                <path id="Union_64" data-name="Union 64" d="M.333,16A.315.315,0,0,1,0,15.668V.335A.315.315,0,0,1,.333,0h9.31a.285.285,0,0,1,.123.014A.318.318,0,0,1,9.9.1l2.667,2.667.009.01a.293.293,0,0,1,.079.132.274.274,0,0,1,.012.112V5.835l1.267-1.267a.322.322,0,0,1,.466,0l1.5,1.5a.322.322,0,0,1,0,.466L12.667,9.768v5.9a.315.315,0,0,1-.333.333Zm.334-.666H12v-4.9L9.133,13.3a.3.3,0,0,1-.233.1H8.882L6.4,14.468a.2.2,0,0,1-.133.033.332.332,0,0,1-.3-.466l.589-1.368H2.667a.333.333,0,0,1,0-.667H6.843l.258-.6a.321.321,0,0,1,.176-.177L8.5,10H2.667a.333.333,0,0,1,0-.667h6.5L12,6.5V3.335H9.667A.315.315,0,0,1,9.333,3V.668H.667Zm6.233-1.8,1.4-.6-.8-.8-.1.239a.323.323,0,0,1-.074.172Zm2-.967,6.3-6.3-.283-.283-6.3,6.3ZM7.867,11.534l.284.284,6.3-6.3-.283-.283L12.624,6.777a.291.291,0,0,1-.115.115L9.558,9.844a.291.291,0,0,1-.115.115ZM10,2.668h1.533L10.767,1.9,10,1.135ZM2.667,7.335a.333.333,0,0,1,0-.667H10a.333.333,0,1,1,0,.667Zm0-2.668a.333.333,0,1,1,0-.666H10a.333.333,0,1,1,0,.666Z" fill="#575b6a"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16.001"
+                                viewBox="0 0 16 16.001">
+                                <path id="Union_64" data-name="Union 64"
+                                    d="M.333,16A.315.315,0,0,1,0,15.668V.335A.315.315,0,0,1,.333,0h9.31a.285.285,0,0,1,.123.014A.318.318,0,0,1,9.9.1l2.667,2.667.009.01a.293.293,0,0,1,.079.132.274.274,0,0,1,.012.112V5.835l1.267-1.267a.322.322,0,0,1,.466,0l1.5,1.5a.322.322,0,0,1,0,.466L12.667,9.768v5.9a.315.315,0,0,1-.333.333Zm.334-.666H12v-4.9L9.133,13.3a.3.3,0,0,1-.233.1H8.882L6.4,14.468a.2.2,0,0,1-.133.033.332.332,0,0,1-.3-.466l.589-1.368H2.667a.333.333,0,0,1,0-.667H6.843l.258-.6a.321.321,0,0,1,.176-.177L8.5,10H2.667a.333.333,0,0,1,0-.667h6.5L12,6.5V3.335H9.667A.315.315,0,0,1,9.333,3V.668H.667Zm6.233-1.8,1.4-.6-.8-.8-.1.239a.323.323,0,0,1-.074.172Zm2-.967,6.3-6.3-.283-.283-6.3,6.3ZM7.867,11.534l.284.284,6.3-6.3-.283-.283L12.624,6.777a.291.291,0,0,1-.115.115L9.558,9.844a.291.291,0,0,1-.115.115ZM10,2.668h1.533L10.767,1.9,10,1.135ZM2.667,7.335a.333.333,0,0,1,0-.667H10a.333.333,0,1,1,0,.667Zm0-2.668a.333.333,0,1,1,0-.666H10a.333.333,0,1,1,0,.666Z"
+                                    fill="#575b6a" />
                             </svg>
                         </div>
-                        <span class="aiz-side-nav-text">{{translate('Notes')}}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Notes') }}</span>
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <!--Submenu-->
                     <ul class="aiz-side-nav-list level-2">
-                        @if(get_setting('seller_can_add_note'))
+                        @if (get_setting('seller_can_add_note'))
                             <li class="aiz-side-nav-item">
-                                <a class="aiz-side-nav-link" href="{{route('seller.note.create')}}">
-                                    <span class="aiz-side-nav-text">{{translate('Add New Note')}}</span>
+                                <a class="aiz-side-nav-link" href="{{ route('seller.note.create') }}">
+                                    <span class="aiz-side-nav-text">{{ translate('Add New Note') }}</span>
                                 </a>
                             </li>
                         @endif
                         <li class="aiz-side-nav-item">
-                            <a href="{{route('seller.note.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.note.edit']) }}">
-                                <span class="aiz-side-nav-text">{{translate('Note List')}}</span>
+                            <a href="{{ route('seller.note.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.note.edit']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Note List') }}</span>
                             </a>
                         </li>
                     </ul>
                 </li>
 
+                {{-- File --}}
                 <li class="aiz-side-nav-item sl-file">
                     <a href="{{ route('seller.uploaded-files.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.uploaded-files.index', 'seller.uploads.create']) }}">
@@ -201,6 +211,8 @@
                         <span class="aiz-side-nav-text">{{ translate('Uploaded Files') }}</span>
                     </a>
                 </li>
+
+                {{-- Package --}}
                 @if (addon_is_activated('seller_subscription'))
                     <li class="aiz-side-nav-item sl-package-subscription">
                         <a href="#" class="aiz-side-nav-link">
@@ -223,6 +235,8 @@
                         </ul>
                     </li>
                 @endif
+
+                {{-- Coupon --}}
                 @if (get_setting('coupon_system') == 1)
                     <li class="aiz-side-nav-item sl-coupon">
                         <a href="{{ route('seller.coupon.index') }}"
@@ -232,6 +246,8 @@
                         </a>
                     </li>
                 @endif
+
+                {{-- Wholesale --}}
                 @if (addon_is_activated('wholesale') && get_setting('seller_wholesale_product') == 1)
                     <li class="aiz-side-nav-item sl-wholesale">
                         <a href="{{ route('seller.wholesale_products_list') }}"
@@ -241,6 +257,8 @@
                         </a>
                     </li>
                 @endif
+
+                {{-- Auction --}}
                 @if (addon_is_activated('auction') && get_setting('seller_auction_product') == 1)
                     <li class="aiz-side-nav-item sl-auction">
                         <a href="javascript:void(0);" class="aiz-side-nav-link">
@@ -265,6 +283,7 @@
                     </li>
                 @endif
 
+                {{-- POS System --}}
                 @if (addon_is_activated('pos_system') &&
                         get_setting('pos_activation_for_seller') != null &&
                         get_setting('pos_activation_for_seller') != 0)
@@ -293,24 +312,8 @@
                         </ul>
                     </li>
                 @endif
-                    @php
-                        $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)->where('seller_process_status', 0)->count();
-                        $total_orders = $total_orders < 10 ? $total_orders : "9+";
-                    @endphp
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.orders.index') }}"
-                        class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
-                        <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">
-                            {{ translate('Orders') }}
-                            @if($total_orders > 0)
-                            <span class="badge badge-danger rounded-pill position-absolute" style="top: 10px; right: 10px; font-size: 12px;">
-                                {{ $total_orders }}
-                            </span>
-                            @endif
-                        </span>
-                    </a>
-                </li>
+
+                {{-- Refund --}}
                 @if (addon_is_activated('refund_request'))
                     <li class="aiz-side-nav-item sl-refund">
                         <a href="{{ route('seller.vendor_refund_request') }}"
@@ -321,12 +324,16 @@
                     </li>
                 @endif
 
+                {{-- Package --}}
                 <li class="aiz-side-nav-item sl-package">
-                    <a href="{{ route('seller.seller_packages_list')}}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.seller_packages_list'])}}">
+                    <a href="{{ route('seller.seller_packages_list') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.seller_packages_list']) }}">
                         <i class="las la-box aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Packages') }}</span>
                     </a>
                 </li>
+
+                {{-- Commission --}}
                 <li class="aiz-side-nav-item sl-commission">
                     <a href="{{ route('seller.commission-packages.index') }}" class="aiz-side-nav-link">
                         <i class="las la-trophy aiz-side-nav-icon"></i>
@@ -334,20 +341,39 @@
                     </a>
                 </li>
 
+                {{-- POS System --}}
                 <li class="aiz-side-nav-item sl-pos-system">
-                    <a href="{{ route('seller.pos.index') }}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.pos.index', 'seller.pos.products'])}}">
+                    <a href="{{ route('seller.pos.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.pos.index', 'seller.pos.products']) }}">
                         <i class="las la-cash-register aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
                     </a>
                 </li>
-                <li class="aiz-side-nav-item sl-orders">
+
+                {{-- Order --}}
+                @php
+                    $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)
+                        ->where('seller_process_status', 0)
+                        ->count();
+                    $total_orders = $total_orders < 10 ? $total_orders : '9+';
+                @endphp
+                <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.orders.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
+                        class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
+                        <span class="aiz-side-nav-text">
+                            {{ translate('Orders') }}
+                            @if ($total_orders > 0)
+                                <span class="badge badge-danger rounded-pill position-absolute"
+                                    style="top: 10px; right: 10px; font-size: 12px;">
+                                    {{ $total_orders }}
+                                </span>
+                            @endif
+                        </span>
                     </a>
                 </li>
 
+                {{-- Shop Setting --}}
                 <li class="aiz-side-nav-item sl-shop">
                     <a href="{{ route('seller.shop.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
@@ -355,6 +381,8 @@
                         <span class="aiz-side-nav-text">{{ translate('Shop Setting') }}</span>
                     </a>
                 </li>
+
+                {{-- Money Deposit --}}
                 <li class="aiz-side-nav-item sl-deposit">
                     <a href="{{ route('seller.money_deposit_requests.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_deposit_requests.index']) }}">
@@ -362,6 +390,8 @@
                         <span class="aiz-side-nav-text">{{ translate('Money Deposit') }}</span>
                     </a>
                 </li>
+
+                {{-- Money Withdraw --}}
                 <li class="aiz-side-nav-item sl-withdraw">
                     <a href="{{ route('seller.money_withdraw_requests.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
@@ -370,6 +400,7 @@
                     </a>
                 </li>
 
+                {{-- Payment History --}}
                 <li class="aiz-side-nav-item sp-pay">
                     <a href="{{ route('seller.payments.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.payments.index']) }}">
@@ -378,16 +409,15 @@
                     </a>
                 </li>
 
-
-
-
-
+                {{-- Commission History --}}
                 <li class="aiz-side-nav-item sl-commission-history">
                     <a href="{{ route('seller.commission-history.index') }}" class="aiz-side-nav-link">
                         <i class="las la-file-alt aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
                     </a>
                 </li>
+
+                {{-- Support Ticket --}}
                 @php
                     $support_ticket = DB::table('tickets')
                         ->where('client_viewed', 0)
@@ -404,6 +434,8 @@
                         @endif
                     </a>
                 </li>
+
+                {{-- Conversation --}}
                 @if (get_setting('conversation_system') == 1)
                     @php
                         $conversation = \App\Models\Conversation::where('sender_id', Auth::user()->id)
@@ -422,6 +454,7 @@
                     </li>
                 @endif
 
+                {{-- Product Query --}}
                 @if (get_setting('product_query_activation') == 1)
                     <li class="aiz-side-nav-item sl-product-query">
                         <a href="{{ route('seller.product_query.index') }}"
@@ -432,9 +465,6 @@
                         </a>
                     </li>
                 @endif
-
-
-
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->
