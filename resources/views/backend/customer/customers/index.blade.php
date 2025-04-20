@@ -51,97 +51,7 @@
         </div>
 
         <div class="card-body">
-            <table class="lmt-table">
-                <thead>
-                    <tr>
-                        <th class="lmt-th-head">
-                            <div class="form-group">
-                                <div class="aiz-checkbox-inline">
-                                    <label class="aiz-checkbox">
-                                        <input type="checkbox" class="check-all">
-                                        <span class="aiz-square-check"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </th>
-                        <th>{{translate('Name')}}</th>
-                        <th data-breakpoints="lg">{{translate('Email Address')}}</th>
-                        <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                        <th data-breakpoints="lg">{{translate('Package')}}</th>
-                        <th data-breakpoints="lg">{{translate('Wallet Balance')}}</th>
-                        <th data-breakpoints="lg">{{translate('Verification Status')}}</th>
-                        <th class="text-right">{{translate('Options')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($users as $key => $user)
-                        @if ($user != null)
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="aiz-checkbox-inline">
-                                            <label class="aiz-checkbox">
-                                                <input type="checkbox" class="check-one" name="id[]" value="{{$user->id}}">
-                                                <span class="aiz-square-check"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td data-text="{{translate('Name')}}">
-                                    <div class="@if($user->banned == 1) text-danger @elseif($user->is_suspicious == 1) text-info @endif">
-                                        @if($user->banned == 1) 
-                                            <i class="las la-ban las" aria-hidden="true"></i>
-                                        @elseif($user->is_suspicious == 1) 
-                                            <i class="las la-exclamation-circle" aria-hidden="true"></i> 
-                                        @endif 
-                                        {{$user->name}}
-                                    </div>
-                                <td data-text="{{translate('Email Address')}}">{{$user->email}}</td>
-                                <td data-text="{{translate('Phone')}}">{{$user->phone}}</td>
-                                <td data-text="{{translate('Package')}}">
-                                    @if ($user->customer_package != null)
-                                        {{$user->customer_package->getTranslation('name')}}
-                                    @endif
-                                </td>
-                                <td data-text="{{translate('Wallet Balance')}}">{{single_price($user->balance)}}</td>
-                                <td data-text="{{translate('Package')}}">
-                                    @if($user->email_verified_at != null)
-                                        <span class="badge badge-inline badge-success">{{translate('Verified')}}</span>
-                                    @else
-                                        <span class="badge badge-inline badge-warning">{{translate('Unverified')}}</span>
-                                    @endif
-                                </td>
-                                <td class="text-right" data-text="{{translate('Options')}}">
-                                    <div class="">
-                                        @if($user->email_verified_at != null && auth()->user()->can('login_as_customer'))
-                                            <a href="{{route('customers.login', encrypt($user->id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="{{ translate('Log in as this Customer') }}">
-                                                <i class="las la-edit"></i>
-                                            </a>
-                                        @endif
-                                        @can('ban_customer')
-                                            @if($user->banned != 1)
-                                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Ban this Customer') }}">
-                                                    <i class="las la-user-slash"></i>
-                                                </a>
-                                                @else
-                                                <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm" onclick="confirm_unban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Unban this Customer') }}">
-                                                    <i class="las la-user-check"></i>
-                                                </a>
-                                            @endif
-                                        @endcan
-                                        @can('delete_customer')
-                                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customers.destroy', $user->id)}}" title="{{ translate('Delete') }}">
-                                                <i class="las la-trash"></i>
-                                            </a>
-                                        @endcan
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
-            {{-- <table class="table aiz-table mb-0" style="display: none">
+            <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
                         <th>
@@ -248,7 +158,7 @@
                     @endif
                     @endforeach
                 </tbody>
-            </table> --}}
+            </table>
             <div class="aiz-pagination">
                 {{ $users->appends(request()->input())->links() }}
             </div>
