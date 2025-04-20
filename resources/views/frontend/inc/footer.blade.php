@@ -302,6 +302,9 @@
 
             </div>
         </div>
+
+        <!-- Custom code -->
+        {!! get_setting('custom_code')!!}
     </div>
 </section>
 
