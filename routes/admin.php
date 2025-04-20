@@ -80,18 +80,25 @@ Route::controller(UpdateController::class)->group(function () {
     Route::get('/update/step3', 'step3')->name('update.step3');
     Route::post('/purchase_code', 'purchase_code')->name('update.code');
 });
-Route::get('/run-migrate', function () {
-    // Chạy file 1
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2025_04_18_144305_create_commission_packages_table.php',
-        '--force' => true
-    ]);
-    // Chạy file 2
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2025_04_18_151854_create_commission_package_user_table.php',
-        '--force' => true
-    ]);
-    return 'Đã migrate 2 file commission package xong rồi nha!';
+Route::get('/run-migrate-after-payment-fields', function () {
+    $basePath = database_path('migrations');
+    $files = collect(\File::files($basePath))
+        ->map(function ($file) { return $file->getFilename(); })
+        ->filter(function ($filename) {
+            // Chỉ lấy file sau file này
+            return $filename > '2025_04_19_180944_add_payment_fields_to_users_table.php' && \Str::endsWith($filename, '.php');
+        })
+        ->sort();
+
+    $ran = [];
+    foreach ($files as $file) {
+        Artisan::call('migrate', [
+            '--path' => 'database/migrations/' . $file,
+            '--force' => true
+        ]);
+        $ran[] = $file;
+    }
+    return 'Đã migrate các file sau: <br>' . implode('<br>', $ran);
 });
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin', 'prevent-back-history']);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-back-history']], function () {
