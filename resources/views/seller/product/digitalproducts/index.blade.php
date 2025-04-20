@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table aiz-table mb-0">
+            <table class="lmt-table mb-0">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -81,16 +81,16 @@
                 <tbody>
                     @foreach ($products as $key => $product)
                         <tr>
-                            <td>{{ $key+1 }}</td>
-                            <td><a href="{{ route('product', $product->slug) }}" target="_blank">{{   $product->getTranslation('name')  }}</a></td>
-                            <td>
+                            <td data-text="#">{{ $key+1 }}</td>
+                            <td data-text="{{ translate('Name')}}"><a href="{{ route('product', $product->slug) }}" target="_blank">{{   $product->getTranslation('name')  }}</a></td>
+                            <td data-text="{{ translate('Category')}}">
                                 @if ($product->main_category != null)
                                     {{ $product->main_category->getTranslation('name') }}
                                 @endif
                             </td>
-                            <td>{{ $product->unit_price }}</td>
+                            <td data-text="{{ translate('Base Price')}}">{{ $product->unit_price }}</td>
                             @if(get_setting('product_approve_by_admin') == 1)
-                                <td>
+                                <td data-text="{{ translate('Approval')}}">
                                     @if ($product->approved == 1)
                                         <span class="badge badge-inline badge-success">{{ translate('Approved')}}</span>
                                     @else
@@ -98,24 +98,32 @@
                                     @endif
                                 </td>
                             @endif
-                            <td><label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
-                                <span class="slider round"></span></label>
+                            <td data-text="{{ translate('Published')}}">
+                                <div class="">
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
+                                    <span class="slider round"></span></label>
+                                </div>
                             </td>
-                            <td><label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->seller_featured == 1) echo "checked";?> >
-                                <span class="slider round"></span></label>
+                            <td data-text="{{ translate('Featured')}}">
+                                <div class="">
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->seller_featured == 1) echo "checked";?> >
+                                    <span class="slider round"></span></label>
+                                </div>
                             </td>
-                            <td class="text-right">
-                                <a href="{{route('seller.digitalproducts.edit',  ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Edit') }}">
-                                  <i class="las la-edit"></i>
-                                </a>
-                                <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('seller.digitalproducts.download', encrypt($product->id))}}" title="{{ translate('Download') }}">
-                                    <i class="las la-download"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.digitalproducts.destroy', $product->id)}}" title="{{ translate('Delete') }}">
-                                  <i class="las la-trash"></i>
-                                </a>
+                            <td class="text-right" data-text="{{ translate('Options')}}">
+                                <div class="">
+                                    <a href="{{route('seller.digitalproducts.edit',  ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Edit') }}">
+                                        <i class="las la-edit"></i>
+                                    </a>
+                                    <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('seller.digitalproducts.download', encrypt($product->id))}}" title="{{ translate('Download') }}">
+                                        <i class="las la-download"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.digitalproducts.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                                    <i class="las la-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
