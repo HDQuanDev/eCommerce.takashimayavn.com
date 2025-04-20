@@ -13,7 +13,7 @@
                 <p class="text-primary">{{ Auth::user()->email }}</p>
             </div>
         </div>
-        <div class="aiz-side-nav-wrap">
+        <div class="aiz-side-nav-wrap seller">
             <div class="px-20px mb-3">
                 <input class="form-control bg-soft-secondary border-0 form-control-sm" type="text" name=""
                     placeholder="{{ translate('Search in menu') }}" id="menu-search" onkeyup="menuSearch()">
@@ -21,13 +21,13 @@
             <ul class="aiz-side-nav-list" id="search-menu">
             </ul>
             <ul class="aiz-side-nav-list" id="main-menu" data-toggle="aiz-side-menu">
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-dashboard">
                     <a href="{{ route('seller.dashboard') }}" class="aiz-side-nav-link">
                         <i class="las la-home aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Dashboard') }}</span>
                     </a>
                 </li>
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-products">
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-shopping-cart aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Products') }}</span>
@@ -71,7 +71,7 @@
                 </li>
 
                 @if (addon_is_activated('preorder') && (get_setting('seller_preorder_product') == 1))
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-preorder">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-clock aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Preorder') }}</span>
@@ -167,7 +167,7 @@
                 @endif
 
                 {{-- Note --}}
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-notes">
                     <a href="#" class="aiz-side-nav-link">
                         <div class="aiz-side-nav-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16.001" viewBox="0 0 16 16.001">
@@ -194,7 +194,7 @@
                     </ul>
                 </li>
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-file">
                     <a href="{{ route('seller.uploaded-files.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.uploaded-files.index', 'seller.uploads.create']) }}">
                         <i class="las la-folder-open aiz-side-nav-icon"></i>
@@ -202,7 +202,7 @@
                     </a>
                 </li>
                 @if (addon_is_activated('seller_subscription'))
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-package-subscription">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Package') }}</span>
@@ -224,7 +224,7 @@
                     </li>
                 @endif
                 @if (get_setting('coupon_system') == 1)
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-coupon">
                         <a href="{{ route('seller.coupon.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.coupon.index', 'seller.coupon.create', 'seller.coupon.edit']) }}">
                             <i class="las la-bullhorn aiz-side-nav-icon"></i>
@@ -233,7 +233,7 @@
                     </li>
                 @endif
                 @if (addon_is_activated('wholesale') && get_setting('seller_wholesale_product') == 1)
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-wholesale">
                         <a href="{{ route('seller.wholesale_products_list') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['wholesale_product_create.seller', 'wholesale_product_edit.seller']) }}">
                             <i class="las la-luggage-cart aiz-side-nav-icon"></i>
@@ -242,7 +242,7 @@
                     </li>
                 @endif
                 @if (addon_is_activated('auction') && get_setting('seller_auction_product') == 1)
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-auction">
                         <a href="javascript:void(0);" class="aiz-side-nav-link">
                             <i class="las la-gavel aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Auction') }}</span>
@@ -268,7 +268,7 @@
                 @if (addon_is_activated('pos_system') &&
                         get_setting('pos_activation_for_seller') != null &&
                         get_setting('pos_activation_for_seller') != 0)
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-pos">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-tasks aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
@@ -294,15 +294,9 @@
                     </li>
                 @endif
 
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.orders.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
-                        <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
-                    </a>
-                </li>
+               
                 @if (addon_is_activated('refund_request'))
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-refund">
                         <a href="{{ route('seller.vendor_refund_request') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.vendor_refund_request', 'reason_show']) }}">
                             <i class="las la-backward aiz-side-nav-icon"></i>
@@ -311,29 +305,56 @@
                     </li>
                 @endif
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-package">
                     <a href="{{ route('seller.seller_packages_list')}}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.seller_packages_list'])}}">
                         <i class="las la-box aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Packages') }}</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item sl-commission">
+                    <a href="{{ route('seller.commission-packages.index') }}" class="aiz-side-nav-link">
+                        <i class="las la-trophy aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Commission Packages') }}</span>
+                    </a>
+                </li>
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-pos-system">
                     <a href="{{ route('seller.pos.index') }}" class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.pos.index', 'seller.pos.products'])}}">
                         <i class="las la-cash-register aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item sl-orders">
+                    <a href="{{ route('seller.orders.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
+                    </a>
+                </li>
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-shop">
                     <a href="{{ route('seller.shop.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
                         <i class="las la-cog aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Shop Setting') }}</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item sl-deposit">
+                    <a href="{{ route('seller.money_deposit_requests.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_deposit_requests.index']) }}">
+                        <i class="las la-wallet aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Money Deposit') }}</span>
+                    </a>
+                </li>
+                <li class="aiz-side-nav-item sl-withdraw">
+                    <a href="{{ route('seller.money_withdraw_requests.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
+                        <i class="las la-money-bill-wave-alt aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
+                    </a>
+                </li>
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sp-pay">
                     <a href="{{ route('seller.payments.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.payments.index']) }}">
                         <i class="las la-history aiz-side-nav-icon"></i>
@@ -341,41 +362,39 @@
                     </a>
                 </li>
 
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.money_withdraw_requests.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
-                        <i class="las la-money-bill-wave-alt aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
-                    </a>
-                </li>
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.commission-packages.index') }}" class="aiz-side-nav-link">
-                        <i class="las la-trophy aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Commission Packages') }}</span>
-                    </a>
-                </li>
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.money_deposit_requests.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_deposit_requests.index']) }}">
-                        <i class="las la-wallet aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Money Deposit') }}</span>
-                    </a>
-                </li>
+                
+               
+                
 
-                <li class="aiz-side-nav-item">
+                <li class="aiz-side-nav-item sl-commission-history">
                     <a href="{{ route('seller.commission-history.index') }}" class="aiz-side-nav-link">
                         <i class="las la-file-alt aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
                     </a>
                 </li>
-
+                @php
+                    $support_ticket = DB::table('tickets')
+                        ->where('client_viewed', 0)
+                        ->where('user_id', Auth::user()->id)
+                        ->count();
+                @endphp
+                <li class="aiz-side-nav-item sl-support">
+                    <a href="{{ route('seller.support_ticket.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.support_ticket.index']) }}">
+                        <i class="las la-atom aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Support Ticket') }}</span>
+                        @if ($support_ticket > 0)
+                            <span class="badge badge-inline badge-success">{{ $support_ticket }}</span>
+                        @endif
+                    </a>
+                </li>
                 @if (get_setting('conversation_system') == 1)
                     @php
                         $conversation = \App\Models\Conversation::where('sender_id', Auth::user()->id)
                             ->where('sender_viewed', 0)
                             ->get();
                     @endphp
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-conversation">
                         <a href="{{ route('seller.conversations.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
                             <i class="las la-comment aiz-side-nav-icon"></i>
@@ -388,7 +407,7 @@
                 @endif
 
                 @if (get_setting('product_query_activation') == 1)
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav-item sl-product-query">
                         <a href="{{ route('seller.product_query.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.product_query.index']) }}">
                             <i class="las la-question-circle aiz-side-nav-icon"></i>
@@ -398,22 +417,7 @@
                     </li>
                 @endif
 
-                @php
-                    $support_ticket = DB::table('tickets')
-                        ->where('client_viewed', 0)
-                        ->where('user_id', Auth::user()->id)
-                        ->count();
-                @endphp
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.support_ticket.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.support_ticket.index']) }}">
-                        <i class="las la-atom aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Support Ticket') }}</span>
-                        @if ($support_ticket > 0)
-                            <span class="badge badge-inline badge-success">{{ $support_ticket }}</span>
-                        @endif
-                    </a>
-                </li>
+                
 
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
