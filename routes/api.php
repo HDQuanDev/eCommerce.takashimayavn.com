@@ -461,6 +461,33 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
         Route::get('file/all', 'index');
         Route::get('file/delete/{id}', 'destroy');
     });
+
+    // Referral Code Verification
+    Route::get('/verify-referral-code/{code}', function($code) {
+        $referralCode = \App\Models\ReferralCode::where('code', $code)
+            ->where('is_active', 1)
+            ->first();
+
+        if (!$referralCode) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Invalid referral code'
+            ]);
+        }
+
+        // Check if referral code reached its usage limit
+        if ($referralCode->usage_limit !== null && $referralCode->used_count >= $referralCode->usage_limit) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'This referral code has reached its usage limit'
+            ]);
+        }
+
+        return response()->json([
+            'valid' => true,
+            'message' => 'Valid referral code'
+        ]);
+    });
 });
 
 Route::fallback(function () {

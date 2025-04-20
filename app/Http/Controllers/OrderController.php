@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\CombinedOrder;
 use App\Models\SmsTemplate;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Mail\InvoiceEmailManager;
 use App\Models\OrdersExport;
@@ -80,8 +81,8 @@ class OrderController extends Controller
             $orders = $orders->where('orders.manual_payment', 1);
             if($request->order_type != null){
                 $order_type = $request->order_type;
-                $orders = $order_type =='inhouse_orders' ? 
-                            $orders->where('orders.seller_id', '=', $admin_user_id) : 
+                $orders = $order_type =='inhouse_orders' ?
+                            $orders->where('orders.seller_id', '=', $admin_user_id) :
                             $orders->where('orders.seller_id', '!=', $admin_user_id);
             }
         }
@@ -116,12 +117,12 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::findOrFail(decrypt($id));
-        
+
         $order_shipping_address = json_decode($order->shipping_address);
         $delivery_boys = User::where('city', $order_shipping_address->city)
                 ->where('user_type', 'delivery_boy')
                 ->get();
-                
+
         if(env('DEMO_MODE') != 'On') {
             $order->viewed = 1;
             $order->save();
@@ -199,6 +200,10 @@ class OrderController extends Controller
             $order->payment_status_viewed = '0';
             $order->code = date('Ymd-His') . rand(10, 99);
             $order->date = strtotime('now');
+            if($request->payment_option != 'cash_on_delivery') {
+                $order->delivery_status = 'confirmed';
+                $order->payment_status = 'paid';
+            }
             $order->save();
 
             $subtotal = 0;
@@ -261,11 +266,6 @@ class OrderController extends Controller
                     $order->carrier_id = $cartItem['carrier_id'];
                 }
 
-                if ($product->added_by == 'seller' && $product->user->seller != null) {
-                    $seller = $product->user->seller;
-                    $seller->num_of_sale += $cartItem['quantity'];
-                    $seller->save();
-                }
 
                 if (addon_is_activated('affiliate_system')) {
                     if ($order_detail->product_referral_code) {
@@ -290,7 +290,11 @@ class OrderController extends Controller
             }
 
             $combined_order->grand_total += $order->grand_total;
-
+            if ($product->added_by == 'seller' && $product->user->seller != null) {
+                $seller = $product->user->seller;
+                $seller->num_of_sale += $cartItem['quantity'];
+                $seller->save();
+            }
             $order->save();
         }
 
@@ -377,6 +381,9 @@ class OrderController extends Controller
 
     public function update_delivery_status(Request $request)
     {
+        DB::beginTransaction();
+        try {
+
         $order = Order::findOrFail($request->order_id);
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
@@ -386,7 +393,7 @@ class OrderController extends Controller
             $order->delivered_date = date("Y-m-d H:i:s");
             $order->save();
         }
-        
+
         if ($request->status == 'cancelled' && $order->payment_type == 'wallet') {
             $user = User::where('id', $order->user_id)->first();
             $user->balance += $order->grand_total;
@@ -399,6 +406,16 @@ class OrderController extends Controller
             $shop = $order->shop;
             $shop->admin_to_pay -= $sellerEarning;
             $shop->save();
+        }
+        if($request->status == 'delivered'){
+            $sellerEarning = $order->commissionHistory->seller_earning;
+            $adminCommission = $order->commissionHistory->admin_commission;
+            if($order->payment_type == 'cash_on_delivery'){
+                $order->shop->user->balance += $sellerEarning + $adminCommission;
+            }else {
+                $order->shop->user->balance += $adminCommission;
+            }
+            $order->shop->user->save();
         }
 
         if (Auth::user()->user_type == 'seller') {
@@ -444,7 +461,7 @@ class OrderController extends Controller
             }
         }
         // Delivery Status change email notification to Admin, seller, Customer
-        EmailUtility::order_email($order, $request->status);  
+        EmailUtility::order_email($order, $request->status);
 
         // Delivery Status change SMS notification
         if (addon_is_activated('otp_system') && SmsTemplate::where('identifier', 'delivery_status_change')->first()->status == 1) {
@@ -478,7 +495,13 @@ class OrderController extends Controller
             }
         }
 
+        DB::commit();
+
         return 1;
+    } catch (\Throwable $th) {
+        DB::rollBack();
+        throw $th;
+    }
     }
 
     public function update_tracking_code(Request $request)
@@ -527,7 +550,7 @@ class OrderController extends Controller
 
         // Payment Status change email notification to Admin, seller, Customer
         if($request->status == 'paid'){
-            EmailUtility::order_email($order, $request->status);  
+            EmailUtility::order_email($order, $request->status);
         }
 
         //Sends Web Notifications to Admin, seller, Customer

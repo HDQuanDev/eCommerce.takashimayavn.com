@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </div>
-        
+
 
             @if (count($orders) > 0)
                 <div class="card-body p-3">
@@ -80,6 +80,7 @@
                                 <th data-breakpoints="lg">{{ translate('Customer') }}</th>
                                 <th data-breakpoints="md">{{ translate('Amount') }}</th>
                                 <th data-breakpoints="lg">{{ translate('Delivery Status') }}</th>
+                                <th data-breakpoints="lg">{{ translate('Payment method') }}</th>
                                 <th>{{ translate('Payment Status') }}</th>
                                 <th class="text-right">{{ translate('Options') }}</th>
                             </tr>
@@ -105,6 +106,16 @@
                                         <td data-text="{{ translate('Order Code') }}">
                                             <a href="#{{ $order->code }}"
                                                 onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
+                                                <br>
+                                             @if($order->seller_process_status == 0 && $order->payment_type == 'cash_on_delivery')
+                                                <a href="javascript:void(0)"
+                                                class="process-order-btn small text-primary"
+                                                data-id="<?= $order->id ?>"
+                                                data-order-code="<?= $order->code ?>"
+                                                data-amount="<?= $order->grand_total ?>">
+                                                 <i class="las la-check-circle"></i> {{ translate('Process Order') }}
+                                             </a>
+                                            @endif
                                             @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
                                                 <span class="badge badge-inline badge-danger">{{ translate('POS') }}</span>
                                             @endif
@@ -128,7 +139,13 @@
                                             @endphp
                                             {{ translate(ucfirst(str_replace('_', ' ', $status))) }}
                                         </td>
-                                        <td data-text="{{ translate('Payment Status') }}">
+                                        <td>
+                                            @php
+                                                $payment_method = $order->payment_type;
+                                            @endphp
+                                            {{ translate(ucfirst(str_replace('_', ' ', $payment_method))) }}
+                                        </td>
+                                        <td>
                                             @if ($order->payment_status == 'paid')
                                                 <span class="badge badge-inline badge-success">{{ translate('Paid') }}</span>
                                             @else
@@ -197,5 +214,63 @@
             $('#sort_orders').submit();
             $("#sort_orders").attr("action", '');
         }
+        $(document).on('click', '.process-order-btn', function() {
+                var orderId = $(this).data('id');
+                var orderCode = $(this).data('order-code');
+                var amount = $(this).data('amount');
+                var $processBtn = $(this);
+                // Find the payment status badge for this order row
+                var $paymentStatusBadge = $processBtn.closest('tr').find('td:nth-child(8) span.badge');
+                // Find the delivery status badge for this order row
+                var $deliveryStatusBadge = $processBtn.closest('tr').find('td:nth-child(7) span.badge');
+
+                // Confirm before processing
+                if (confirm('Are you sure you want to process order ' + orderCode + '?\nThis will mark the order as delivered.')) {
+                    // Show loading indicator
+                    $processBtn.html('<i class="las la-spinner la-spin"></i> Processing...');
+
+                    // Send Ajax request
+                    $.ajax({
+                        url: "{{ route('seller.process-order') }}",
+                        type: 'POST',
+                        data: {
+                            order_id: orderId,
+                            amount: amount,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                // Remove the process button
+                                $processBtn.fadeOut(function() {
+                                    $(this).remove();
+                                });
+
+                                // Update payment status badge to "Paid"
+                                $paymentStatusBadge.removeClass('badge-danger').addClass('badge-success');
+                                $paymentStatusBadge.text('Paid');
+
+                                // Update delivery status badge to "Delivered"
+                                $deliveryStatusBadge.removeClass('badge-warning badge-info badge-primary badge-secondary').addClass('badge-primary');
+                                $deliveryStatusBadge.text('Confirmed');
+
+                                // Show success message
+                                AIZ.plugins.notify('success', response.message);
+                            } else {
+                                // Show error message
+                                AIZ.plugins.notify('danger', response.message);
+                                // Reset button
+                                $processBtn.html('<i class="las la-check-circle"></i> Process Order');
+                            }
+                        },
+                        error: function() {
+                            // Show error message
+                            AIZ.plugins.notify('danger', 'An error occurred while processing the order.');
+                            // Reset button
+                            $processBtn.html('<i class="las la-check-circle"></i> Process Order');
+                        }
+                    });
+                }
+            });
     </script>
 @endsection

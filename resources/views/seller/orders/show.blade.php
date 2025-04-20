@@ -15,7 +15,7 @@
                     $delivery_status = $order->delivery_status;
                     $payment_status = $order->orderDetails->where('seller_id', Auth::user()->id)->first()->payment_status;
                 @endphp
-                @if (get_setting('product_manage_by_admin') == 0)
+                {{-- @if (get_setting('product_manage_by_admin') == 0)
                     <div class="col-md-3 ml-auto">
                         <label for="update_payment_status">{{ translate('Payment Status') }}</label>
                         @if (($order->payment_type == 'cash_on_delivery' || (addon_is_activated('offline_payment') == 1 && $order->manual_payment == 1)) && $payment_status == 'unpaid')
@@ -59,7 +59,7 @@
                         <input type="text" class="form-control" id="update_tracking_code"
                             value="{{ $order->tracking_code }}">
                     </div>
-                @endif
+                @endif --}}
             </div>
             <div class="row gutters-5 mt-2">
                 <div class="col text-md-left text-center">
@@ -276,7 +276,7 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $('#update_delivery_status').on('change', function() {
             var order_id = {{ $order->id }};
             var status = $('#update_delivery_status').val();
@@ -305,5 +305,5 @@
                 location.reload().setTimeOut(500);
             });
         });
-    </script>
+    </script> --}}
 @endsection

@@ -293,8 +293,24 @@
                         </ul>
                     </li>
                 @endif
-
-               
+                    @php
+                        $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)->where('seller_process_status', 0)->count();
+                        $total_orders = $total_orders < 10 ? $total_orders : "9+";
+                    @endphp
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.orders.index') }}"
+                        class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">
+                            {{ translate('Orders') }}
+                            @if($total_orders > 0)
+                            <span class="badge badge-danger rounded-pill position-absolute" style="top: 10px; right: 10px; font-size: 12px;">
+                                {{ $total_orders }}
+                            </span>
+                            @endif
+                        </span>
+                    </a>
+                </li>
                 @if (addon_is_activated('refund_request'))
                     <li class="aiz-side-nav-item sl-refund">
                         <a href="{{ route('seller.vendor_refund_request') }}"
@@ -362,9 +378,9 @@
                     </a>
                 </li>
 
-                
-               
-                
+
+
+
 
                 <li class="aiz-side-nav-item sl-commission-history">
                     <a href="{{ route('seller.commission-history.index') }}" class="aiz-side-nav-link">
@@ -417,7 +433,7 @@
                     </li>
                 @endif
 
-                
+
 
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->

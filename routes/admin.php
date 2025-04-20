@@ -43,6 +43,7 @@ use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReferralCodeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
@@ -82,14 +83,10 @@ Route::controller(UpdateController::class)->group(function () {
 Route::get('/run-migrate', function () {
     // Chạy file 1
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2025_04_18_144305_create_commission_packages_table.php',
+        '--path' => 'database/migrations/2025_04_19_180944_add_payment_fields_to_users_table.php',
         '--force' => true
     ]);
-    // Chạy file 2
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2025_04_18_151854_create_commission_package_user_table.php',
-        '--force' => true
-    ]);
+
     return 'Đã migrate 2 file commission package xong rồi nha!';
 });
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin', 'prevent-back-history']);
@@ -671,7 +668,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::post('/commission-packages/update-status', 'updateStatus')->name('commission-packages.update_status');
         Route::post('/commission-packages/bulk-delete', 'bulkDelete')->name('commission-packages.bulk_delete');
     });
+ // Referral Codes
+ Route::resource('referral-codes', ReferralCodeController::class);
+ Route::controller(ReferralCodeController::class)->group(function () {
+     Route::get('/referral-codes/destroy/{id}', 'destroy')->name('referral-codes.destroy');
+     Route::post('/referral-codes/update_status', 'updateStatus')->name('referral-codes.update_status');
+     Route::post('/bulk-referral-code-delete', 'bulk_referral_code_delete')->name('bulk-referral-code-delete');
+ });
 
+    Route::group(['prefix' => 'referral-codes', 'middleware' => ['permission:edit_general_setting']], function () {
+        Route::get('/', 'App\Http\Controllers\ReferralCodeController@index')->name('referral-codes.index');
+        Route::get('/create', 'App\Http\Controllers\ReferralCodeController@create')->name('referral-codes.create');
+        Route::post('/', 'App\Http\Controllers\ReferralCodeController@store')->name('referral-codes.store');
+        Route::get('/{id}/edit', 'App\Http\Controllers\ReferralCodeController@edit')->name('referral-codes.edit');
+        Route::patch('/{id}', 'App\Http\Controllers\ReferralCodeController@update')->name('referral-codes.update');
+        Route::post('/update_status', 'App\Http\Controllers\ReferralCodeController@updateStatus')->name('referral-codes.update_status');
+        Route::get('/destroy/{id}', 'App\Http\Controllers\ReferralCodeController@destroy')->name('referral-codes.destroy');
+        Route::post('/bulk-delete', 'App\Http\Controllers\ReferralCodeController@bulk_referral_code_delete')->name('bulk-referral-code-delete');
+    });
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 

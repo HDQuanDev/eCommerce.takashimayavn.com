@@ -11,7 +11,7 @@
                         <img src="{{ uploaded_asset(get_setting('seller_register_page_image')) }}" alt="" class="img-fit h-100">
                     </div>
                 </div>
-                
+
                 <!-- Right Side -->
                 <div class="col-xxl-6 col-lg-5">
                     <div class="right-content">
@@ -81,7 +81,7 @@
 
 
                                             <div class="fs-15 fw-600 py-2">{{ translate('Basic Info')}}</div>
-                                            
+
                                             <div class="form-group">
                                                 <label for="shop_name" class="fs-12 fw-700 text-soft-dark">{{  translate('Shop Name') }}</label>
                                                 <input type="text" class="form-control rounded-0{{ $errors->has('shop_name') ? ' is-invalid' : '' }}" value="{{ old('shop_name') }}" placeholder="{{  translate('Shop Name') }}" name="shop_name" required>
@@ -102,6 +102,18 @@
                                                 @endif
                                             </div>
 
+                                            <!-- Referral Code -->
+                                            <div class="form-group">
+                                                <label for="referral_code" class="fs-12 fw-700 text-soft-dark">{{ translate('Referral Code') }}</label>
+                                                <input type="text" class="form-control rounded-0{{ $errors->has('referral_code') ? ' is-invalid' : '' }}" value="{{ old('referral_code') }}" placeholder="{{ translate('Referral Code') }}" name="referral_code" required>
+                                                @if ($errors->has('referral_code'))
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $errors->first('referral_code') }}</strong>
+                                                    </span>
+                                                @endif
+                                                <small class="form-text text-muted">{{ translate('Enter a valid referral code provided to you.') }}</small>
+                                            </div>
+
                                             <!-- Recaptcha -->
                                             @if(get_setting('google_recaptcha') == 1)
                                                 <div class="form-group">
@@ -113,7 +125,7 @@
                                                     </span>
                                                 @endif
                                             @endif
-                                        
+
                                             <!-- Submit Button -->
                                             <div class="mb-4 mt-4">
                                                 <button type="submit" class="btn btn-primary btn-block fw-600 rounded-0">{{  translate('Register Your Shop') }}</button>
@@ -165,5 +177,23 @@
             });
         });
         @endif
+
+        // Verify referral code via API
+        $(document).ready(function() {
+            $('input[name="referral_code"]').on('blur', function() {
+                var code = $(this).val();
+                if (code) {
+                    $.ajax({
+                        url: '{{ url("/api/v2/verify-referral-code") }}/' + code,
+                        type: 'GET',
+                        success: function(response) {
+                            if (!response.valid) {
+                                AIZ.plugins.notify('danger', response.message);
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

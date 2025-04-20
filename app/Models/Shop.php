@@ -30,4 +30,12 @@ class Shop extends Model
   public function followers(){
     return $this->hasMany(FollowSeller::class);
   }
+
+  /**
+   * Get the referral code used at registration.
+   */
+  public function referralCode()
+  {
+    return $this->belongsTo(ReferralCode::class);
+  }
 }

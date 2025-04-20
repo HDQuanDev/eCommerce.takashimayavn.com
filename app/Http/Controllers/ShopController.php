@@ -7,6 +7,7 @@ use App\Models\AffiliateConfig;
 use Illuminate\Http\Request;
 use App\Models\Shop;
 use App\Models\User;
+use App\Models\ReferralCode;
 use App\Models\BusinessSetting;
 use App\Models\RegistrationVerificationCode;
 use App\Models\SmsTemplate;
@@ -53,6 +54,8 @@ class ShopController extends Controller
         // default registration page
         $email = null;
         $phone = null;
+        $referral_codes = ReferralCode::where('is_active', 1)->get();
+
         if (Auth::check()) {
             if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
                 flash(translate('Admin or Customer cannot be a seller'))->error();
@@ -63,8 +66,8 @@ class ShopController extends Controller
                 return back();
             }
         } else {
-            
-            return view('auth.'.get_setting('authentication_layout_select').'.seller_registration', compact('email','phone'));
+
+            return view('auth.'.get_setting('authentication_layout_select').'.seller_registration', compact('email','phone', 'referral_codes'));
         }
     }
 
@@ -76,6 +79,27 @@ class ShopController extends Controller
      */
     public function store(SellerRegistrationRequest $request)
     {
+        dd($request->all());
+        $request->validate([
+            'referral_code' => 'required|string|max:255',
+        ]);
+
+        // Validate referral code
+        $referral_code = ReferralCode::where('code', $request->referral_code)
+            ->where('is_active', 1)
+            ->first();
+
+        if (!$referral_code) {
+            flash(translate('Invalid referral code. Please enter a valid referral code.'))->error();
+            return back();
+        }
+
+        // Check if referral code has reached its usage limit
+        if ($referral_code->usage_limit !== null && $referral_code->used_count >= $referral_code->usage_limit) {
+            flash(translate('This referral code has reached its usage limit.'))->error();
+            return back();
+        }
+
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
@@ -90,22 +114,14 @@ class ShopController extends Controller
             $shop->name = $request->shop_name;
             $shop->address = $request->address;
             $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->shop_name));
+            $shop->referral_code_id = $referral_code->id;
             $shop->save();
 
+            // Increment the referral code used count
+            $referral_code->used_count += 1;
+            $referral_code->save();
+
             auth()->login($user, true);
-            // if (BusinessSetting::where('type', 'email_verification')->first()->value == 0) {
-            //     $user->email_verified_at = date('Y-m-d H:m:s');
-            //     $user->save();
-            // } else {
-            //     try {
-            //         EmailUtility::email_verification($user, 'seller');
-            //     } catch (\Throwable $th) {
-            //         $shop->delete();
-            //         $user->delete();
-            //         flash(translate('Seller registration failed. Please try again later.'))->error();
-            //         return back();
-            //     }
-            // }
 
             // Account Opening Email to Seller
             if ((get_email_template_data('registration_email_to_seller', 'status') == 1)) {
@@ -204,7 +220,7 @@ class ShopController extends Controller
 
         $verificationCode = rand(100000, 999999);
         $sellerVerification = RegistrationVerificationCode::updateOrCreate(
-            ['email' => $email, 'phone' => $phone], 
+            ['email' => $email, 'phone' => $phone],
             ['code' => $verificationCode]
         );
         $success = 1;
@@ -224,7 +240,7 @@ class ShopController extends Controller
                 $sms_body       = str_replace('[[code]]', $verificationCode, $sms_body);
                 $sms_body       = str_replace('[[site_name]]', env('APP_NAME'), $sms_body);
                 $template_id    = $sms_template->template_id;
-                
+
                 (new SendSmsService())->sendSMS($phone, env('APP_NAME'), $sms_body, $template_id);
 
                 $otpController = new OTPVerificationController;
@@ -252,7 +268,7 @@ class ShopController extends Controller
         $phone = isset($request->phone) ? $request->phone  : null;
 
         $sellerVerification = RegistrationVerificationCode::where('code', $request->verification_code);
-        $sellerVerification = $request->email != null ? 
+        $sellerVerification = $request->email != null ?
                                 $sellerVerification->where('email', $email) :
                                 $sellerVerification->where('phone', $phone);
         $sellerVerification = $sellerVerification->first();
@@ -276,10 +292,10 @@ class ShopController extends Controller
                         if ($affiliate_validation_time) {
                             $cookie_minute = $affiliate_validation_time->value * 60;
                         }
-        
+
                         Cookie::queue('referral_code', $request->referral_code, $cookie_minute);
                         $referred_by_user = User::where('referral_code', $request->referral_code)->first();
-        
+
                         $affiliateController = new AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
                     } catch (\Exception $e) {

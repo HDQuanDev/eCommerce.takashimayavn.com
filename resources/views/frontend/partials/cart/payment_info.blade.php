@@ -10,7 +10,7 @@
         {{ translate('Select a payment option') }}
     </h3>
     <div class="row gutters-10">
-        @foreach (get_activate_payment_methods() as $payment_method)
+        @foreach (get_v2_payment_methods() as $payment_method)
             <div class="col-xl-4 col-md-6">
                 <label class="aiz-megabox d-block mb-3">
                     <input value="{{ $payment_method->name }}" class="online_payment" type="radio"
@@ -18,7 +18,7 @@
                     <span class="d-flex align-items-center justify-content-between aiz-megabox-elem rounded-0 p-3">
                         <span class="d-block fw-400 fs-14">{{ ucfirst(translate($payment_method->name)) }}</span>
                         <span class="rounded-1 h-40px overflow-hidden">
-                            <img src="{{ static_asset('assets/img/cards/'.$payment_method->name.'.png') }}"
+                            <img   src="{{ $payment_method->logo ? uploaded_asset($payment_method->logo) : static_asset('assets/img/cards/default.png') }}"
                             class="img-fit h-100">
                         </span>
                     </span>

@@ -12,66 +12,75 @@
     <h5 class="mb-0 h6">{{translate('Add New Seller')}}</h5>
 </div>
 
-<div class="col-lg-6 mx-auto">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0 h6">{{translate('Seller Information')}}</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('sellers.store') }}" method="POST">
-            	@csrf
-                <div class="form-group row">
-                    <label class="col-sm-2 col-from-label" for="name">
-                        {{translate('Name')}} <span class="text-danger">*</span>
-                    </label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control @if ($errors->has('name')) is-invalid @endif" name="name" value="{{ old('name') }}" placeholder="{{ translate('Name') }}" required>
-                        @if ($errors->has('name'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
+<div class="row">
+    <div class="col-lg-8 mr-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0 h6">{{translate('Seller Information')}}</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('sellers.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="name">{{translate('Name')}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
+                            @error('name')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-from-label" for="email">
-                        {{ translate('Email') }} <span class="text-danger">*</span>
-                    </label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control rounded-0 @if($errors->has('email')) is-invalid @endif" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email">
-                        @if ($errors->has('email'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="email">{{translate('Email Address')}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="{{translate('Email Address')}}" id="email" name="email" class="form-control" required>
+                            @error('email')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-from-label" for="shop_name">{{ translate('Shop Name') }}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control rounded-0 @if($errors->has('shop_name')) is-invalid @endif" value="{{ old('shop_name') }}" placeholder="{{  translate('Shop Name') }}" name="shop_name">
-                        @if ($errors->has('shop_name'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('shop_name') }}</strong>
-                            </span>
-                        @endif
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="shop_name">{{translate('Shop Name')}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="{{translate('Shop Name')}}" id="shop_name" name="shop_name" class="form-control" required>
+                            @error('shop_name')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-from-label" for="address">{{ translate('Address') }}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control rounded-0 @if($errors->has('address')) is-invalid @endif" value="{{ old('address') }}" placeholder="{{  translate('Address') }}" name="address">
-                        @if ($errors->has('address'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('address') }}</strong>
-                            </span>
-                        @endif
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="address">{{translate('Address')}}</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" rows="4" placeholder="{{ translate('Address') }}" name="address"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
-                </div>
-            </form>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="referral_code">{{translate('Referral Code')}}</label>
+                        <div class="col-sm-9">
+                            <select name="referral_code" id="referral_code" class="form-control aiz-selectpicker" required data-placeholder="{{ translate('Select a referral code') }}">
+                                <option value="">{{ translate('Select a referral code') }}</option>
+                                @foreach(\App\Models\ReferralCode::where('is_active', 1)->get() as $referral)
+                                    <option value="{{ $referral->code }}">{{ $referral->code }}
+                                        @if($referral->usage_limit)
+                                            ({{ translate('Used') }}: {{ $referral->used_count }}/{{ $referral->usage_limit }})
+                                        @else
+                                            ({{ translate('Used') }}: {{ $referral->used_count }} - {{ translate('Unlimited') }})
+                                        @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('referral_code')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-0 text-right">
+                        <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

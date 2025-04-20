@@ -83,8 +83,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     //Order
     Route::resource('orders', OrderController::class);
     Route::controller(OrderController::class)->group(function () {
-        Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
-        Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
+        // Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
+        // Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
+        Route::post('/process-order', 'processOrder')->name('process-order');
 
         // Order bulk export
         Route::get('/order-bulk-export', 'orderBulkExport')->name('order-bulk-export');
@@ -193,6 +194,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::post('/pos/checkout', 'checkout')->name('pos.checkout');
         Route::get('/pos/products', 'productList')->name('pos.products');
     });
+
 
  //Commision Package
  Route::prefix('commission-packages')->group(function () {

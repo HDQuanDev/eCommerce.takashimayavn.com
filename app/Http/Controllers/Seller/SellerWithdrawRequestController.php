@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PayoutNotification;
@@ -20,7 +21,7 @@ class SellerWithdrawRequestController extends Controller
     public function index()
     {
         $seller_withdraw_requests = SellerWithdrawRequest::where('user_id', Auth::user()->id)->latest()->paginate(9);
-        $total_withdraw_amount = SellerWithdrawRequest::where('user_id', Auth::user()->id)->where('status', 0)->sum('amount');
+        $total_withdraw_amount = Order::where('seller_id', Auth::user()->id)->where('seller_process_status', 0)->sum('grand_total');
         $shop = Auth::user()->shop;
         return view('seller.money_withdraw_requests.index', compact('seller_withdraw_requests', 'total_withdraw_amount', 'shop'));
     }

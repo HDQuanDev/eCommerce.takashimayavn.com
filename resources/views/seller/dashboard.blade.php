@@ -54,7 +54,7 @@
                                     d="M63.286,22.145a2.821,2.821,0,0,0-1.816-.926L43.958,19.455a2.816,2.816,0,0,1-2.294-1.666L34.574,1.68a2.813,2.813,0,0,0-5.148,0l-7.09,16.11a2.813,2.813,0,0,1-2.292,1.666L2.53,21.219a2.813,2.813,0,0,0-1.59,4.9l13.13,11.72a2.818,2.818,0,0,1,.876,2.7l-3.734,17.2a2.812,2.812,0,0,0,4.166,3.026L30.584,51.9a2.8,2.8,0,0,1,2.832,0l15.206,8.864a2.813,2.813,0,0,0,4.166-3.026l-3.734-17.2a2.818,2.818,0,0,1,.876-2.7l13.13-11.72a2.813,2.813,0,0,0,.226-3.972m-1.5,2.546L48.658,36.413a4.717,4.717,0,0,0-1.47,4.524l3.732,17.2a.9.9,0,0,1-1.336.97l-15.2-8.866a4.729,4.729,0,0,0-4.758,0L14.416,59.109a.9.9,0,0,1-1.336-.97l3.732-17.2a4.717,4.717,0,0,0-1.47-4.524L2.212,24.691a.9.9,0,0,1,.51-1.57l17.512-1.766a4.721,4.721,0,0,0,3.85-2.8l7.09-16.11a.9.9,0,0,1,1.652,0l7.09,16.11a4.721,4.721,0,0,0,3.85,2.8l17.512,1.766a.9.9,0,0,1,.51,1.57"
                                     transform="translate(0 0)" fill="#FFFFFF" />
                             </svg>
-                        </div> 
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <div class="d-flex align-items-center">
@@ -157,16 +157,8 @@
                                 <span class="fs-14 text-light">{{ translate('Total Sales') }}</span>
                             </p>
                             <h3 class="mb-0 text-white fs-30">
-                                @php
-                                    $orderDetails = \App\Models\OrderDetail::where('seller_id', $authUser->id)->get();
-                                    $total = 0;
-                                    foreach ($orderDetails as $key => $orderDetail) {
-                                        if ($orderDetail->order != null && $orderDetail->order->payment_status == 'paid') {
-                                            $total += $orderDetail->price;
-                                        }
-                                    }
-                                @endphp
-                                {{ single_price($total) }}
+
+                                {{ single_price($total_sales) }}
                             </h3>
 
                         </div>
@@ -207,11 +199,11 @@
             <div class="card shadow-none bg-soft-primary mb-0">
                 <div class="card-body">
                     <div class="card-title text-primary fs-16 fw-600">
-                        {{ translate('Sold Amount') }}
+                        {{ translate('Commission Amount') }}
                     </div>
-                    <p>{{ translate('Your Sold Amount (Current month)') }}</p>
+                    <p>{{ translate('Your Commission Amount (Current month)') }}</p>
                     <h3 class="text-primary fw-600 fs-30">
-                        {{ single_price($this_month_sold_amount) }}
+                        {{ single_price($commission_this_month) }}
                     </h3>
                     <p class="mt-4">
                         {{ translate('Last Month') }}: {{ single_price($previous_month_sold_amount) }}

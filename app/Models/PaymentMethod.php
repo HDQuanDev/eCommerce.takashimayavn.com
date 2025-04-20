@@ -8,6 +8,7 @@ use App\Traits\PreventDemoModeChanges;
 
 class PaymentMethod extends Model
 {
+
     use HasFactory,PreventDemoModeChanges;
 
 }
