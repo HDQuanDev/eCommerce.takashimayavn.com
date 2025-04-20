@@ -346,7 +346,7 @@
                     <a href="{{ route('seller.pos.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutesHome(['seller.pos.index', 'seller.pos.products']) }}">
                         <i class="las la-cash-register aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Add Products') }}</span>
                     </a>
                 </li>
 
