@@ -362,14 +362,12 @@
                     <a href="{{ route('seller.orders.index') }}"
                         class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text" id="order-badge">
+                        <span class="aiz-side-nav-text" >
                             {{ translate('Orders') }}
-                            @if ($total_orders > 0)
-                                <span class="badge badge-danger rounded-pill position-absolute"
-                                    style="top: 10px; right: 10px; font-size: 12px;">
-                                    {{ $total_orders }}
-                                </span>
-                            @endif
+                            <span id="order-badge" class="badge badge-danger  rounded-pill position-absolute"
+                                style="top: 10px; right: 10px; font-size: 12px;">
+                                {{ $total_orders }}
+                            </span>
                         </span>
                     </a>
                 </li>
