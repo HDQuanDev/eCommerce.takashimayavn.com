@@ -354,6 +354,7 @@
                 @php
                     $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)
                         ->where('seller_process_status', 0)
+                        ->where('payment_type', 'cash_on_delivery')
                         ->count();
                     $total_orders = $total_orders < 10 ? $total_orders : '9+';
                 @endphp
