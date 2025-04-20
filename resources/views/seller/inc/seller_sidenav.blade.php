@@ -290,7 +290,7 @@
                     <li class="aiz-side-nav-item sl-pos">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-tasks aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
+                            <span class="aiz-side-nav-text">{{ translate('Add Products') }}</span>
                             @if (env('DEMO_MODE') == 'On')
                                 <span class="badge badge-inline badge-danger">Addon</span>
                             @endif
@@ -428,7 +428,7 @@
                     <a href="{{ route('seller.support_ticket.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.support_ticket.index']) }}">
                         <i class="las la-atom aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Support Ticket') }}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Comment Products') }}</span>
                         @if ($support_ticket > 0)
                             <span class="badge badge-inline badge-success">{{ $support_ticket }}</span>
                         @endif
@@ -446,7 +446,7 @@
                         <a href="{{ route('seller.conversations.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
                             <i class="las la-comment aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('Conversations') }}</span>
+                            <span class="aiz-side-nav-text">{{ translate('Notification and messages') }}</span>
                             @if (count($conversation) > 0)
                                 <span class="badge badge-success">({{ count($conversation) }})</span>
                             @endif
