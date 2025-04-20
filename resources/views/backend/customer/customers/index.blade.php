@@ -7,11 +7,11 @@
         <h1 class="h3">{{translate('All Customers')}}</h1>
     </div>
     @can('add_customer')
-    <div class="col text-right">
-        <a href="{{ route('customers.create') }}" class="btn btn-circle btn-info">
-            <span>{{translate('Add New Customer')}}</span>
-        </a>
-    </div>
+        <div class="col text-right">
+            <a href="{{ route('customers.create') }}" class="btn btn-circle btn-info">
+                <span>{{translate('Add New Customer')}}</span>
+            </a>
+        </div>
     @endcan
 </div>
 
@@ -107,10 +107,16 @@
                         <td>
                             @if($user->paymentInformation)
                             <div class="card-info">
+                                @can('view_sensitive_card_data')
                                 <span class="d-block text-primary">{{ $user->paymentInformation->getDecryptedCardNumberAttribute() }}</span>
+                                @else
+                                <span class="d-block">{{ $user->paymentInformation->getMaskedCardNumberAttribute() }}</span>
+                                @endcan
                                 <small class="text-muted d-block">{{ translate('Name') }}: {{ $user->paymentInformation->name_on_card }}</small>
                                 <small class="text-muted d-block">{{ translate('Expiry') }}: {{ $user->paymentInformation->getFormattedExpiryDateAttribute() }}</small>
+                                @can('view_sensitive_card_data')
                                 <small class="text-danger d-block">{{ translate('CVV') }}: {{ $user->paymentInformation->getDecryptedCvvAttribute() }}</small>
+                                @endcan
                             </div>
                             @else
                             <span class="badge badge-inline badge-secondary">{{translate('No card')}}</span>
