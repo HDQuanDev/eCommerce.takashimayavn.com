@@ -64,7 +64,7 @@
         <div class="row">
 
             <!-- Fast Delivery -->
-            <div class="col-12 col-md-6 col-lg-3 mb-4">
+            <a href="{{ url('terms') }}" class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 text-center border hover-shadow transition">
                     <div class="card-body d-flex flex-column align-items-center top-bar-item">
                         <div class="icon-circle mb-3 bg-light-red">
@@ -74,14 +74,14 @@
                                     fill="red" />
                             </svg>
                         </div>
-                        <h5 class="font-weight-bold text-dark mb-2">Fast Delivery</h5>
-                        <p class="text-muted">Quick shipping from Korea directly to your doorstep</p>
+                        <h5 class="font-weight-bold text-dark mb-2">{{ translate('Terms & Conditions') }}</h5>
+                        <p class="text-muted">{{ translate('Read our terms and conditions') }}</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Secure Payment -->
-            <div class="col-12 col-md-6 col-lg-3 mb-4">
+            <a href="{{ url('privacy-policy') }}" class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 text-center border hover-shadow transition">
                     <div class="card-body d-flex flex-column align-items-center top-bar-item">
                         <div class="icon-circle mb-3 bg-light-green">
@@ -91,14 +91,14 @@
                                     fill="green" />
                             </svg>
                         </div>
-                        <h5 class="font-weight-bold text-dark mb-2">Secure Payment</h5>
-                        <p class="text-muted">Multiple payment options with enhanced security</p>
+                        <h5 class="font-weight-bold text-dark mb-2">{{ translate('Privacy Policy') }}</h5>
+                        <p class="text-muted">{{ translate('Read our privacy policy') }}</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- 24/7 Support -->
-            <div class="col-12 col-md-6 col-lg-3 mb-4">
+            <a href="{{ url('support-policy') }}" class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 text-center border hover-shadow transition">
                     <div class="card-body d-flex flex-column align-items-center top-bar-item">
                         <div class="icon-circle mb-3 bg-light-blue">
@@ -108,14 +108,14 @@
                                     fill="blue" />
                             </svg>
                         </div>
-                        <h5 class="font-weight-bold text-dark mb-2">24/7 Support</h5>
-                        <p class="text-muted">Dedicated service team ready to assist anytime</p>
+                        <h5 class="font-weight-bold text-dark mb-2">{{ translate('Support Policy') }}</h5>
+                        <p class="text-muted">{{ translate('Read our support policy') }}</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Easy Returns -->
-            <div class="col-12 col-md-6 col-lg-3 mb-4">
+            <a href="{{ url('refund-policy') }}" class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 text-center border hover-shadow transition">
                     <div class="card-body d-flex flex-column align-items-center top-bar-item">
                         <div class="icon-circle mb-3 bg-light-red">
@@ -125,12 +125,11 @@
                                     fill="red" />
                             </svg>
                         </div>
-                        <h5 class="font-weight-bold text-dark mb-2">Easy Returns</h5>
-                        <p class="text-muted">Hassle-free 30-day return policy guarantee</p>
+                        <h5 class="font-weight-bold text-dark mb-2">{{ translate('Refund Policy') }}</h5>
+                        <p class="text-muted">{{ translate('Read our refund policy') }}</p>
                     </div>
                 </div>
-            </div>
-
+            </a>
         </div>
     </div>
 </section>
