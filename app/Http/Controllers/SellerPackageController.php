@@ -66,6 +66,7 @@ class SellerPackageController extends Controller
     public function edit(Request $request, $id)
     {
         $seller_package = SellerPackage::findOrFail($id);
+
         return view('backend.seller_packages.edit', compact('seller_package'));
     }
 
