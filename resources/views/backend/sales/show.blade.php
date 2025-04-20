@@ -11,12 +11,12 @@
                 <div class="col text-md-left text-center">
                 </div>
                 @php
-
                     $delivery_status = $order->delivery_status;
                     $payment_status = $order->payment_status;
                     $admin_user_id = get_admin()->id;
+
                 @endphp
-                @if ($order->seller_id == $admin_user_id || get_setting('product_manage_by_admin') == 1)
+                @if (true)
 
                     <!--Assign Delivery Boy-->
                     @if (addon_is_activated('delivery_boy'))

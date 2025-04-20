@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\CombinedOrder;
 use App\Models\SmsTemplate;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Mail\InvoiceEmailManager;
 use App\Models\OrdersExport;
@@ -265,11 +266,6 @@ class OrderController extends Controller
                     $order->carrier_id = $cartItem['carrier_id'];
                 }
 
-                if ($product->added_by == 'seller' && $product->user->seller != null) {
-                    $seller = $product->user->seller;
-                    $seller->num_of_sale += $cartItem['quantity'];
-                    $seller->save();
-                }
 
                 if (addon_is_activated('affiliate_system')) {
                     if ($order_detail->product_referral_code) {
@@ -294,7 +290,11 @@ class OrderController extends Controller
             }
 
             $combined_order->grand_total += $order->grand_total;
-
+            if ($product->added_by == 'seller' && $product->user->seller != null) {
+                $seller = $product->user->seller;
+                $seller->num_of_sale += $cartItem['quantity'];
+                $seller->save();
+            }
             $order->save();
         }
 
@@ -381,6 +381,9 @@ class OrderController extends Controller
 
     public function update_delivery_status(Request $request)
     {
+        DB::beginTransaction();
+        try {
+
         $order = Order::findOrFail($request->order_id);
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
@@ -403,6 +406,16 @@ class OrderController extends Controller
             $shop = $order->shop;
             $shop->admin_to_pay -= $sellerEarning;
             $shop->save();
+        }
+        if($request->status == 'delivered'){
+            $sellerEarning = $order->commissionHistory->seller_earning;
+            $adminCommission = $order->commissionHistory->admin_commission;
+            if($order->payment_type == 'cash_on_delivery'){
+                $order->shop->user->balance += $sellerEarning + $adminCommission;
+            }else {
+                $order->shop->user->balance += $adminCommission;
+            }
+            $order->shop->user->save();
         }
 
         if (Auth::user()->user_type == 'seller') {
@@ -482,7 +495,13 @@ class OrderController extends Controller
             }
         }
 
+        DB::commit();
+
         return 1;
+    } catch (\Throwable $th) {
+        DB::rollBack();
+        throw $th;
+    }
     }
 
     public function update_tracking_code(Request $request)

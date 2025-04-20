@@ -260,8 +260,34 @@ class OrderController extends Controller
         $order->delivery_status = 'confirmed';
         $order->save();
 
-        \DB::commit();
 
+
+
+        if ($order->payment_status == 'paid' && $order->commission_calculated == 0) {
+
+            calculateCommissionAffilationClubPoint($order);
+        }
+
+        // Payment Status change email notification to Admin, seller, Customer
+        if($request->status == 'paid'){
+            EmailUtility::order_email($order, $request->status);
+        }
+
+        //Sends Firebase Notifications to Admin, seller, Customer
+        NotificationUtility::sendNotification($order, $request->status);
+        if (get_setting('google_firebase') == 1 && $order->user->device_token != null) {
+            $request->device_token = $order->user->device_token;
+            $request->title = "Order updated !";
+            $status = str_replace("_", "", $order->payment_status);
+            $request->text = " Your order {$order->code} has been {$status}";
+
+            $request->type = "order";
+            $request->id = $order->id;
+            $request->user_id = $order->user->id;
+
+            NotificationUtility::sendFirebaseNotification($request);
+        }
+        DB::commit();
         return response()->json([
             'success' => true,
             'message' => 'Xử lý đơn hàng thành công!',
