@@ -128,7 +128,7 @@
                 <thead>
                     <tr>
                         @can('delete_custom_alerts')
-                            <th width="40">
+                            <th width="40" class="lmt-th-head">
                                 <div class="form-group">
                                     <div class="aiz-checkbox-inline">
                                         <label class="aiz-checkbox">

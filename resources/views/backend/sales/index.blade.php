@@ -93,7 +93,7 @@
                     <thead>
                         <tr>
                             @if (auth()->user()->can('delete_order') || auth()->user()->can('export_order'))
-                                <th>
+                                <th class="lmt-th-head">
                                     <div class="form-group">
                                         <div class="aiz-checkbox-inline">
                                             <label class="aiz-checkbox">

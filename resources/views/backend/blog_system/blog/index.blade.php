@@ -36,7 +36,7 @@
             <table class="lmt-table">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th class="lmt-th-head">#</th>
                         <th>{{translate('Title')}}</th>
                         <th data-breakpoints="lg">{{translate('Category')}}</th>
                         <th data-breakpoints="lg">{{translate('Short Description')}}</th>
