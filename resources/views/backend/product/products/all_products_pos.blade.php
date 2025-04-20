@@ -151,11 +151,9 @@
                             @php
                             $qty = 0;
                             if($product->variant_product) {
-                            echo '<strong>'.$product->stocks.'</strong><br>';
                             foreach ($product->stocks as $key => $stock) {
                             $qty += $stock->qty;
                             if ($stock->variant) {
-                            echo $stock->variant . ' - ' . $stock->qty . '<br>';
                             } else {
                             echo $stock->qty . '<br>';
                             }
@@ -163,7 +161,6 @@
                             }
                             }
                             else {
-                            echo '<strong>'.$product->stocks->first().'</strong><br>';
                             //$qty = $product->current_stock;
                             $qty = optional($product->stocks->first())->qty;
                             echo $qty;
@@ -235,174 +232,144 @@
 
 
 @section('script')
-<script type="text/javascript">
-    $(document).on("change", ".check-all", function() {
-        if (this.checked) {
-            // Iterate each checkbox
-            $('.check-one:checkbox').each(function() {
-                this.checked = true;
-            });
-        } else {
-            $('.check-one:checkbox').each(function() {
-                this.checked = false;
-            });
-        }
+    <script type="text/javascript">
 
-    });
-
-    $(document).ready(function() {
-        //$('#container').removeClass('mainnav-lg').addClass('mainnav-sm');
-    });
-
-    function update_todays_deal(el) {
-
-        if ('{{env('
-            DEMO_MODE ')}}' == 'On') {
-            AIZ.plugins.notify('info', '{{ translate('
-                Data can not change in demo mode.
-                ') }}');
-            return;
-        }
-
-        if (el.checked) {
-            var status = 1;
-        } else {
-            var status = 0;
-        }
-        $.post('{{ route('
-            products.todays_deal ') }}', {
-                _token: '{{ csrf_token() }}',
-                id: el.value,
-                status: status
-            },
-            function(data) {
-                if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('
-                        Todays Deal updated successfully ') }}');
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('
-                        Something went wrong ') }}');
-                }
-            });
-    }
-
-    function update_published(el) {
-
-        if ('{{env('
-            DEMO_MODE ')}}' == 'On') {
-            AIZ.plugins.notify('info', '{{ translate('
-                Data can not change in demo mode.
-                ') }}');
-            return;
-        }
-
-        if (el.checked) {
-            var status = 1;
-        } else {
-            var status = 0;
-        }
-        $.post('{{ route('
-            products.published ') }}', {
-                _token: '{{ csrf_token() }}',
-                id: el.value,
-                status: status
-            },
-            function(data) {
-                if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('
-                        Published products updated successfully ') }}');
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('
-                        Something went wrong ') }}');
-                }
-            });
-    }
-
-    function update_approved(el) {
-
-        if ('{{env('
-            DEMO_MODE ')}}' == 'On') {
-            AIZ.plugins.notify('info', '{{ translate('
-                Data can not change in demo mode.
-                ') }}');
-            return;
-        }
-
-        if (el.checked) {
-            var approved = 1;
-        } else {
-            var approved = 0;
-        }
-        $.post('{{ route('
-            products.approved ') }}', {
-                _token: '{{ csrf_token() }}',
-                id: el.value,
-                approved: approved
-            },
-            function(data) {
-                if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('
-                        Product approval update successfully ') }}');
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('
-                        Something went wrong ') }}');
-                }
-            });
-    }
-
-    function update_featured(el) {
-        if ('{{env('
-            DEMO_MODE ')}}' == 'On') {
-            AIZ.plugins.notify('info', '{{ translate('
-                Data can not change in demo mode.
-                ') }}');
-            return;
-        }
-
-        if (el.checked) {
-            var status = 1;
-        } else {
-            var status = 0;
-        }
-        $.post('{{ route('
-            products.featured ') }}', {
-                _token: '{{ csrf_token() }}',
-                id: el.value,
-                status: status
-            },
-            function(data) {
-                if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('
-                        Featured products updated successfully ') }}');
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('
-                        Something went wrong ') }}');
-                }
-            });
-    }
-
-    function sort_products(el) {
-        $('#sort_products').submit();
-    }
-
-    function bulk_delete() {
-        var data = new FormData($('#sort_products')[0]);
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "{{route('bulk-product-delete')}}",
-            type: 'POST',
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (response == 1) {
-                    location.reload();
-                }
+        $(document).on("change", ".check-all", function() {
+            if(this.checked) {
+                // Iterate each checkbox
+                $('.check-one:checkbox').each(function() {
+                    this.checked = true;
+                });
+            } else {
+                $('.check-one:checkbox').each(function() {
+                    this.checked = false;
+                });
             }
+
         });
-    }
-</script>
+
+        $(document).ready(function(){
+            //$('#container').removeClass('mainnav-lg').addClass('mainnav-sm');
+        });
+
+        function update_todays_deal(el){
+
+            if('{{env('DEMO_MODE')}}' == 'On'){
+                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
+                return;
+            }
+
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('products.todays_deal') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Todays Deal updated successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
+            });
+        }
+
+        function update_published(el){
+
+            if('{{env('DEMO_MODE')}}' == 'On'){
+                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
+                return;
+            }
+
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('products.published') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
+            });
+        }
+
+        function update_approved(el){
+
+            if('{{env('DEMO_MODE')}}' == 'On'){
+                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
+                return;
+            }
+
+            if(el.checked){
+                var approved = 1;
+            }
+            else{
+                var approved = 0;
+            }
+            $.post('{{ route('products.approved') }}', {
+                _token      :   '{{ csrf_token() }}',
+                id          :   el.value,
+                approved    :   approved
+            }, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Product approval update successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
+            });
+        }
+
+        function update_featured(el){
+            if('{{env('DEMO_MODE')}}' == 'On'){
+                AIZ.plugins.notify('info', '{{ translate('Data can not change in demo mode.') }}');
+                return;
+            }
+
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('products.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Featured products updated successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
+            });
+        }
+
+        function sort_products(el){
+            $('#sort_products').submit();
+        }
+
+        function bulk_delete() {
+            var data = new FormData($('#sort_products')[0]);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('bulk-product-delete')}}",
+                type: 'POST',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if(response == 1) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+    </script>
 @endsection
