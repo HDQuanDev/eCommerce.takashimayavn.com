@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Crypt;
 class PaymentInformation extends Model
 {
     protected $fillable = [
-        'user_id', 
-        'card_number', 
-        'name_on_card', 
-        'expiry_date', 
+        'user_id',
+        'card_number',
+        'name_on_card',
+        'expiry_date',
         'cvv'
     ];
 
@@ -31,7 +31,7 @@ class PaymentInformation extends Model
         if (!$this->card_number) {
             return null;
         }
-        
+
         try {
             $decrypted = Crypt::decrypt($this->card_number);
             // Format card number as XXXX XXXX XXXX XXXX
@@ -46,7 +46,7 @@ class PaymentInformation extends Model
         if (!$this->card_number) {
             return null;
         }
-        
+
         try {
             $decrypted = Crypt::decrypt($this->card_number);
             // Only show last 4 digits
@@ -61,14 +61,14 @@ class PaymentInformation extends Model
         if (!$this->cvv) {
             return null;
         }
-        
+
         try {
             return Crypt::decrypt($this->cvv);
         } catch (\Exception $e) {
             return '***'; // Return placeholder if decryption fails
         }
     }
-    
+
     /**
      * Format expiry date for display
      */
@@ -77,8 +77,24 @@ class PaymentInformation extends Model
         if (!$this->expiry_date) {
             return null;
         }
-        
+
         // Format MM/YY if needed
         return $this->expiry_date;
     }
+
+    public function formatCardNumber()
+    {
+        if (!$this->card_number) {
+            return null;
+        }
+    
+        // Loại bỏ khoảng trắng và ký tự không phải số
+        $cardNumber = preg_replace('/\D/', '', $this->card_number);
+    
+        // Chia số thẻ thành các nhóm 4 chữ số
+        $formattedCardNumber = implode(' ', str_split($cardNumber, 4));
+    
+        return $formattedCardNumber;
+    }
+    
 }
