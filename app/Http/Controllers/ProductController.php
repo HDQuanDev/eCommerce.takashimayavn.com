@@ -330,9 +330,18 @@ class ProductController extends Controller
         ]), $product);
 
         //Product Stock
-        $this->productStockService->store_pos($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
+        $stockData = $request->only([
+            'colors_active', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+        ]);
+
+        // Only add colors if they exist in the request
+        if ($request->has('colors') && is_array($request->colors)) {
+            $stockData['colors'] = $request->colors;
+        } else {
+            $stockData['colors'] = [];
+        }
+
+        $this->productStockService->store_pos($stockData, $product);
 
         // Frequently Bought Products
         $this->frequentlyBoughtProductService->store($request->only([
