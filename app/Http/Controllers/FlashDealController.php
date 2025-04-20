@@ -129,7 +129,9 @@ class FlashDealController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
         $flash_deal = FlashDeal::findOrFail($id);
+
 
         $flash_deal->text_color = $request->text_color;
 
@@ -146,17 +148,25 @@ class FlashDealController extends Controller
           }
         }
 
+
         $flash_deal->banner = $request->banner;
+
         foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product) {
-            $prev_product = Product::findOrFail($flash_deal_product->product_id);
+
+            $prev_product = Product::find($flash_deal_product->product_id);
+            if($prev_product == null){
+                $flash_deal_product->delete();
+                continue;
+            }
             $prev_product->discount = 0.00;
             $prev_product->discount_type = 'amount';
             $prev_product->discount_start_date = null;
             $prev_product->discount_end_date   = null;
             $prev_product->save();
 
-            $flash_deal_product->delete();
+
         }
+
         if($flash_deal->save()){
             foreach ($request->products as $key => $product) {
                 $flash_deal_product = new FlashDealProduct;
@@ -180,6 +190,11 @@ class FlashDealController extends Controller
             return back();
         }
         else{
+            flash(translate('Something went wrong'))->error();
+            return back();
+        }
+        } catch (\Exception $e) {
+            dd($e);
             flash(translate('Something went wrong'))->error();
             return back();
         }
