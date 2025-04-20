@@ -80,6 +80,7 @@
                                 <th data-breakpoints="lg">{{ translate('Customer') }}</th>
                                 <th data-breakpoints="md">{{ translate('Amount') }}</th>
                                 <th data-breakpoints="lg">{{ translate('Delivery Status') }}</th>
+                                <th data-breakpoints="lg">{{ translate('Payment method') }}</th>
                                 <th>{{ translate('Payment Status') }}</th>
                                 <th class="text-right">{{ translate('Options') }}</th>
                             </tr>
@@ -137,6 +138,12 @@
                                                 $status = $order->delivery_status;
                                             @endphp
                                             {{ translate(ucfirst(str_replace('_', ' ', $status))) }}
+                                        </td>
+                                        <td>
+                                            @php
+                                                $payment_method = $order->payment_type;
+                                            @endphp
+                                            {{ translate(ucfirst(str_replace('_', ' ', $payment_method))) }}
                                         </td>
                                         <td>
                                             @if ($order->payment_status == 'paid')

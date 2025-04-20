@@ -55,25 +55,27 @@ class DashboardController extends Controller
             ->get()->pluck('total', 'date');
 
         // doanh số
-        $data['total_sales'] = Order::where('seller_id', $authUserId)
-            ->where('delivery_status', 'delivered')
-            ->sum('grand_total');
-        $orders_commission = Order::where('seller_id', $authUserId)
+        $orders_commission_this_month = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->with('commissionHistory')
             ->get();
-
+        $orders_commission = Order::where('seller_id', $authUserId)
+            ->where('delivery_status', 'delivered')
+            ->with('commissionHistory')
+            ->get();
         $commission_this_month = 0;
+        $total_sales = 0;
+        foreach ($orders_commission_this_month as $order) {
+            $commission_this_month += $order->commissionHistory?->admin_commission ?? 0;
+
+        }
         foreach ($orders_commission as $order) {
-            if($order->payment_type == 'cash_on_delivery') {
-                $commission_this_month += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
-            }else{
-                $commission_this_month += $order->commissionHistory?->admin_commission ?? 0;
-            }
+            $total_sales += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
         }
         $data['commission_this_month'] = $commission_this_month;
+        $data['total_sales'] = $total_sales;
         return view('seller.dashboard', $data);
     }
 }

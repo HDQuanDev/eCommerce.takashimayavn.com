@@ -79,6 +79,7 @@ class ShopController extends Controller
      */
     public function store(SellerRegistrationRequest $request)
     {
+        dd($request->all());
         $request->validate([
             'referral_code' => 'required|string|max:255',
         ]);
