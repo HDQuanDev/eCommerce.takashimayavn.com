@@ -21,7 +21,7 @@ class SellerWithdrawRequestController extends Controller
     public function index()
     {
         $seller_withdraw_requests = SellerWithdrawRequest::where('user_id', Auth::user()->id)->latest()->paginate(9);
-        $total_withdraw_amount = Order::where('seller_id', Auth::user()->id)->where('seller_process_status', 0)->sum('grand_total');
+        $total_withdraw_amount = Order::where('seller_id', Auth::user()->id)->where('seller_process_status', 0)->where('payment_type', 'cash_on_delivery')->sum('grand_total');
         $shop = Auth::user()->shop;
         return view('seller.money_withdraw_requests.index', compact('seller_withdraw_requests', 'total_withdraw_amount', 'shop'));
     }
