@@ -362,7 +362,7 @@
                     <a href="{{ route('seller.orders.index') }}"
                         class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">
+                        <span class="aiz-side-nav-text" id="order-badge">
                             {{ translate('Orders') }}
                             @if ($total_orders > 0)
                                 <span class="badge badge-danger rounded-pill position-absolute"
@@ -471,3 +471,19 @@
     </div><!-- .aiz-sidebar -->
     <div class="aiz-sidebar-overlay"></div>
 </div><!-- .aiz-sidebar -->
+<script>
+    function updateOrderBadge() {
+
+        fetch('{{ route('seller.orders.count') }}')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('order-badge');
+                if (badge) {
+                    badge.textContent = data.total_orders;
+                    badge.style.display = data.total_orders > 0 ? 'inline-block' : 'none';
+                }
+            });
+    }
+    setInterval(updateOrderBadge, 5000);
+    document.addEventListener('DOMContentLoaded', updateOrderBadge);
+    </script>

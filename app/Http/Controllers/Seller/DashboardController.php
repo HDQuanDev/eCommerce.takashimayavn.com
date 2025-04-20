@@ -72,7 +72,11 @@ class DashboardController extends Controller
 
         }
         foreach ($orders_commission as $order) {
-            $total_sales += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
+            if($order->payment_type == 'cash_on_delivery') {
+                $total_sales += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
+            }else {
+                $total_sales += $order->commissionHistory?->admin_commission ?? 0;
+            }
         }
         $data['commission_this_month'] = $commission_this_month;
         $data['total_sales'] = $total_sales;

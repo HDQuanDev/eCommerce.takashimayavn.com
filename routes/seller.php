@@ -21,6 +21,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
     });
+    Route::get('/orders/count', [App\Http\Controllers\Seller\OrderController::class, 'countOrders'])->name('orders.count');
 
     // Product
     Route::controller(ProductController::class)->group(function () {
