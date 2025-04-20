@@ -234,7 +234,11 @@ class OrderController extends Controller
         }
 
         // 2. Kiểm tra số dư seller
-        $seller = Seller::find(auth()->user()->seller->id);
+        $user = User::find($user_id);
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => translate('User account not found!')]);
+        }
+        $seller = Seller::find($user->seller->id);
         if (!$seller) {
             return response()->json(['success' => false, 'message' => translate('Seller account not found!')]);
         }
