@@ -517,12 +517,23 @@ class ProductController extends Controller
         //Product categories
         $product->categories()->sync($request->category_ids);
 
-
         //Product Stock
         $product->stocks()->delete();
-        $this->productStockService->store_pos($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
+        $stockData = $request->only([
+            'colors_active', 'choice_no', 'sku', 'current_stock', 'product_id'
+        ]);
+        
+        // Ensure unit_price is included in stock data
+        $stockData['unit_price'] = $request->unit_price;
+        
+        // Only add colors if they exist in the request
+        if ($request->has('colors') && is_array($request->colors)) {
+            $stockData['colors'] = $request->colors;
+        } else {
+            $stockData['colors'] = [];
+        }
+        
+        $this->productStockService->store_pos($stockData, $product);
 
         //Flash Deal
         $this->productFlashDealService->store($request->only([
