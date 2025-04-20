@@ -47,7 +47,7 @@
                                 </div>
                             @endif
                         @else
-                            <button type="button" onclick="show_price_modal('{{ $seller_package->id }}')" class="btn btn-primary">{{ translate('Mua ngay') }}</button>
+                            <button type="button" onclick="show_price_modal('{{ $seller_package->id }}', '{{ $seller_package->amount }}')" class="btn btn-primary">{{ translate('Mua ngay') }}</button>
                             @php
                                 $shop = Auth::user()->shop;
                                 $admin_to_pay = $shop ? $shop->admin_to_pay : 0;
@@ -108,12 +108,12 @@
                                 @foreach($package_history as $key => $payment)
                                     <tr>
                                         <td>{{ $key+1 + ($package_history->currentPage() - 1)*$package_history->perPage() }}</td>
-                                        <td>{{ $payment->seller_package->name }}</td>
-                                        <td>{{ format_price($payment->seller_package->amount) }}</td>
-                                        <td>{{ ucfirst($payment->payment_method) }}</td>
-                                        <td>{{ date('d/m/Y', strtotime($payment->created_at)) }}</td>
+                                        <td>{{ $payment?->seller_package->name ?? '-' }}</td>
+                                        <td>{{ format_price($payment?->seller_package->amount ?? 0) }}</td>
+                                        <td>{{ ucfirst($payment?->payment_method ?? '-') }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($payment?->created_at ?? '-')) }}</td>
                                         <td>
-                                            @if($payment->approval == 1)
+                                            @if($payment?->approval == 1)
                                                 <span class="badge badge-inline badge-success">{{ translate('Đã duyệt') }}</span>
                                             @else
                                                 <span class="badge badge-inline badge-warning">{{ translate('Đang xử lý') }}</span>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <form class="form-horizontal" action="{{ route('seller.purchase_package') }}" method="POST">
+                    <form class="form-horizontal" id="package_payment_form" action="{{ route('seller.purchase_package') }}" method="POST">
                         @csrf
                         <input type="hidden" name="seller_package_id" id="package_id" value="">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ translate('Hủy') }}</button>
@@ -171,9 +171,14 @@
 
 @section('script')
     <script type="text/javascript">
-        function show_price_modal(id){
-            $('#package_id').val(id);
-            $('#price_modal').modal('show');
+        function show_price_modal(id, amount){
+            if(amount > 0){
+                $('#package_id').val(id);
+                $('#price_modal').modal('show');
+            }else{
+                $('#package_id').val(id);
+                $('#package_payment_form').submit();
+            }
         }
     </script>
 @endsection
