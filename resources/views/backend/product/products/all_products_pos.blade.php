@@ -269,8 +269,7 @@
         } else {
             var status = 0;
         }
-        $.post('{{ route('
-            products.todays_deal ') }}', {
+        $.post('{{ route('products.todays_deal') }}', {
                 _token: '{{ csrf_token() }}',
                 id: el.value,
                 status: status
@@ -301,8 +300,7 @@
         } else {
             var status = 0;
         }
-        $.post('{{ route('
-            products.published ') }}', {
+        $.post('{{ route('products.published') }}', {
                 _token: '{{ csrf_token() }}',
                 id: el.value,
                 status: status
@@ -333,8 +331,7 @@
         } else {
             var approved = 0;
         }
-        $.post('{{ route('
-            products.approved ') }}', {
+        $.post('{{ route('products.approved') }}', {
                 _token: '{{ csrf_token() }}',
                 id: el.value,
                 approved: approved
@@ -364,8 +361,7 @@
         } else {
             var status = 0;
         }
-        $.post('{{ route('
-            products.featured ') }}', {
+        $.post('{{ route('products.featured') }}', {
                 _token: '{{ csrf_token() }}',
                 id: el.value,
                 status: status
