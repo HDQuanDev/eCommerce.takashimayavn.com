@@ -78,10 +78,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table aiz-table mb-0">
+                <table class="lmt-table mb-0">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="lmt-th-head">
                                 <div class="form-group">
                                     <div class="aiz-checkbox-inline">
                                         <label class="aiz-checkbox">
@@ -106,7 +106,7 @@
                     <tbody>
                         @foreach ($products as $key => $product)
                             <tr>
-                                <td>
+                                <td data-text="#">
                                     <div class="form-group d-inline-block">
                                         <label class="aiz-checkbox">
                                             <input type="checkbox" class="check-one" name="id[]" value="{{$product->id}}">
@@ -114,12 +114,12 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>
+                                <td data-text="{{translate('Name')}}">
                                     <a href="{{ route('product', $product->slug) }}" target="_blank" class="text-reset">
                                         {{ $product->getTranslation('name') }}
                                     </a>
                                 </td>
-                                <td>
+                                <td data-text="{{translate('Current Qty')}}">
                                     @php
                                         $qty = 0;
                                         foreach ($product->stocks as $key => $stock) {
@@ -128,9 +128,9 @@
                                         echo $qty;
                                     @endphp
                                 </td>
-                                <td>{{ $product->unit_price }}</td>
+                                <td data-text="{{ translate('Base Price')}}">{{ $product->unit_price }}</td>
                                 @if(get_setting('product_approve_by_admin') == 1)
-                                    <td>
+                                    <td data-text="{{ translate('Approval')}}">
                                         @if ($product->approved == 1)
                                             <span class="badge badge-inline badge-success">{{ translate('Approved')}}</span>
                                         @else
@@ -138,28 +138,30 @@
                                         @endif
                                     </td>
                                 @endif
-                                <td>
+                                <td data-text="{{ translate('Published')}}">
                                     <label class="aiz-switch aiz-switch-success mb-0">
                                         <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
-                                <td>
+                                <td data-text="{{ translate('Featured')}}">
                                     <label class="aiz-switch aiz-switch-success mb-0">
                                         <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->seller_featured == 1) echo "checked";?> >
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
-                                <td class="text-right">
-                                <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('seller.products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')])}}" title="{{ translate('Edit') }}">
-                                    <i class="las la-edit"></i>
-                                </a>
-                                <a href="{{route('seller.products.duplicate', $product->id)}}" class="btn btn-soft-success btn-icon btn-circle btn-sm"  title="{{ translate('Duplicate') }}">
-                                    <i class="las la-copy"></i>
-                                </a>
-                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.products.destroy', $product->id)}}" title="{{ translate('Delete') }}">
-                                    <i class="las la-trash"></i>
-                                </a>
+                                <td class="text-right" data-text="{{translate('Options')}}">
+                                <div class="">
+                                    <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('seller.products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')])}}" title="{{ translate('Edit') }}">
+                                        <i class="las la-edit"></i>
+                                    </a>
+                                    <a href="{{route('seller.products.duplicate', $product->id)}}" class="btn btn-soft-success btn-icon btn-circle btn-sm"  title="{{ translate('Duplicate') }}">
+                                        <i class="las la-copy"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.products.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                                        <i class="las la-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                             </tr>
                         @endforeach

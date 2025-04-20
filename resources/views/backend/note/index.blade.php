@@ -61,7 +61,60 @@
         </form>
 
         <div class="card-body">
-            <table class="table aiz-table mb-0">
+            <table class="lmt-table">
+                <thead>
+                    <tr>
+                        <th data-breakpoints="lg">#</th>
+                        <th data-breakpoints="lg">{{ translate('User') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Type') }}</th>
+                        <th data-breakpoints="lg" width="40%">{{ translate('Description') }}</th>
+                        <th data-breakpoints="lg">{{ translate('Seller Can Access') }}?</th>
+                        <th width="15%" class="text-right">{{ translate('Options') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($notes as $key => $note)
+                        <tr>
+                            <td data-text="#">{{ $key + 1 + ($notes->currentPage() - 1) * $notes->perPage() }}</td>
+                            <td data-text="{{ translate('User') }}">{{ $note->user_id == get_admin()->id ? 
+                                        translate('In-House') : 
+                                        ($note->user->shop->name ?? $note->user->name) 
+                                    }}</td>
+                            <td data-text="{{ translate('Type') }}">{{ translate($note->note_type) }}</td>
+                            <td data-text="{{ translate('Description') }}" class="lmt-fix"><div class="text-truncate-2">{{ $note->getTranslation('description') }}</div></td>
+                            <td data-text="{{ translate('Seller Can Access') }}">
+                                @if( $note->user_id == get_admin()->id)
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input onchange="updateSellerAccess(this)" value="{{ $note->id }}" type="checkbox" <?php if ($note->seller_access == 1) echo "checked"; ?> >
+                                        <span class="slider round"></span>
+                                    </label>
+                                @endif
+                            </td>
+                            <td class="text-right" data-text="{{ translate('Options') }}">
+                                <div class="">
+                                    <a href="javascript:void(0);" onclick="noteView('{{ route('get-single-note', $note->id )}}')" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="{{ translate('Note Description') }}">
+                                        <i class="las la-eye"></i>
+                                    </a>
+                                    @can('edit_note')
+                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
+                                            href="{{route('note.edit', ['id'=>$note->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}"
+                                            title="{{ translate('Edit') }}">
+                                            <i class="las la-edit"></i>
+                                        </a>
+                                    @endcan
+                                    @can('delete_note')
+                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
+                                            data-href="{{ route('note.delete', $note->id) }}" title="{{ translate('Delete') }}">
+                                            <i class="las la-trash"></i>
+                                        </a>
+                                    @endcan
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{-- <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
                         <th data-breakpoints="lg">#</th>
@@ -111,7 +164,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
             <div class="aiz-pagination">
                 {{ $notes->appends(request()->input())->links() }}
             </div>

@@ -33,7 +33,66 @@
         </div>
         </form>
         <div class="card-body">
-            <table class="table mb-0 aiz-table">
+            <table class="lmt-table">
+                <thead>
+                    <tr>
+                        <th class="lmt-th-head">#</th>
+                        <th>{{translate('Title')}}</th>
+                        <th data-breakpoints="lg">{{translate('Category')}}</th>
+                        <th data-breakpoints="lg">{{translate('Short Description')}}</th>
+                        <th data-breakpoints="lg">{{translate('Status')}}</th>
+                        <th class="text-right">{{translate('Options')}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($blogs as $key => $blog)
+                    <tr>
+                        <td data-text="#">
+                            {{ ($key+1) + ($blogs->currentPage() - 1) * $blogs->perPage() }}
+                        </td>
+                        <td data-text="{{translate('Title')}}">
+                            {{ $blog->title }}
+                        </td>
+                        <td data-text="{{translate('Category')}}">
+                            @if($blog->category != null)
+                                {{ $blog->category->category_name }}
+                            @else
+                                --
+                            @endif
+                        </td>
+                        <td data-text="{{translate('Short Description')}}" class=lmt-fix> 
+                            {{ $blog->short_description }}
+                        </td>
+                        <td data-text="{{translate('Status')}}">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input type="checkbox"
+                                    @can('publish_blog') onchange="change_status(this)" @endcan
+                                    value="{{ $blog->id }}"
+                                    <?php if($blog->status == 1) echo "checked";?>
+                                    @cannot('publish_blog') disabled @endcan
+                                >
+                                <span></span>
+                            </label>
+                        </td>
+                        <td class="text-right" data-text="{{translate('Options')}}">
+                            <div class="">
+                                @can('edit_blog')
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('blog.edit',$blog->id)}}" title="{{ translate('Edit') }}">
+                                        <i class="las la-pen"></i>
+                                    </a>
+                                @endcan
+                                @can('delete_blog')
+                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('blog.destroy', $blog->id)}}" title="{{ translate('Delete') }}">
+                                        <i class="las la-trash"></i>
+                                    </a>
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{-- <table class="table mb-0 aiz-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -89,7 +148,7 @@
                     </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
             <div class="aiz-pagination">
                 {{ $blogs->appends(request()->input())->links() }}
             </div>

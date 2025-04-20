@@ -62,10 +62,10 @@
 
             @if (count($orders) > 0)
                 <div class="card-body p-3">
-                    <table class="table aiz-table mb-0">
+                    <table class="lmt-table">
                         <thead>
                             <tr>
-                                <th>
+                                <th class="lmt-th-head">
                                     <div class="form-group">
                                         <div class="aiz-checkbox-inline">
                                             <label class="aiz-checkbox">
@@ -92,7 +92,7 @@
                                 @endphp
                                 @if ($order != null)
                                     <tr>
-                                        <td>
+                                        <td >
                                             <div class="form-group">
                                                 <div class="aiz-checkbox-inline">
                                                     <label class="aiz-checkbox">
@@ -103,7 +103,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-text="{{ translate('Order Code') }}">
                                             <a href="#{{ $order->code }}"
                                                 onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
                                                 <br>
@@ -120,20 +120,20 @@
                                                 <span class="badge badge-inline badge-danger">{{ translate('POS') }}</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td data-text="{{ translate('Num. of Products') }}">
                                             {{ count($order->orderDetails->where('seller_id', Auth::user()->id)) }}
                                         </td>
-                                        <td>
+                                        <td data-text="{{ translate('Customer') }}">
                                             @if ($order->user_id != null)
                                                 {{ optional($order->user)->name }}
                                             @else
                                                 {{ translate('Guest') }} ({{ $order->guest_id }})
                                             @endif
                                         </td>
-                                        <td>
+                                        <td data-text="{{ translate('Amount') }}">
                                             {{ single_price($order->grand_total) }}
                                         </td>
-                                        <td>
+                                        <td data-text="{{ translate('Delivery Status') }}">
                                             @php
                                                 $status = $order->delivery_status;
                                             @endphp
@@ -152,24 +152,26 @@
                                                 <span class="badge badge-inline badge-danger">{{ translate('Unpaid') }}</span>
                                             @endif
                                         </td>
-                                        <td class="text-right">
-                                            @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
-                                                <a class="btn btn-soft-success btn-icon btn-circle btn-sm"
-                                                    href="{{ route('seller.invoice.thermal_printer', $order->id) }}"
-                                                    target="_blank" title="{{ translate('Thermal Printer') }}">
-                                                    <i class="las la-print"></i>
+                                        <td class="text-right" data-text="{{ translate('Options') }}">
+                                            <div class="">
+                                                @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
+                                                    <a class="btn btn-soft-success btn-icon btn-circle btn-sm"
+                                                        href="{{ route('seller.invoice.thermal_printer', $order->id) }}"
+                                                        target="_blank" title="{{ translate('Thermal Printer') }}">
+                                                        <i class="las la-print"></i>
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('seller.orders.show', encrypt($order->id)) }}"
+                                                    class="btn btn-soft-info btn-icon btn-circle btn-sm"
+                                                    title="{{ translate('Order Details') }}">
+                                                    <i class="las la-eye"></i>
                                                 </a>
-                                            @endif
-                                            <a href="{{ route('seller.orders.show', encrypt($order->id)) }}"
-                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
-                                                title="{{ translate('Order Details') }}">
-                                                <i class="las la-eye"></i>
-                                            </a>
-                                            <a href="{{ route('seller.invoice.download', $order->id) }}"
-                                                class="btn btn-soft-warning btn-icon btn-circle btn-sm"
-                                                title="{{ translate('Download Invoice') }}">
-                                                <i class="las la-download"></i>
-                                            </a>
+                                                <a href="{{ route('seller.invoice.download', $order->id) }}"
+                                                    class="btn btn-soft-warning btn-icon btn-circle btn-sm"
+                                                    title="{{ translate('Download Invoice') }}">
+                                                    <i class="las la-download"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endif

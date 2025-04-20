@@ -42,6 +42,57 @@
         .pac-container{
             z-index: 100000;
         }
+        .lmt-table{
+            width: 100%;
+            tr{
+                td,th{
+                    padding: 15px 10px;
+                }
+            }
+            @media (max-width: 768px) {
+                thead{
+                    th:not(.lmt-th-head){
+                        display: none;
+                    }
+                }
+                tbody{
+                    tr{
+                        display: flex;
+                        flex-direction: column;
+                        border-bottom: 1px solid #000;
+                        padding-bottom: 20px;
+                        margin-bottom: 20px;
+                        td{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            text-align: right;
+                            padding: 10px 0;
+                            min-height: 30px;
+                            border-top: 1px dash #e4e5eb;
+                            border-bottom: 1px solid #e4e5eb;
+                            gap: 10px;
+
+                            &:before{
+                                content: attr(data-text);
+                                display: block;
+                                font-weight: 600;
+                                color: #232734;
+                                flex: 0 0 auto;
+                            }
+                            &.lmt-fix{
+                               & > *{
+                                flex: 0 0 50%;
+                               }
+                            }
+                            &:last-child{
+                                border-bottom: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     </style>
 	<script>

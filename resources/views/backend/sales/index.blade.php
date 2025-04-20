@@ -89,7 +89,162 @@
             </div>
 
             <div class="card-body">
-                <table class="table aiz-table mb-0">
+                <table class="lmt-table">
+                    <thead>
+                        <tr>
+                            @if (auth()->user()->can('delete_order') || auth()->user()->can('export_order'))
+                                <th class="lmt-th-head">
+                                    <div class="form-group">
+                                        <div class="aiz-checkbox-inline">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check-all">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </th>
+                            @else
+                                <th data-breakpoints="lg">#</th>
+                            @endif
+
+                            <th>{{ translate('Order Code') }}</th>
+                            <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
+                            <th data-breakpoints="md">{{ translate('Customer') }}</th>
+                            <th data-breakpoints="md">{{ translate('Seller') }}</th>
+                            <th data-breakpoints="md">{{ translate('Amount') }}</th>
+                            <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
+                            <th data-breakpoints="md">{{ translate('Payment method') }}</th>
+                            <th data-breakpoints="md">{{ translate('Payment Status') }}</th>
+                            @if (addon_is_activated('refund_request'))
+                                <th>{{ translate('Refund') }}</th>
+                            @endif
+                            <th class="text-right" width="15%">{{ translate('options') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($orders as $key => $order)
+                            <tr>
+                                @if (auth()->user()->can('delete_order') || auth()->user()->can('export_order'))
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="aiz-checkbox-inline">
+                                                <label class="aiz-checkbox">
+                                                    <input type="checkbox" class="check-one" name="id[]"
+                                                        value="{{ $order->id }}">
+                                                    <span class="aiz-square-check"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td data-text="#">{{ $key + 1 + ($orders->currentPage() - 1) * $orders->perPage() }}</td>
+                                @endif
+                                <td data-text="{{ translate('Order Code') }}">
+                                    <div class="">
+                                        {{ $order->code }}
+                                        @if ($order->viewed == 0)
+                                            <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
+                                        @endif
+                                        @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
+                                            <span class="badge badge-inline badge-danger">{{ translate('POS') }}</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td data-text="{{ translate('Num. of Products') }}">
+                                    {{ count($order->orderDetails) }}
+                                </td>
+                                <td data-text="{{ translate('Customer') }}">
+                                    @if ($order->user != null)
+                                        {{ $order->user->name }}
+                                    @else
+                                        Guest ({{ $order->guest_id }})
+                                    @endif
+                                </td>
+                                <td data-text="{{ translate('Seller') }}">
+                                    @if ($order->shop)
+                                        {{ $order->shop->name }}
+                                    @else
+                                        {{ translate('Inhouse Order') }}
+                                    @endif
+                                </td>
+                                <td data-text="{{ translate('Amount') }}">
+                                    {{ single_price($order->grand_total) }}
+                                </td>
+                                <td data-text="{{ translate('Delivery Status') }}">
+                                    {{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}
+                                </td>
+                                <td data-text="{{ translate('Payment method') }}">
+                                    {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
+                                </td>
+                                <td data-text="{{ translate('Payment Status') }}">
+                                    @if ($order->payment_status == 'paid')
+                                        <span class="badge badge-inline badge-success">{{ translate('Paid') }}</span>
+                                    @else
+                                        <span class="badge badge-inline badge-danger">{{ translate('Unpaid') }}</span>
+                                    @endif
+                                </td>
+                                @if (addon_is_activated('refund_request'))
+                                    <td data-text="{{ translate('Refund') }}">
+                                        @if (count($order->refund_requests) > 0)
+                                            {{ count($order->refund_requests) }} {{ translate('Refund') }}
+                                        @else
+                                            {{ translate('No Refund') }}
+                                        @endif
+                                    </td>
+                                @endif
+                                <td class="text-right" data-text="{{ translate('options') }}">
+                                    <div class="">
+                                        @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
+                                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm"
+                                                href="{{ route('admin.invoice.thermal_printer', $order->id) }}" target="_blank"
+                                                title="{{ translate('Thermal Printer') }}">
+                                                <i class="las la-print"></i>
+                                            </a>
+                                        @endif
+                                        @can('view_order_details')
+                                            @php
+                                                $order_detail_route = route('orders.show', encrypt($order->id));
+                                                if (Route::currentRouteName() == 'seller_orders.index') {
+                                                    $order_detail_route = route('seller_orders.show', encrypt($order->id));
+                                                } elseif (Route::currentRouteName() == 'pick_up_point.index') {
+                                                    $order_detail_route = route('pick_up_point.order_show', encrypt($order->id));
+                                                }
+                                                if (Route::currentRouteName() == 'inhouse_orders.index') {
+                                                    $order_detail_route = route('inhouse_orders.show', encrypt($order->id));
+                                                }
+                                            @endphp
+                                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
+                                                href="{{ $order_detail_route }}" title="{{ translate('View') }}">
+                                                <i class="las la-eye"></i>
+                                            </a>
+                                        @endcan
+                                        <a class="btn btn-soft-info btn-icon btn-circle btn-sm"
+                                            href="{{ route('invoice.download', $order->id) }}"
+                                            title="{{ translate('Download Invoice') }}">
+                                            <i class="las la-download"></i>
+                                        </a>
+                                        @if(auth()->user()->can('unpaid_order_payment_notification_send') && $order->payment_status == 'unpaid' && $unpaid_order_payment_notification->status == 1)
+                                            <a class="btn btn-soft-warning btn-icon btn-circle btn-sm"
+                                                href="javascript:void();" onclick="unpaid_order_payment_notification('{{ $order->id }}');"
+                                                title="{{ translate('Unpaid Order Payment Notification') }}">
+                                                <i class="las la-bell"></i>
+                                            </a>
+                                        @endif
+                                        @can('delete_order')
+                                            <a href="#"
+                                                class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
+                                                data-href="{{ route('orders.destroy', $order->id) }}"
+                                                title="{{ translate('Delete') }}">
+                                                <i class="las la-trash"></i>
+                                            </a>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{-- <table class="table aiz-table mb-0">
                     <thead>
                         <tr>
                             @if (auth()->user()->can('delete_order') || auth()->user()->can('export_order'))
@@ -239,7 +394,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>
+                </table> --}}
 
                 <div class="aiz-pagination">
                     {{ $orders->appends(request()->input())->links() }}
