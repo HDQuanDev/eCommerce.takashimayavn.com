@@ -630,7 +630,7 @@
                                         viewBox="0 0 15.964 16">
                                         <path id="_608087065a4e8d47000761280c315020"
                                             data-name="608087065a4e8d47000761280c315020"
-                                            d="M4.993,20.456a.456.456,0,0,0,.456.456h8.389a.456.456,0,0,0,.456-.456V19.009a1.256,1.256,0,0,0-1.254-1.254h-.2V16.32a.456.456,0,0,0-.456-.456H6.9a.456.456,0,0,0-.456.456v1.435h-.2a1.255,1.255,0,0,0-1.254,1.254Zm2.363-3.68H11.93v.979H7.356ZM5.905,19.009a.342.342,0,0,1,.342-.342H13.04a.342.342,0,0,1,.342.342V20H5.905Zm13.717-1.79a1.405,1.405,0,0,0,1.334-1.4,1.411,1.411,0,0,0-.461-1.042l-4.466-4.009L17.6,9.031a.831.831,0,0,0-.06-1.172L14.513,5.127a.816.816,0,0,0-.6-.213.824.824,0,0,0-.574.272L8.27,10.8a.83.83,0,0,0,.059,1.173L11.354,14.7a.83.83,0,0,0,1.172-.06l1.622-1.795,4.464,4.008a1.392,1.392,0,0,0,1.011.361ZM13.779,11.9l0,0,0,0L11.9,13.972,9,11.35l4.961-5.492,2.9,2.622L13.779,11.9Zm.981.275.658-.728,4.466,4.008a.492.492,0,1,1-.661.728Z"
+                                            d="M4.993,20.456a.456.456,0,0,0,.456.456h8.389a.456.456,0,0,0,.456-.456V19.009a1.256,1.256,0,0,0-1.254-1.254h-.2V16.32a.456.456,0,0,0-.456-.456H6.9a.456.456,0,0,0-.456.456v1.435h-.2a1.255,1.255,0,0,0-1.254,1.254Zm2.363-3.68H11.93v.979H7.356ZM5.905,19.009a.342.342,0,0,1,.342-.342H13.04a.342.342,0,0,1,.342.342V20H5.905Zm6.233-1.8H7.25V12.406A.466.466,0,0,0,7.2,12.2h0l-.836-1.672a2.638,2.638,0,0,1,1.042-.212h.652a1.875,1.875,0,0,0,3.7,0h.652a2.659,2.659,0,0,1,2.656,2.656Z"
                                             transform="translate(-4.993 -4.912)" fill="#575b6a" />
                                     </svg>
                                 </div>
@@ -1166,7 +1166,7 @@
                                 viewBox="0 0 16 16">
                                 <g id="layer1" transform="translate(-0.53 -0.53)">
                                     <path id="path3159"
-                                        d="M3.386.53A2.862,2.862,0,0,0,.53,3.386V13.67a2.865,2.865,0,0,0,2.856,2.86H13.67a2.869,2.869,0,0,0,2.86-2.86V3.386A2.865,2.865,0,0,0,13.67.53Zm0,1.143H13.67a1.7,1.7,0,0,1,1.718,1.713V13.67a1.7,1.7,0,0,1-1.718,1.718H3.386A1.7,1.7,0,0,1,1.673,13.67V3.386A1.7,1.7,0,0,1,3.386,1.673ZM8.12,3.557,5.34,6.37a.572.572,0,0,0,0,.809.564.564,0,0,0,.81,0l1.8-1.824V10.8a.571.571,0,0,0,1.143,0V5.347l1.8,1.829a.571.571,0,0,0,.81-.806L8.935,3.557a.511.511,0,0,0-.815,0Zm-4.156,8.97a.571.571,0,0,0,0,1.143h9.128a.571.571,0,0,0,0-1.143Z"
+                                        d="M3.386.53A2.862,2.862,0,0,0,.53,3.386V13.67a2.865,2.865,0,0,0,2.856,2.86H13.67a2.869,2.869,0,0,0,2.86-2.86V3.386A2.865,2.865,0,0,0,13.67.53Zm0,1.143H13.67a1.7,1.7,0,0,1,1.718,1.713V13.67a1.7,1.7,0,0,1-1.718,1.718H3.386A1.7,1.7,0,0,1,1.673,13.67V3.386A1.7,1.7,0,0,1,3.386,1.673ZM8.12,3.557,5.34,6.37a.572.572,0,0,0,0,.809.564.564,0,0,0,.81,0l1.8-1.824V10.8a.571.571,0,0,0,1.143,0V5.347l1.8,1.829a.571.571,0,0,0,.81-.806L8.935,3.557a.511.511,0,0,0-.815,0Zm-4.156,8.97a.571.571,0,0,0,0,1.143H13.092a.571.571,0,0,0,0-1.143Z"
                                         fill="#575b6a" />
                                 </g>
                             </svg>
@@ -2171,118 +2171,122 @@
                                             </li>
                                         @endcan
 
-                                        @can('facebook_comment')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">
-                                                    <span class="aiz-side-nav-text">{{ translate('Facebook Comment') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                    </ul>
-                                </li>
-                            @endcanany
-                            @canany(['analytics_tools_configuration', 'google_recaptcha_configuration',
-                                'google_map_setting', 'google_firebase_setting'])
+                                @can('facebook_comment')
                                 <li class="aiz-side-nav-item">
-                                    <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{ translate('Google') }}</span>
-                                        <span class="aiz-side-nav-arrow"></span>
+                                    <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Facebook Comment')}}</span>
                                     </a>
-                                    <ul class="aiz-side-nav-list level-3">
-                                        @can('analytics_tools_configuration')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">
-                                                    <span class="aiz-side-nav-text">{{ translate('Analytics Tools') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('google_recaptcha_configuration')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
-                                                    <span class="aiz-side-nav-text">{{ translate('Google reCAPTCHA') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('google_map_setting')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">
-                                                    <span class="aiz-side-nav-text">{{ translate('Google Map') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('google_firebase_setting')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">
-                                                    <span class="aiz-side-nav-text">{{ translate('Google Firebase') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                    </ul>
                                 </li>
-                            @endcanany
-                            @canany(['shipping_configuration', 'shipping_country_setting', 'manage_shipping_states',
-                                'manage_shipping_cities', 'manage_zones', 'manage_carriers'])
-                                <li class="aiz-side-nav-item">
-                                    <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{ translate('Shipping') }}</span>
-                                        <span class="aiz-side-nav-arrow"></span>
-                                    </a>
-                                    <ul class="aiz-side-nav-list level-3">
-                                        @can('shipping_configuration')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('shipping_configuration.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index', 'shipping_configuration.edit', 'shipping_configuration.update']) }}">
-                                                    <span
-                                                        class="aiz-side-nav-text">{{ translate('Shipping Configuration') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('shipping_country_setting')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('countries.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['countries.index', 'countries.edit', 'countries.update']) }}">
-                                                    <span class="aiz-side-nav-text">{{ translate('Shipping Countries') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('manage_shipping_states')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('states.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['states.index', 'states.edit', 'states.update']) }}">
-                                                    <span class="aiz-side-nav-text">{{ translate('Shipping States') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('manage_shipping_cities')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('cities.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['cities.index', 'cities.edit', 'cities.update']) }}">
-                                                    <span class="aiz-side-nav-text">{{ translate('Shipping Cities') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('manage_zones')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('zones.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['zones.index', 'zones.create', 'zones.edit']) }}">
-                                                    <span class="aiz-side-nav-text">{{ translate('Shipping Zones') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('manage_carriers')
-                                            <li class="aiz-side-nav-item">
-                                                <a href="{{ route('carriers.index') }}"
-                                                    class="aiz-side-nav-link {{ areActiveRoutes(['carriers.index', 'carriers.create', 'carriers.edit']) }}">
-                                                    <span class="aiz-side-nav-text">{{ translate('Shipping Carrier') }}</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                    </ul>
-                                </li>
-                                @endif
+                                @endcan
                             </ul>
                         </li>
-                    @endcanany
+                        @endcanany
+                        @canany(['analytics_tools_configuration','google_recaptcha_configuration','google_map_setting','google_firebase_setting'])
+                        <li class="aiz-side-nav-item">
+                            <a href="javascript:void(0);" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{translate('Google')}}</span>
+                                <span class="aiz-side-nav-arrow"></span>
+                            </a>
+                            <ul class="aiz-side-nav-list level-3">
+                                @can('analytics_tools_configuration')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Analytics Tools')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('google_recaptcha_configuration')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Google reCAPTCHA')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('google_map_setting')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Google Map')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('google_firebase_setting')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Google Firebase')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+                        </li>
+                        @endcanany
+                        @canany(['shipping_configuration','shipping_country_setting','manage_shipping_states','manage_shipping_cities','manage_zones','manage_carriers'])
+                        <li class="aiz-side-nav-item">
+                            <a href="javascript:void(0);" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{translate('Shipping')}}</span>
+                                <span class="aiz-side-nav-arrow"></span>
+                            </a>
+                            <ul class="aiz-side-nav-list level-3">
+                                @can('shipping_configuration')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('shipping_configuration.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index','shipping_configuration.edit','shipping_configuration.update'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Configuration')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('shipping_country_setting')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('countries.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['countries.index','countries.edit','countries.update'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Countries')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('manage_shipping_states')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('states.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['states.index','states.edit','states.update'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping States')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('manage_shipping_cities')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('cities.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['cities.index','cities.edit','cities.update'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Cities')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('manage_zones')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('zones.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['zones.index','zones.create','zones.edit'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Zones')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('manage_carriers')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('carriers.index')}}"
+                                        class="aiz-side-nav-link {{ areActiveRoutes(['carriers.index','carriers.create','carriers.edit'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Carrier')}}</span>
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+                        </li>
+                        @endif
+                        @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('referral-codes.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['referral-codes.index', 'referral-codes.create', 'referral-codes.edit'])}}">
+                                    <span class="aiz-side-nav-text">{{translate('Seller Referral Codes')}}</span>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+                @endcanany
 
                     <!-- Staffs -->
                     @canany(['view_all_staffs', 'view_staff_roles'])
@@ -2414,26 +2418,25 @@
                         </li>
                     @endcanany
 
-                    <!-- Addon Manager -->
-                    @can('manage_addons')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('addons.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create']) }}">
-                                <div class="aiz-side-nav-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 16 16">
-                                        <path id="_0339d7f72e6ebf7daea77d00de6c6177"
-                                            data-name="0339d7f72e6ebf7daea77d00de6c6177"
-                                            d="M12.2,17H9a.533.533,0,0,1-.533-.533v-1.6a1.067,1.067,0,1,0-2.133,0v1.6A.533.533,0,0,1,5.8,17H2.6A1.6,1.6,0,0,1,1,15.4V12.2a.533.533,0,0,1,.533-.533h1.6a1.067,1.067,0,1,0,0-2.133h-1.6A.533.533,0,0,1,1,9V5.8A1.6,1.6,0,0,1,2.6,4.2H5.267V3.133a2.133,2.133,0,1,1,4.267,0V4.2H12.2a1.6,1.6,0,0,1,1.6,1.6V8.467h1.067a2.133,2.133,0,1,1,0,4.267H13.8V15.4A1.6,1.6,0,0,1,12.2,17ZM9.533,15.933H12.2a.533.533,0,0,0,.533-.533V12.2a.533.533,0,0,1,.533-.533h1.6a1.067,1.067,0,1,0,0-2.133h-1.6A.533.533,0,0,1,12.733,9V5.8a.533.533,0,0,0-.533-.533H9a.533.533,0,0,1-.533-.533v-1.6a1.067,1.067,0,1,0-2.133,0v1.6a.533.533,0,0,1-.533.533H2.6a.533.533,0,0,0-.533.533V8.467H3.133a2.133,2.133,0,0,1,0,4.267H2.067V15.4a.533.533,0,0,0,.533.533H5.267V14.867a2.133,2.133,0,0,1,4.267,0Z"
-                                            transform="translate(-1 -1)" fill="#575b6a" />
-                                    </svg>
-                                </div>
-                                <span class="aiz-side-nav-text">{{ translate('Addon Manager') }}</span>
-                            </a>
-                        </li>
-                    @endcan
-                </ul><!-- .aiz-side-nav -->
-            </div><!-- .aiz-side-nav-wrap -->
-        </div><!-- .aiz-sidebar -->
-        <div class="aiz-sidebar-overlay"></div>
+                <!-- Addon Manager -->
+                @can('manage_addons')
+                <li class="aiz-side-nav-item">
+                    <a href="{{route('addons.index')}}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create'])}}">
+                        <div class="aiz-side-nav-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path id="_0339d7f72e6ebf7daea77d00de6c6177"
+                                    data-name="0339d7f72e6ebf7daea77d00de6c6177"
+                                    d="M12.2,17H9a.533.533,0,0,1-.533-.533v-1.6a1.067,1.067,0,1,0-2.133,0v1.6A.533.533,0,0,1,5.8,17H2.6A1.6,1.6,0,0,1,1,15.4V12.2a.533.533,0,0,1,.533-.533h1.6a1.067,1.067,0,1,0,0-2.133h-1.6A.533.533,0,0,1,1,9V5.8A1.6,1.6,0,0,1,2.6,4.2H5.267V3.133a2.133,2.133,0,1,1,4.267,0V4.2H12.2a1.6,1.6,0,0,1,1.6,1.6V8.467h1.067a2.133,2.133,0,1,1,0,4.267H13.8V15.4A1.6,1.6,0,0,1,12.2,17ZM9.533,15.933H12.2a.533.533,0,0,0,.533-.533V12.2a.533.533,0,0,1,.533-.533h1.6a1.067,1.067,0,1,0,0-2.133h-1.6A.533.533,0,0,1,12.733,9V5.8a.533.533,0,0,0-.533-.533H9a.533.533,0,0,1-.533-.533v-1.6a1.067,1.067,0,1,0-2.133,0v1.6a.533.533,0,0,1-.533.533H2.6a.533.533,0,0,0-.533.533V8.467H3.133a2.133,2.133,0,0,1,0,4.267H2.067V15.4a.533.533,0,0,0,.533.533H5.267V14.867a2.133,2.133,0,0,1,4.267,0Z"
+                                    transform="translate(-1 -1)" fill="#575b6a" />
+                            </svg>
+                        </div>
+                        <span class="aiz-side-nav-text">{{translate('Addon Manager')}}</span>
+                    </a>
+                </li>
+                @endcan
+            </ul><!-- .aiz-side-nav -->
+        </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->
+    <div class="aiz-sidebar-overlay"></div>
+</div><!-- .aiz-sidebar -->

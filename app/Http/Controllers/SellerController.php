@@ -16,6 +16,7 @@ use App\Services\PreorderService;
 use App\Utility\EmailUtility;
 use Cache;
 use Illuminate\Support\Facades\Notification;
+use App\Models\ReferralCode;
 
 class SellerController extends Controller
 {
@@ -106,6 +107,27 @@ class SellerController extends Controller
             'address.max' => translate('Max 255 Character'),
         ]);
 
+        // Validate referral code
+        $referral_code = null;
+        if ($request->has('referral_code')) {
+            $referral_code = ReferralCode::where('code', $request->referral_code)
+                ->where('is_active', 1)
+                ->first();
+
+            if (!$referral_code) {
+                flash(translate('Invalid referral code. Please enter a valid referral code.'))->error();
+                return back();
+            }
+
+            // Check usage limit if it's set
+            if ($referral_code->usage_limit !== null && $referral_code->used_count >= $referral_code->usage_limit) {
+                flash(translate('This referral code has reached its usage limit.'))->error();
+                return back();
+            }
+        } else {
+            flash(translate('Referral code is required for seller registration.'))->error();
+            return back();
+        }
 
         if (User::where('email', $request->email)->first() != null) {
             flash(translate('Email already exists!'))->error();
@@ -125,7 +147,12 @@ class SellerController extends Controller
             $shop->name     = $request->shop_name;
             $shop->address  = $request->address;
             $shop->slug     = 'demo-shop-' . $user->id;
+            $shop->referral_code_id = $referral_code->id; // Save the referral code ID
             $shop->save();
+
+            // Increment the used count for the referral code
+            $referral_code->used_count += 1;
+            $referral_code->save();
 
             try {
                 EmailUtility::selelr_registration_email('registration_from_system_email_to_seller', $user, $password);

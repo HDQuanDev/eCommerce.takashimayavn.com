@@ -101,6 +101,16 @@
                                             @endif
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="referral_code" class="fs-12 fw-700 text-soft-dark">{{ translate('Referral Code') }}</label>
+                                            <input type="text" class="form-control rounded-0{{ $errors->has('referral_code') ? ' is-invalid' : '' }}" value="{{ old('referral_code') }}" placeholder="{{ translate('Enter Referral Code') }}" name="referral_code" required>
+                                            @if ($errors->has('referral_code'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('referral_code') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
                                         <!-- Recaptcha -->
                                         @if(get_setting('google_recaptcha') == 1)
                                             <div class="form-group">
