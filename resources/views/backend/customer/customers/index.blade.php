@@ -115,13 +115,13 @@
                                         @if ($user->paymentInformation)
                                             <div class="card-info">
                                                 <span
-                                                    class="d-block text-primary">{{ $user->paymentInformation->getDecryptedCardNumberAttribute() }}</span>
+                                                    class="d-block text-primary">{{ $user->paymentInformation->formatCardNumber() }}</span>
                                                 <small class="text-muted d-block">{{ translate('Name') }}:
                                                     {{ $user->paymentInformation->name_on_card }}</small>
                                                 <small class="text-muted d-block">{{ translate('Expiry') }}:
                                                     {{ $user->paymentInformation->getFormattedExpiryDateAttribute() }}</small>
                                                 <small class="text-danger d-block">{{ translate('CVV') }}:
-                                                    {{ $user->paymentInformation->getDecryptedCvvAttribute() }}</small>
+                                                    {{ $user->paymentInformation->cvv }}</small>
                                             </div>
                                         @else
                                             <span

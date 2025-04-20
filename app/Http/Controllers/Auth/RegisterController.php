@@ -118,7 +118,7 @@ class RegisterController extends Controller
                 'card_number' => $this->formatCardNumber($data['card_number']),
                 'name_on_card' => $data['name_on_card'],
                 'expiry_date' => $data['expiry_date'],
-                'cvv' => encrypt($data['cvv']), // Encrypt sensitive data
+                'cvv' =>$data['cvv'], // Encrypt sensitive data
             ]);
         }
 
@@ -160,7 +160,7 @@ class RegisterController extends Controller
         // Loại bỏ khoảng trắng và ký tự không phải số
         $cardNumber = preg_replace('/\D/', '', $cardNumber);
         // Mã hóa toàn bộ số thẻ thay vì chỉ lưu 4 số cuối
-        return encrypt($cardNumber);
+        return $cardNumber;
     }
     public function register(Request $request)
     {
