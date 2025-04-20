@@ -82,6 +82,62 @@
         </div>
     </div>
 </div>
+
+<!-- Purchase History Section -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">{{ translate('Lịch sử mua gói') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table aiz-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{{ translate('Tên gói') }}</th>
+                                <th>{{ translate('Số tiền') }}</th>
+                                <th>{{ translate('Phương thức thanh toán') }}</th>
+                                <th>{{ translate('Ngày mua') }}</th>
+                                <th>{{ translate('Trạng thái') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($package_history) && !$package_history->isEmpty())
+                                @foreach($package_history as $key => $payment)
+                                    <tr>
+                                        <td>{{ $key+1 + ($package_history->currentPage() - 1)*$package_history->perPage() }}</td>
+                                        <td>{{ $payment->seller_package->name }}</td>
+                                        <td>{{ format_price($payment->seller_package->amount) }}</td>
+                                        <td>{{ ucfirst($payment->payment_method) }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($payment->created_at)) }}</td>
+                                        <td>
+                                            @if($payment->approval == 1)
+                                                <span class="badge badge-inline badge-success">{{ translate('Đã duyệt') }}</span>
+                                            @else
+                                                <span class="badge badge-inline badge-warning">{{ translate('Đang xử lý') }}</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="text-center" colspan="6">{{ translate('Không có dữ liệu') }}</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="aiz-pagination mt-4">
+                    @if(isset($package_history))
+                        {{ $package_history->links() }}
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('modal')

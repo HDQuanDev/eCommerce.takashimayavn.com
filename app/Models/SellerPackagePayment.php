@@ -2,19 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SellerPackagePayment extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'seller_package_id',
-        'payment_method',
-        'payment_details',
-        'approval',
-        'offline_payment',
-        'offline_payment_proof'
-    ];
+    use HasFactory;
+
+    protected $guarded = [];
 
     public function seller_package()
     {

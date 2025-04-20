@@ -4,6 +4,7 @@ use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\CommisionPackageController;
 use App\Http\Controllers\Seller\PosController;
+use App\Http\Controllers\SellerPackageController;
 
 //Upload
 Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user', 'prevent-back-history'], 'as' => 'seller.'], function () {

@@ -129,7 +129,14 @@ class SellerPackageController extends Controller
     public function seller_packages_list()
     {
         $seller_packages = SellerPackage::where('status', 'active')->get();
-        return view('seller.seller_packages.packages', compact('seller_packages'));
+
+        // Get purchase history for current seller
+        $package_history = SellerPackagePayment::where('user_id', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->with('seller_package') // Make sure you have this relationship defined in the model
+            ->paginate(10);
+
+        return view('seller.seller_packages.packages', compact('seller_packages', 'package_history'));
     }
 
     public function purchase_package(Request $request)
@@ -153,10 +160,10 @@ class SellerPackageController extends Controller
         // Cập nhật thời hạn gói
         if ($shop->package_invalid_at != null) {
             // Nếu người bán đang có gói, thêm thời hạn vào gói hiện tại
-            $shop->package_invalid_at = date('Y-m-d', strtotime($shop->package_invalid_at . ' +'. $seller_package->duration .' days'));
+            $shop->package_invalid_at = date('Y-m-d', strtotime($shop->package_invalid_at . ' +' . $seller_package->duration . ' days'));
         } else {
             // Nếu người bán chưa có gói, thiết lập thời hạn mới
-            $shop->package_invalid_at = date('Y-m-d', strtotime('+'. $seller_package->duration .' days'));
+            $shop->package_invalid_at = date('Y-m-d', strtotime('+' . $seller_package->duration . ' days'));
         }
 
         $shop->save();
@@ -210,9 +217,9 @@ class SellerPackageController extends Controller
                 $shop->product_upload_limit = $seller_package->product_upload_limit;
 
                 if ($shop->package_invalid_at != null) {
-                    $shop->package_invalid_at = date('Y-m-d', strtotime($shop->package_invalid_at . ' +'. $seller_package->duration .' days'));
+                    $shop->package_invalid_at = date('Y-m-d', strtotime($shop->package_invalid_at . ' +' . $seller_package->duration . ' days'));
                 } else {
-                    $shop->package_invalid_at = date('Y-m-d', strtotime('+'. $seller_package->duration .' days'));
+                    $shop->package_invalid_at = date('Y-m-d', strtotime('+' . $seller_package->duration . ' days'));
                 }
 
                 $shop->save();
