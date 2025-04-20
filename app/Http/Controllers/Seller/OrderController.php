@@ -12,6 +12,7 @@ use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
 use App\Models\OrdersExport;
 use App\Utility\EmailUtility;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use DB;
