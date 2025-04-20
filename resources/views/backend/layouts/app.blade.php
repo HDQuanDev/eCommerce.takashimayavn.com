@@ -93,6 +93,11 @@
         }
         .lmt-table{
             width: 100%;
+            tr{
+                td,th{
+                    padding: 5px 10px;
+                }
+            }
             @media (max-width: 768px) {
                 thead{
                     th:not(.lmt-th-head){
@@ -103,6 +108,9 @@
                     tr{
                         display: flex;
                         flex-direction: column;
+                        border-bottom: 1px solid #000;
+                        padding-bottom: 20px;
+                        margin-bottom: 20px;
                         td:not(:first-child){
                             display: flex;
                             justify-content: space-between;
@@ -116,6 +124,9 @@
                                 display: block;
                                 font-weight: 600;
                                 color: #232734;
+                            }
+                            &:last-child{
+                                border-bottom: none;
                             }
                         }
                     }
