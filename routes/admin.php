@@ -209,6 +209,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/sellers/login/{id}', 'login')->name('sellers.login');
         Route::post('/sellers/payment_modal', 'payment_modal')->name('sellers.payment_modal');
         Route::post('/sellers/profile_modal', 'profile_modal')->name('sellers.profile_modal');
+        Route::post('/sellers/change_balance_modal', 'change_balance_modal')->name('sellers.change_balance_modal');
+        Route::post('/sellers/change_balance', 'change_balance')->name('sellers.change_balance');
         Route::post('/sellers/approved', 'updateApproved')->name('sellers.approved');
         Route::post('/sellers/set-commission', 'setSellerBasedCommission')->name('set_seller_based_commission');
         Route::post('/sellers/edit-custom-followers', 'editSellerCustomFollowers')->name('edit_Seller_custom_followers');

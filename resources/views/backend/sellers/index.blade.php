@@ -196,6 +196,11 @@
                                                 {{translate('Go to Payment')}}
                                             </a>
                                         @endcan
+                                        @can('change_balance_seller')
+                                        <a href="javascript:void();" onclick="show_change_balance_modal('{{$shop->id}}');" class="dropdown-item">
+                                            {{translate('Change Balance')}}
+                                        </a>
+                                    @endcan
                                         @can('seller_payment_history')
                                             <a href="{{route('sellers.payment_history', encrypt($shop->user_id))}}" class="dropdown-item">
                                                 {{translate('Payment History')}}
@@ -287,6 +292,14 @@
 	<div class="modal fade" id="payment_modal">
 	    <div class="modal-dialog">
 	        <div class="modal-content" id="payment-modal-content">
+
+	        </div>
+	    </div>
+	</div>
+	<!-- Seller Payment Modal -->
+	<div class="modal fade" id="change_balance_modal">
+	    <div class="modal-dialog">
+	        <div class="modal-content" id="change-balance-modal-content">
 
 	        </div>
 	    </div>
@@ -416,6 +429,14 @@
             $.post('{{ route('sellers.payment_modal') }}',{_token:'{{ @csrf_token() }}', id:id}, function(data){
                 $('#payment_modal #payment-modal-content').html(data);
                 $('#payment_modal').modal('show', {backdrop: 'static'});
+                $('.demo-select2-placeholder').select2();
+            });
+        }
+
+        function show_change_balance_modal(id){
+            $.post('{{ route('sellers.change_balance_modal') }}',{_token:'{{ @csrf_token() }}', id:id}, function(data){
+                $('#change_balance_modal #change-balance-modal-content').html(data);
+                $('#change_balance_modal').modal('show', {backdrop: 'static'});
                 $('.demo-select2-placeholder').select2();
             });
         }

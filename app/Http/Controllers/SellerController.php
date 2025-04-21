@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Addon;
 use App\Models\Cart;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
@@ -28,6 +29,7 @@ class SellerController extends Controller
         $this->middleware(['permission:view_seller_profile'])->only('profile_modal');
         $this->middleware(['permission:login_as_seller'])->only('login');
         $this->middleware(['permission:pay_to_seller'])->only('payment_modal');
+        $this->middleware(['permission:change_seller_balance'])->only('change_balance_modal');
         $this->middleware(['permission:edit_seller'])->only('edit');
         $this->middleware(['permission:delete_seller'])->only('destroy');
         $this->middleware(['permission:ban_seller'])->only('ban');
@@ -349,6 +351,36 @@ class SellerController extends Controller
     {
         $shop = shop::findOrFail($request->id);
         return view('backend.sellers.payment_modal', compact('shop'));
+    }
+
+    public function change_balance_modal(Request $request)
+    {
+        $shop = shop::findOrFail($request->id);
+        return view('backend.sellers.change_balance_modal', compact('shop'));
+    }
+
+    public function change_balance(Request $request)
+    {
+        $shop = shop::findOrFail($request->shop_id);
+        $amount = $request->amount;
+        $payment_option = $request->payment_option;
+
+        if ($payment_option == 'add') {
+            $shop->user->balance += $amount;
+        } else {
+            $shop->user->balance -= $amount;
+            if ($shop->user->balance < 0) {
+                $shop->user->balance = 0;
+            }
+        }
+        $shop->user->save();
+        $paymentHistory = new Payment();
+        $paymentHistory->seller_id = $shop->user->id;
+        $paymentHistory->amount = $amount;
+        $paymentHistory->payment_method = "Admin ".$payment_option." balance action";
+        $paymentHistory->save();
+        flash(translate('Seller balance has been changed successfully'))->success();
+        return redirect()->route('sellers.index');
     }
 
     public function profile_modal(Request $request)
