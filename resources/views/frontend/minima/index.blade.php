@@ -64,7 +64,8 @@
                                         <img class="img-fit h-100 m-auto has-transition ls-is-cached lazyloaded"
                                         src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                         alt="{{ env('APP_NAME') }} promo"
-                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                        loading="lazy">
                                     </div>
                                 </a>
                             </div>
@@ -88,7 +89,8 @@
                                         <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                             data-src="{{ uploaded_asset(get_setting('flash_deal_card_bg_image', null, $lang)) }}" alt="{{ env('APP_NAME') }} promo"
                                             class="img-fluid lazyload w-100 has-transition"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                            loading="lazy">
                                         <span class="position-absolute top-0 left-0 p-2rem d-flex flex-column" style="width: 70%">
                                             <span class="fs-30 fw-700 text-{{ get_setting('flash_deal_card_text') }}" style="text-transform: uppercase;">{{ get_setting('flash_deal_card_bg_title') }}</span>
                                             <span class="fs-16 text-{{ get_setting('flash_deal_card_text') }}">{{ get_setting('flash_deal_card_bg_subtitle') }}</span>
@@ -102,7 +104,8 @@
                                         <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                             data-src="{{ uploaded_asset(get_setting('todays_deal_card_bg_image', null, $lang)) }}" alt="{{ env('APP_NAME') }} promo"
                                             class="img-fluid lazyload w-100 has-transition"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                            loading="lazy">
                                         <span class="position-absolute top-0 left-0 p-2rem d-flex flex-column" style="width: 70%">
                                             <span class="fs-30 fw-700 text-{{ get_setting('flash_deal_card_text') }}" style="text-transform: uppercase;">{{ get_setting('todays_deal_card_bg_title') }}</span>
                                             <span class="fs-16 text-{{ get_setting('flash_deal_card_text') }}">{{ get_setting('todays_deal_card_bg_subtitle') }}</span>
@@ -116,7 +119,8 @@
                                         <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                             data-src="{{ uploaded_asset(get_setting('new_product_card_bg_image', null, $lang)) }}" alt="{{ env('APP_NAME') }} promo"
                                             class="img-fluid lazyload w-100 has-transition"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                            loading="lazy">
                                         <span class="position-absolute top-0 left-0 p-2rem d-flex flex-column" style="width: 70%">
                                             <span class="fs-30 fw-700 text-{{ get_setting('new_product_card_text') }}" style="text-transform: uppercase;">{{ get_setting('new_product_card_bg_title') }}</span>
                                             <span class="fs-16 text-{{ get_setting('new_product_card_text') }}">{{ get_setting('new_product_card_bg_subtitle') }}</span>
@@ -151,7 +155,8 @@
                                             <img src="{{ isset($category->coverImage->file_name) ? my_asset($category->coverImage->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                                 alt="{{ $category_name }}"
                                                 class="img-fit h-100 has-transition"
-                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';"
+                                                loading="lazy">
                                         </div>
                                         <div class="absolute-bottom-left has-transition h-80px w-100 d-flex flex-column align-items-center justify-content-center"
                                             style="background-color: {{ hex2rgba(get_setting('base_color', '#d43533'), 0.95) }}">
@@ -196,7 +201,8 @@
                                     <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                         data-src="{{ uploaded_asset($value) }}" alt="{{ env('APP_NAME') }} promo"
                                         class="img-fluid lazyload w-100 has-transition"
-                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                        loading="lazy">
                                 </a>
                             </div>
                         @endforeach
@@ -234,7 +240,8 @@
                                     <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                         data-src="{{ uploaded_asset($value) }}" alt="{{ env('APP_NAME') }} promo"
                                         class="img-fluid lazyload w-100 has-transition"
-                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                        loading="lazy">
                                 </a>
                             </div>
                         @endforeach
@@ -270,7 +277,8 @@
                                 <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                     data-src="{{ uploaded_asset($value) }}" alt="{{ env('APP_NAME') }} promo"
                                     class="img-fluid lazyload w-100 has-transition"
-                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                    loading="lazy">
                             </a>
                         </div>
                     @endforeach
@@ -318,7 +326,8 @@
                                 <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                     data-src="{{ uploaded_asset($value) }}" alt="{{ env('APP_NAME') }} promo"
                                     class="img-fluid lazyload w-100 has-transition"
-                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                    loading="lazy">
                             </a>
                         </div>
                     @endforeach
@@ -363,13 +372,15 @@
                             <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                 data-src="{{ uploaded_asset($classifiedBannerImage) }}"
                                 alt="{{ env('APP_NAME') }} promo" class="lazyload img-fit h-100 has-transition"
-                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                loading="lazy">
                         </div>
                         <div class="overflow-hidden hov-scale-img d-md-none">
                             <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                 data-src="{{ $classifiedBannerImageSmall != null ? uploaded_asset($classifiedBannerImageSmall) : uploaded_asset($classifiedBannerImage) }}"
                                 alt="{{ env('APP_NAME') }} promo" class="lazyload img-fit h-100 has-transition"
-                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                loading="lazy">
                         </div>
                     @endif
                     <div class="bg-white border p-3 p-sm-4">
@@ -399,7 +410,8 @@
                                                         src="{{ static_asset('assets/img/placeholder.jpg') }}"
                                                         data-src="{{ isset($classified_product->thumbnail->file_name) ? my_asset($classified_product->thumbnail->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                                         alt="{{ $classified_product->getTranslation('name') }}"
-                                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';"
+                                                        loading="lazy">
                                                 </a>
                                             </div>
                                             <div class="col">
@@ -530,7 +542,8 @@
                                                         <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
                                                             data-src="{{ uploaded_asset($seller->logo) }}" alt="{{ $seller->name }}"
                                                             class="img-fit lazyload has-transition"
-                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
+                                                            loading="lazy">
                                                     </a>
                                                 </div>
                                                 <!-- Shop name -->
@@ -584,7 +597,8 @@
                                             <img src="{{ $brand->logo != null ? uploaded_asset($brand->logo) : static_asset('assets/img/placeholder.jpg') }}"
                                                 class="lazyload h-100px h-md-110px mx-auto has-transition p-2 p-sm-4"
                                                 alt="{{ $brand->getTranslation('name') }}"
-                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';"
+                                                loading="lazy">
                                             <p class="text-center text-dark fs-12 fs-md-14 fw-700 mt-2 mb-2 text-truncate" title="{{ $brand->getTranslation('name') }}">
                                                 {{ $brand->getTranslation('name') }}
                                             </p>
