@@ -68,7 +68,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <p class="fs-12 text-light my-2 ml-1">{{ translate('Followers').' '.$authUser->shop?->followers()->count() }}</p>
+                            {{-- <p class="fs-12 text-light my-2 ml-1">{{ translate('Followers').' '.$authUser->shop?->followers()->count() }}</p> --}}
                         </div>
                         <div class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16.5" height="16.5" viewBox="0 0 16.5 16.5">
