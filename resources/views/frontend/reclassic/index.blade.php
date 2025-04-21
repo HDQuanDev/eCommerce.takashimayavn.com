@@ -732,7 +732,7 @@
                         @endphp
                         @foreach ($brands as $brand)
                             <div class="col-xl-3 col-lg-4 col-6 my-3">
-                                <a href="{{ route('products.brand', $brand->slug) }}" class="d-block has-transition hov-shadow-out z-1 hov-scale-img rounded-2 overflow-hidden">
+                                <a href="{{ $brand->link_brand ?? route('products.brand', $brand->slug) }}" class="d-block has-transition hov-shadow-out z-1 hov-scale-img rounded-2 overflow-hidden">
                                     <span class="d-flex flex-column flex-sm-row align-items-center">
                                         <span class="d-flex align-items-center bg-white size-80px p-2 rounded-2 overflow-hidden">
                                             <img src="{{ $brand->logo != null ? uploaded_asset($brand->logo) : static_asset('assets/img/placeholder.jpg') }}"

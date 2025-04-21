@@ -731,15 +731,15 @@
                         @foreach ($brands as $brand)
                             <div
                                 class="col text-center border-right border-bottom hov-scale-img has-transition hov-shadow-out z-1">
-                                <a href="{{ route('products.brand', $brand->slug) }}" class="d-block p-sm-3">
-                                    <img src="{{ $brand->logo != null ? uploaded_asset($brand->logo) : static_asset('assets/img/placeholder.jpg') }}"
-                                        class="lazyload h-100 h-md-100px mx-auto has-transition p-2 p-sm-4 mw-100"
-                                        alt="{{ $brand->getTranslation('name') }}"
-                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
-                                    <p class="text-center text-dark fs-12 fs-md-14 fw-700 mt-2">
-                                        {{ $brand->getTranslation('name') }}
-                                    </p>
-                                </a>
+                                <a href="{{ $brand->link_brand ?? route('products.brand', $brand->slug) }}" class="d-block p-sm-3" target="{{ $brand->link_brand ? '_blank' : '_self' }}">
+                    <img src="{{ $brand->logo != null ? uploaded_asset($brand->logo) : static_asset('assets/img/placeholder.jpg') }}"
+                        class="lazyload h-100 h-md-100px mx-auto has-transition p-2 p-sm-4 mw-100"
+                        alt="{{ $brand->getTranslation('name') }}"
+                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                    <p class="text-center text-dark fs-12 fs-md-14 fw-700 mt-2">
+                        {{ $brand->getTranslation('name') }}
+                    </p>
+                </a>
                             </div>
                         @endforeach
                     </div>
