@@ -246,13 +246,30 @@
                             </td>
                             <td>{{ $shop->followers()->count() }}</td>
                             <td>{{ $shop->custom_followers }}</td>
-                            <td>
-                                @if(auth()->user()->can('edit_seller_custom_followers'))
-                                    <a href="javascript:void();" onclick="editCustomFollowers({{ $shop->id }}, {{ $shop->custom_followers }});" class="btn btn-primary btn-xs fs-10 fw-700">
-                                        {{translate('Edit Custom Follower')}}
-                                    </a>
-                                @endif
-                            </td>
+                            <td class="text-center">
+    <div class="d-flex flex-column align-items-center gap-2">
+        @if(auth()->user()->can('edit_seller_custom_followers'))
+            <a href="javascript:void(0);" 
+               onclick="editCustomFollowers({{ $shop->id }}, {{ $shop->custom_followers }});" 
+               class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1 shadow-sm"
+               title="{{ translate('Edit Custom Follower') }}">
+                <i class="fas fa-user-plus"></i>
+                <span class="fs-12 fw-600">{{ translate('Edit Followers') }}</span>
+            </a>
+        @endif
+
+        @if(auth()->user()->can('edit_seller_custom_rating'))
+            <a href="javascript:void(0);" 
+               onclick="editSellerRating({{ $shop->id }}, {{ $shop->rating }});" 
+               class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1 shadow-sm"
+               title="{{ translate('Edit Rating') }}">
+                <i class="fas fa-star"></i>
+                <span class="fs-12 fw-600">{{ translate('Edit Rating') }}</span>
+            </a>
+        @endif
+    </div>
+</td>
+
                         @endif
 
                     </tr>
@@ -383,6 +400,34 @@
                             <label class="col-md-3 col-from-label">{{translate('Custom Followers')}}</label>
                             <div class="col-md-9">
                                 <input type="number" lang="en" min="0" step="1" placeholder="{{translate('Custom Followers')}}" value="" name="custom_followers" id="custom_followers" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm text-white">{{translate('save!')}}</button>
+                        <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit_seller_rating">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h6">{{translate('Edit Seller Rating')}}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                    </button>
+                </div>
+                <form class="form-horizontal" action="{{ route('edit_seller_rating') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                    <input type="hidden" name="shop_id" value="" id="rating_shop_id">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-from-label">{{translate('Rating')}}</label>
+                            <div class="col-md-9">
+                            <input type="number" lang="en" min="1" max="5" step="0.1" placeholder="{{translate('Rating')}}" value="" name="seller_rating" id="seller_rating" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -525,6 +570,10 @@
             $('#custom_followers').val(custom_followers);
             $('#edit_seller_custom_followers').modal('show', {backdrop: 'static'});
         }
-
+        function editSellerRating(shop_id, seller_rating){
+    $('#rating_shop_id').val(shop_id);
+    $('#seller_rating').val(seller_rating);
+    $('#edit_seller_rating').modal('show', {backdrop: 'static'});
+}
     </script>
 @endsection
