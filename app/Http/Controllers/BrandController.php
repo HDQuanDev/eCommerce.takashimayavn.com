@@ -55,6 +55,16 @@ class BrandController extends Controller
         $brand->name = $request->name;
         $brand->meta_title = $request->meta_title;
         $brand->meta_description = $request->meta_description;
+        if ($request->link_brand) {
+            $link = trim($request->link_brand);
+            if (!Str::startsWith($link, ['http://', 'https://'])) {
+                $link = 'https://' . $link;
+            }
+            $brand->link_brand = $link;
+        } else {
+            $brand->link_brand = null;
+        }
+        
         if ($request->slug != null) {
             $brand->slug = str_replace(' ', '-', $request->slug);
         }
@@ -113,6 +123,16 @@ class BrandController extends Controller
         }
         $brand->meta_title = $request->meta_title;
         $brand->meta_description = $request->meta_description;
+        if ($request->link_brand) {
+            $link = trim($request->link_brand);
+            if (!Str::startsWith($link, ['http://', 'https://'])) {
+                $link = 'https://' . $link;
+            }
+            $brand->link_brand = $link;
+        } else {
+            $brand->link_brand = null;
+        }
+        
         if ($request->slug != null) {
             $brand->slug = strtolower($request->slug);
         }

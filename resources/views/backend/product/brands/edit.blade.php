@@ -45,6 +45,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-3 col-from-label">{{translate('Link Brand')}}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="link_brand" value="{{ $brand->link_brand }}" placeholder="{{translate('Link Brand')}}">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 col-from-label">{{translate('Meta Title')}}</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="meta_title" value="{{ $brand->meta_title }}" placeholder="{{translate('Meta Title')}}">
