@@ -1623,7 +1623,9 @@ if (!function_exists('get_flash_deal_products')) {
     function get_flash_deal_products($flash_deal_id)
     {
         $flash_deal_product_query = FlashDealProduct::query();
-        $flash_deal_product_query->where('flash_deal_id', $flash_deal_id);
+        $flash_deal_product_query->where('flash_deal_id', $flash_deal_id)->whereHas('product', function ($query) {
+            $query->whereNot('published', 0);
+        });
         $flash_deal_products = $flash_deal_product_query->with('product')->orderBy('id', 'desc')->limit(10)->get();
 
         return $flash_deal_products;
