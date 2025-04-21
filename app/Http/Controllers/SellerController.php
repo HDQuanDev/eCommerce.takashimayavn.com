@@ -34,6 +34,7 @@ class SellerController extends Controller
         $this->middleware(['permission:delete_seller'])->only('destroy');
         $this->middleware(['permission:ban_seller'])->only('ban');
         $this->middleware(['permission:edit_seller_custom_followers'])->only('editSellerCustomFollowers');
+        $this->middleware(['permission:edit_seller_custom_rating'])->only('editSellerCustomRating');
     }
 
     /**
@@ -462,4 +463,19 @@ class SellerController extends Controller
         flash(translate('Seller custom follower has been updated successfully.'))->success();
         return back();
     }
+    public function editSellerCustomRating(Request $request)
+{
+    $request->validate([
+        'shop_id' => 'required|exists:shops,id',
+        'seller_rating' => 'required|numeric|min:1|max:5',
+    ]);
+
+    $shop = Shop::find($request->shop_id);
+    $shop->rating = $request->seller_rating;
+    $shop->save();
+
+    flash(translate('Seller rating has been updated successfully.'))->success();
+    return back();
+}
+
 }

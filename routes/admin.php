@@ -214,6 +214,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::post('/sellers/approved', 'updateApproved')->name('sellers.approved');
         Route::post('/sellers/set-commission', 'setSellerBasedCommission')->name('set_seller_based_commission');
         Route::post('/sellers/edit-custom-followers', 'editSellerCustomFollowers')->name('edit_Seller_custom_followers');
+        Route::post('/sellers/edit-seller-rating', 'editSellerCustomRating')->name('edit_seller_rating');
     });
 
     // Seller Payment
