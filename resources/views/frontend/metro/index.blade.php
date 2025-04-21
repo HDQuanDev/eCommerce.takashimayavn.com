@@ -141,8 +141,8 @@
                                 data-rows="2" data-items="5" data-xxl-items="5" data-xl-items="3.5" data-lg-items="3" data-md-items="2"
                                 data-sm-items="2.5" data-xs-items="1.7" data-arrows="true" data-dots="false">
                                 @foreach ($flash_deal_products as $key => $flash_deal_product)
+                                @if ($flash_deal_product->product != null && $flash_deal_product->product->published != 0)
                                     <div class="carousel-box bg-white border-left border-bottom">
-                                        @if ($flash_deal_product->product != null && $flash_deal_product->product->published != 0)
                                             @php
                                                 $product_url = route('product', $flash_deal_product->product->slug);
                                                 if ($flash_deal_product->product->auction_product == 1) {
@@ -171,8 +171,8 @@
                                                     </div>
                                                 </a>
                                             </div>
+                                        </div>
                                         @endif
-                                    </div>
                                 @endforeach
                             </div>
                         </div>
