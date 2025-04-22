@@ -249,7 +249,7 @@
                         @foreach ($shop_slider_images as $key => $slider)
                             <div class="carousel-box w-100 h-140px h-md-300px h-xl-450px">
                                 <a href="{{ isset($shop_slider_links[$key]) ? $shop_slider_links[$key] : '' }}">
-                                    <img class="d-block lazyload h-100 img-fit" 
+                                    <img class="d-block lazyload h-100 img-fit"
                                         src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                         onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';"
                                         alt="{{ $key }} offer">
@@ -293,7 +293,7 @@
                 </div>
             </section>
         @endif
-        
+
         <!-- Banner full width 1 -->
         @if ($shop->banner_full_width_1_images)
             @php
@@ -313,7 +313,7 @@
                 </section>
             @endforeach
         @endif
-        
+
         <!-- Banner half width -->
         @if($shop->banners_half_width_images)
             @php
@@ -389,7 +389,7 @@
                     </div>
                     @if(count($products) > 6)
                     <div class="text-center mt-4 view-all-container">
-                        <button class="btn btn-primary view-all-btn">{{ translate('View All Products') }}</button>
+                        <button id="view-more-btn" data-type="{{ isset($type) ? $type : 'new-arrival' }}" class="btn btn-primary view-all-btn">{{ translate('View More Products') }}</button>
                     </div>
                     @endif
                 </div>
@@ -680,7 +680,7 @@
                                     </div>
 
                                         <!-- Categories -->
-     
+
                                 <div class="bg-white border mb-4 mx-3 mx-xl-0 mt-3 mt-xl-0">
                                     <div class="fs-16 fw-700 p-3">
                                         <a href="#collapse_1" class="dropdown-toggle filter-section text-dark d-flex align-items-center justify-content-between" data-toggle="collapse">
@@ -688,7 +688,7 @@
                                         </a>
                                     </div>
                                     <div class="collapse show px-3" id="collapse_1">
-                                       
+
                                         @php
                                         $product_categories = $type == 'all-preorder-products' ? get_categories_by_preorder_products($shop->user->id) : get_categories_by_products($shop->user->id);
                                         @endphp
@@ -711,7 +711,7 @@
                                  <!-- Attributes -->
                                  <div class="bg-white border mb-3">
                                     <div class="fs-16 fw-700 p-3">
-                                        <a href="#" class="dropdown-toggle text-dark filter-section collapsed d-flex align-items-center justify-content-between" 
+                                        <a href="#" class="dropdown-toggle text-dark filter-section collapsed d-flex align-items-center justify-content-between"
                                             data-toggle="collapse" data-target="#collapse_availability_filter" style="white-space: normal;">
                                             {{ translate('Filter by Availability') }}
                                         </a>
@@ -827,6 +827,10 @@
 
 @section('script')
     <script type="text/javascript">
+
+        let urlParams = new URLSearchParams(window.location.search);
+        const default_page = parseInt(urlParams.get('page')) || 1;
+        let type = $('#view-more-btn').data('type');
         function filter(){
             $('#search-form').submit();
         }
@@ -836,13 +840,45 @@
             $('input[name=max_price]').val(arg[1]);
             filter();
         }
-
+        let loadMore = function(page) {
+                $.ajax({
+                    url: "{{ route('shop.get-more-products') }}",
+                    type: 'POST',
+                    data: {
+                        type: type,
+                        shop_id: "{{ $shop->id }}",
+                        page: page + 1,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        let last_html = $('.products-container').html();
+                        $('.products-container').html(last_html + response.products);
+                        if (!response.has_more) {
+                            $('#view-more-btn').hide();
+                            urlParams.set('page', page + 1);
+                        }
+                        history.pushState(null, null, `?${urlParams.toString()}`);
+                    }
+                });
+            };
         // View All Products functionality
         $(document).ready(function(){
-            $('.view-all-btn').click(function(){
-                $('.product-item').removeClass('d-none');
-                $('.view-all-container').hide();
+            // $('.view-all-btn').click(function(){
+            //     $('.product-item').removeClass('d-none');
+            //     $('.view-all-container').hide();
+            // });
+            if(default_page > 1) {
+                for(let i = 1; i <= default_page; i++) {
+                    loadMore(i);
+                }
+            }
+
+            $('#view-more-btn').click(function(){
+                let page = parseInt(urlParams.get('page')) || 1;
+                loadMore(page);
             });
+
+
         });
     </script>
 @endsection

@@ -154,6 +154,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/product/variant-price', 'variant_price')->name('products.variant_price');
     Route::get('/shop/{slug}', 'shop')->name('shop.visit');
     Route::get('/shop/{slug}/{type}', 'filter_shop')->name('shop.visit.type');
+    Route::post('/shop/get-more-products', 'get_more_products')->name('shop.get-more-products');
 
     Route::get('/customer-packages', 'premium_package_index')->name('customer_packages_list_show');
 

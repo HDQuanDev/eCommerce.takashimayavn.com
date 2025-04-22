@@ -898,4 +898,59 @@ class HomeController extends Controller
         $sql_path = base_path('public/uploads/demo_data.sql');
         DB::unprepared(file_get_contents($sql_path));
     }
+
+    public function get_more_products(Request $request) {
+        $type = $request->type;
+        $shop = Shop::with('user')->find($request->shop_id);
+
+        if (!$shop) {
+            return response()->json([
+                'products' => '',
+                'has_more' => false
+            ]);
+        }
+
+        $user_id = $shop->user->id;
+        $page_size = 6;
+        $offset = ($request->page - 1) * $page_size;
+        $query = null;
+
+        // Coupons xử lý riêng
+        if ($type === 'cupons') {
+            $query = Coupon::where('start_date', '<=', strtotime(date('d-m-Y')))
+                ->where('end_date', '>=', strtotime(date('d-m-Y')))
+                ->where('user_id', $user_id);
+            $items = $query->skip($offset)->take($page_size)->get();
+
+            $view = $items->map(function ($coupon) {
+                return view('frontend.partials.coupon_box', ['coupon' => $coupon])->render();
+            })->implode('');
+
+            return response()->json([
+                'products' => $view,
+                'has_more' => $items->count() >= $page_size
+            ]);
+        }
+
+        // Sản phẩm
+        $product_query = Product::where('user_id', $user_id)->isApprovedPublished();
+
+        if ($type === 'top-selling') {
+            $product_query->orderBy('num_of_sale', 'desc');
+        } else {
+            $product_query->orderBy('created_at', 'desc');
+        }
+
+        $products = $product_query->skip($offset)->take($page_size)->get();
+
+        $view = $products->map(function ($product) {
+            return view('frontend.'.get_setting('homepage_select').'.partials.product_box_1', ['product' => $product])->render();
+        })->implode('');
+
+        return response()->json([
+            'products' => $view,
+            'has_more' => $products->count() >= $page_size
+        ]);
+    }
+
 }
