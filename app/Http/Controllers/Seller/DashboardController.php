@@ -54,6 +54,9 @@ class DashboardController extends Controller
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
             ->get()->pluck('total', 'date');
 
+
+            $data['total_order'] = OrderDetail::whereSellerId($authUserId)
+            ->count();
         // doanh số
         $orders_commission_this_month = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
@@ -65,6 +68,7 @@ class DashboardController extends Controller
             ->where('delivery_status', 'delivered')
             ->with('commissionHistory')
             ->get();
+
         $commission_this_month = 0;
         $total_sales = 0;
         foreach ($orders_commission_this_month as $order) {

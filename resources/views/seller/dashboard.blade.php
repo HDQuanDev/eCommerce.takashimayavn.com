@@ -101,7 +101,7 @@
                                 <span class="fs-14 text-light">{{ translate('Total Order') }}</span>
                             </p>
                             <h3 class="mb-0 text-white fs-30">
-                                {{ \App\Models\Order::where('seller_id', $authUser->id)->where('delivery_status', 'delivered')->count() }}
+                                {{ $total_order }}
                             </h3>
                         </div>
                         <div class="col-auto text-right">
