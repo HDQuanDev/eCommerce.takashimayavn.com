@@ -14,22 +14,22 @@ class DashboardController extends Controller
     public function index()
     {
         $authUserId = auth()->user()->id;
-        $data['this_month_pending_orders'] = OrderDetail::whereSellerId($authUserId)
+        $data['this_month_pending_orders'] = Order::whereSellerId($authUserId)
             ->whereDeliveryStatus('pending')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
-        $data['this_month_cancelled_orders'] = OrderDetail::whereSellerId($authUserId)
+        $data['this_month_cancelled_orders'] = Order::whereSellerId($authUserId)
             ->whereDeliveryStatus('cancelled')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
-        $data['this_month_on_the_way_orders'] = OrderDetail::whereSellerId($authUserId)
+        $data['this_month_on_the_way_orders'] = Order::whereSellerId($authUserId)
             ->whereDeliveryStatus('on_the_way')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
-        $data['this_month_delivered_orders'] = OrderDetail::whereSellerId($authUserId)
+        $data['this_month_delivered_orders'] = Order::whereSellerId($authUserId)
             ->whereDeliveryStatus('delivered')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
@@ -55,8 +55,7 @@ class DashboardController extends Controller
             ->get()->pluck('total', 'date');
 
 
-            $data['total_order'] = OrderDetail::whereSellerId($authUserId)
-            ->count();
+            $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
         // doanh số
         $orders_commission_this_month = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
