@@ -841,6 +841,7 @@
             filter();
         }
         let loadMore = function(page) {
+            $('#view-more-btn').hide();
                 $.ajax({
                     url: "{{ route('shop.get-more-products') }}",
                     type: 'POST',
@@ -855,8 +856,13 @@
                         $('.products-container').html(last_html + response.products);
                         if (!response.has_more) {
                             $('#view-more-btn').hide();
-                            urlParams.set('page', page + 1);
+                        }else {
+                            $('#view-more-btn').show();
                         }
+                        if(response.products.length > 5) {
+                            urlParams.set('page', page +1);
+                        }
+
                         history.pushState(null, null, `?${urlParams.toString()}`);
                     }
                 });
