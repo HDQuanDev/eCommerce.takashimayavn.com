@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\PreventDemoModeChanges;
+use Illuminate\Support\Facades\DB;
 
 class Shop extends Model
 {
@@ -13,10 +14,15 @@ class Shop extends Model
   protected $with = ['user'];
 
 
+
   protected $appends = ['commission_percentage'];
 
   public function getCommissionPercentageAttribute(){
-    return $this->user->commission_percentage;
+    $commission_percentage = $this->user->commission_percentage;
+    if($commission_percentage == 0){
+      $commission_percentage = DB::table('shops')->where('id', $this->id)->first()->commission_percentage;
+    }
+    return $commission_percentage;
   }
 
   public function user()

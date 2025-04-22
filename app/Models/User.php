@@ -184,7 +184,6 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($package) {
             return $package->commission_percentage;
         }
-        return self::DEFAULT_COMMISSION_PERCENTAGE;
     }
 
     public function commission_package()

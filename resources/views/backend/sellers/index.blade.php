@@ -207,9 +207,9 @@
                                             </a>
                                         @endcan
                                         @can('seller_commission_configuration')
-                                            {{-- <a href="javascript:void();" onclick="set_commission('{{ $shop->id }}');" class="dropdown-item">
+                                            <a href="javascript:void();" onclick="set_commission('{{ $shop->id }}');" class="dropdown-item">
                                                 {{translate('Set Commission')}}
-                                            </a> --}}
+                                            </a>
                                         @endcan
                                         @can('edit_seller')
                                             <a href="{{route('sellers.edit', encrypt($shop->id))}}" class="dropdown-item">
@@ -254,8 +254,8 @@
                             <td class="text-center">
     <div class="d-flex flex-column align-items-center gap-2">
         @if(auth()->user()->can('edit_seller_custom_followers'))
-            <a href="javascript:void(0);" 
-               onclick="editCustomFollowers({{ $shop->id }}, {{ $shop->custom_followers }});" 
+            <a href="javascript:void(0);"
+               onclick="editCustomFollowers({{ $shop->id }}, {{ $shop->custom_followers }});"
                class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1 shadow-sm"
                title="{{ translate('Edit Custom Follower') }}">
                 <i class="fas fa-user-plus"></i>
@@ -264,8 +264,8 @@
         @endif
 
         @if(auth()->user()->can('edit_seller_custom_rating'))
-            <a href="javascript:void(0);" 
-               onclick="editSellerRating({{ $shop->id }}, {{ $shop->rating }});" 
+            <a href="javascript:void(0);"
+               onclick="editSellerRating({{ $shop->id }}, {{ $shop->rating }});"
                class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1 shadow-sm"
                title="{{ translate('Edit Rating') }}">
                 <i class="fas fa-star"></i>
