@@ -85,7 +85,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <p class="fs-12 text-light my-2 ml-1">{{ translate('Custom Followers').' '.$authUser->shop?->custom_followers }}</p>
+                            <p class="fs-12 text-light my-2 ml-1">{{ translate('Custom Followers').' '.number_format($authUser->shop?->custom_followers) }}</p>
                         </div>
                     </div>
                 </div>
