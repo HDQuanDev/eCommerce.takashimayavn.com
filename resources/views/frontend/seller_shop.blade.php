@@ -358,7 +358,7 @@
                 </h3>
                 @if (!isset($type))
                     <!-- Links -->
-                    <div class="d-flex">
+                    <div class="d-none">
                         <a type="button" class="arrow-prev slide-arrow link-disable text-secondary mr-2" onclick="clickToSlide('slick-prev','section_types')"><i class="las la-angle-left fs-20 fw-600"></i></a>
                         <a type="button" class="arrow-next slide-arrow text-secondary ml-2" onclick="clickToSlide('slick-next','section_types')"><i class="las la-angle-right fs-20 fw-600"></i></a>
                     </div>
@@ -380,13 +380,18 @@
             @if (!isset($type))
                 <!-- New Arrival Products Section -->
                 <div class="px-sm-3 pb-3">
-                    <div class="aiz-carousel sm-gutters-16 arrow-none" data-items="6" data-xl-items="5" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='false'>
+                    <div class="row gutters-16 row-cols-xxl-6 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2 border-top border-left products-container">
                         @foreach ($products as $key => $product)
-                        <div class="carousel-box px-3 position-relative has-transition hov-animate-outline border-right border-top border-bottom @if($key == 0) border-left @endif">
+                        <div class="col border-right border-bottom product-item @if($key >= 6) d-none @endif">
                             @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1',['product' => $product])
                         </div>
                         @endforeach
                     </div>
+                    @if(count($products) > 6)
+                    <div class="text-center mt-4 view-all-container">
+                        <button class="btn btn-primary view-all-btn">{{ translate('View All Products') }}</button>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Banner full width 2 -->
@@ -831,5 +836,13 @@
             $('input[name=max_price]').val(arg[1]);
             filter();
         }
+
+        // View All Products functionality
+        $(document).ready(function(){
+            $('.view-all-btn').click(function(){
+                $('.product-item').removeClass('d-none');
+                $('.view-all-container').hide();
+            });
+        });
     </script>
 @endsection
