@@ -119,8 +119,7 @@ class OrderController extends Controller
         $order = Order::findOrFail(decrypt($id));
 
         $order_shipping_address = json_decode($order->shipping_address);
-        $delivery_boys = User::where('city', $order_shipping_address->city)
-                ->where('user_type', 'delivery_boy')
+        $delivery_boys = User::where('user_type', 'delivery_boy')
                 ->get();
 
         if(env('DEMO_MODE') != 'On') {
