@@ -37,10 +37,9 @@
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Shipping address') }}:</td>
                             <td>{{ json_decode($order->shipping_address)->address }},
-                                {{ json_decode($order->shipping_address)->city }},
-                                @if(isset(json_decode($order->shipping_address)->state)) {{ json_decode($order->shipping_address)->state }} - @endif
+
                                 {{ json_decode($order->shipping_address)->postal_code }},
-                                {{ json_decode($order->shipping_address)->country }}
+
                             </td>
                         </tr>
                     </table>
