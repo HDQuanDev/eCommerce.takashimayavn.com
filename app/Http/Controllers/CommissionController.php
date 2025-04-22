@@ -126,9 +126,9 @@ class CommissionController extends Controller
                     }
                 }
                 // calculate commission
+
                 if ($commission_percentage > 0) {
                     $admin_commission = ($orderDetail->price * $commission_percentage) / 100;
-
                     if (get_setting('product_manage_by_admin') == 1) {
                         $seller_earning = ($orderDetail->tax + $orderDetail->price) - $admin_commission;
                         $seller->admin_to_pay += $seller_earning;

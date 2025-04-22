@@ -237,7 +237,7 @@ class OrderController extends Controller
         if (!$user) {
             return response()->json(['success' => false, 'message' => translate('User account not found!')]);
         }
-        $seller = Seller::find($user->seller->id);
+        $seller = Seller::createOrFirst(['user_id' => $user->id]);
         if (!$seller) {
             return response()->json(['success' => false, 'message' => translate('Seller account not found!')]);
         }
@@ -269,7 +269,7 @@ class OrderController extends Controller
 
         if ($order->payment_status == 'paid' && $order->commission_calculated == 0) {
 
-            calculateCommissionAffilationClubPoint($order);
+            calculateCommissionAffilationClubPoint(order: $order);
         }
 
         // Payment Status change email notification to Admin, seller, Customer
