@@ -409,7 +409,7 @@ class OrderController extends Controller
             $shop->admin_to_pay -= $sellerEarning;
             $shop->save();
         }
-        if($request->status == 'delivered'){
+        if($request->status == 'delivered' && $order->commissionHistory()->exists()){
             $sellerEarning = $order->commissionHistory->seller_earning;
             $adminCommission = $order->commissionHistory->admin_commission;
             if($order->payment_type == 'cash_on_delivery'){
