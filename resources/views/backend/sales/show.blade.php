@@ -108,7 +108,7 @@
                             </strong><br>
                             {{ json_decode($order->shipping_address)->email }}<br>
                             {{ json_decode($order->shipping_address)->phone }}<br>
-                            {{ json_decode($order->shipping_address)->address }}- {{ json_decode($order->shipping_address)->postal_code }}<br>
+                            {{ json_decode($order->shipping_address)->address }},  {{ json_decode($order->shipping_address)?->postal_code ?? '' }}<br>
 
                         </address>
                     @else
