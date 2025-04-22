@@ -13,10 +13,10 @@
 
         body {
             font-size: 0.875rem;
-            font-family: '<?php echo $font_family; ?>';
+            font-family: '@php echo $font_family; @endphp';
             font-weight: normal;
-            direction: <?php echo $direction; ?>;
-            text-align: <?php echo $text_align; ?>;
+            direction: '@php echo $direction; @endphp';
+            text-align: '@php echo $text_align; @endphp';
             padding: 0;
             margin: 0;
         }
@@ -52,11 +52,11 @@
         }
 
         .text-left {
-            text-align: <?php echo $text_align; ?>;
+            text-align: '@php echo $text_align; @endphp';
         }
 
         .text-right {
-            text-align: <?php echo $not_text_align; ?>;
+            text-align: '@php echo $not_text_align; @endphp';
         }
     </style>
 </head>
@@ -218,10 +218,12 @@
                 </thead>
                 <tbody>
                     <tr>
+                        @php
+                        $removedXML = '<?xml version="1.0" encoding="UTF-8" ?>';
+
+                        @endphp
                         <td class="text-left">
-                            @php
-                            $removedXML = '<?xml version="1.0" encoding="UTF-8"@endphp';
-                            @endphp
+
                             {!! str_replace($removedXML, '', QrCode::size(100)->generate($order->code)) !!}
                         </td>
                         <td>
@@ -261,9 +263,10 @@
                 </tbody>
             </table>
         </div>
-
     </div>
-
 </body>
 
 </html>
+@php
+    exit();
+@endphp
