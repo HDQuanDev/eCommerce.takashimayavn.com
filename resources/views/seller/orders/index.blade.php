@@ -225,7 +225,7 @@
                 var $deliveryStatusBadge = $processBtn.closest('tr').find('td:nth-child(7) span.badge');
 
                 // Confirm before processing
-                if (confirm('Are you sure you want to process order ' + orderCode + '?\nThis will mark the order as delivered.')) {
+                if (confirm('Bạn có chắc bạn muốn xử lý đơn hàng ' + orderCode + ' không?\nĐiều này sẽ đánh dấu đơn đặt hàng là đã được giao.')) {
                     // Show loading indicator
                     $processBtn.html('<i class="las la-spinner la-spin"></i> Processing...');
 
