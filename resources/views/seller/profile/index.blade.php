@@ -282,7 +282,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-2">
                                     <label>{{ translate('State')}}</label>
                                 </div>
@@ -333,7 +333,7 @@
                                         <input type="text" class="form-control mb-3" id="latitude" name="latitude" readonly="">
                                     </div>
                                 </div>
-                            @endif
+                            @endif --}}
 
                             <div class="row">
                                 <div class="col-md-2">

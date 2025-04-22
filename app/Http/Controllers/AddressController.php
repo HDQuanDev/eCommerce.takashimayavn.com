@@ -45,11 +45,11 @@ class AddressController extends Controller
             $address->user_id   = Auth::user()->id;
         }
         $address->address       = $request->address;
-        $address->country_id    = $request->country_id;
-        $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
-        $address->longitude     = $request->longitude;
-        $address->latitude      = $request->latitude;
+        // $address->country_id    = $request->country_id;
+        // $address->state_id      = $request->state_id;
+        // $address->city_id       = $request->city_id;
+        // $address->longitude     = $request->longitude;
+        // $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;
         $address->phone         = '+'.$request->country_code.$request->phone;
         $address->save();

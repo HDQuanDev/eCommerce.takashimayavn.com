@@ -12,7 +12,7 @@
         </div>
 
         <!-- Country -->
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-2">
                 <label>{{ translate('Country')}}</label>
             </div>
@@ -28,10 +28,10 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- State -->
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-2">
                 <label>{{ translate('State')}}</label>
             </div>
@@ -44,10 +44,10 @@
                     @endforeach
                 </select>
             </div>
-        </div>
+        </div> --}}
 
         <!-- City -->
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-2">
                 <label>{{ translate('City')}}</label>
             </div>
@@ -60,8 +60,8 @@
                     @endforeach
                 </select>
             </div>
-        </div>
-        
+        </div> --}}
+
         @if (get_setting('google_map') == 1)
             <!-- Google Map -->
             <div class="row mt-3 mb-3">
