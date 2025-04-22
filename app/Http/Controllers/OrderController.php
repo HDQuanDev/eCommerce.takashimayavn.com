@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\AffiliateController;
+use App\Models\CommissionHistory;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Cart;
@@ -410,8 +411,8 @@ class OrderController extends Controller
             $shop->save();
         }
         if($request->status == 'delivered' && $order->commissionHistory()->exists()){
-            $sellerEarning = $order->commissionHistory->seller_earning;
-            $adminCommission = $order->commissionHistory->admin_commission;
+            $sellerEarning = CommissionHistory::where('order_id', $order->id)->sum('seller_earning');
+            $adminCommission = CommissionHistory::where('order_id', $order->id)->sum('admin_commission');
             if($order->payment_type == 'cash_on_delivery'){
                 $order->shop->user->balance += $sellerEarning + $adminCommission;
             }else {

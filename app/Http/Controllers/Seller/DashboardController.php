@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Models\CommissionHistory;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
@@ -55,7 +56,7 @@ class DashboardController extends Controller
             ->get()->pluck('total', 'date');
 
 
-            $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
+        $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
         // doanh số
         $orders_commission_this_month = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
@@ -71,7 +72,8 @@ class DashboardController extends Controller
         $commission_this_month = 0;
         $total_sales = 0;
         foreach ($orders_commission_this_month as $order) {
-            $commission_this_month += $order->commissionHistory?->admin_commission ?? 0;
+            $value = CommissionHistory::where('order_id', $order->id)->sum('admin_commission');
+            $commission_this_month += $value;
 
         }
         foreach ($orders_commission as $order) {
