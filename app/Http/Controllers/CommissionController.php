@@ -120,7 +120,7 @@ class CommissionController extends Controller
                     if (get_setting('seller_commission_type') == 'fixed_rate') {
                         $commission_percentage = get_setting('vendor_commission');
                     } elseif (get_setting('seller_commission_type') == 'seller_based') {
-                        $commission_percentage = $seller->commission_percentage;
+                        $commission_percentage = $seller->commission_percentage ?? 0;
                     } elseif (get_setting('seller_commission_type') == 'category_based') {
                         $commission_percentage = $orderDetail->product->main_category->commision_rate;
                     }
