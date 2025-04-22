@@ -15,7 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens, HasRoles;
 
-
+    const DEFAULT_COMMISSION_PERCENTAGE = 12;
     public function sendEmailVerificationNotification()
     {
         $this->notify(new EmailVerificationNotification());
@@ -184,7 +184,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($package) {
             return $package->commission_percentage;
         }
-        return 12;
+        return self::DEFAULT_COMMISSION_PERCENTAGE;
     }
 
     public function commission_package()
