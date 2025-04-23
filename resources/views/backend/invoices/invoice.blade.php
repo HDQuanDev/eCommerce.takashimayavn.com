@@ -62,7 +62,7 @@
 			<table>
 				<tr>
 					<td>
-						<img src="{{ static_asset('assets/img/logo_pdf.png') }}" height="30" style="display:inline-block;">
+						<img src="{{ static_asset('assets/img/logo_pdf.png') }}" height="50" style="display:inline-block;">
 					</td>
 					<td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td>
 				</tr>
@@ -105,10 +105,10 @@
 					$shipping_address = json_decode($order->shipping_address);
 				@endphp
 				<tr><td class="strong small gry-color">{{ translate('Bill to') }}:</td></tr>
-				<tr><td class="strong">{{ $shipping_address->name }}</td></tr>
-				<tr><td class="gry-color small">{{ $shipping_address->address }}</td></tr>
+				<tr><td class="strong">{{ translate('Name') }}: {{ $shipping_address->name }}</td></tr>
+				<tr><td class="gry-color small">{{ translate('Address') }}: {{ $shipping_address->address }}</td></tr>
 				<tr><td class="gry-color small">{{ translate('Email') }}: {{ $shipping_address->email }}</td></tr>
-				<tr><td class="gry-color small">{{ translate('Phone') }}: {{ $shipping_address->phone }}</td></tr>
+				<tr><td class="gry-color small">{{ translate('Phone') }}: {{ strpos($shipping_address->phone, '++') === 0 ? substr($shipping_address->phone, 1) : $shipping_address->phone }}</td></tr>
 			</table>
 		</div>
 
