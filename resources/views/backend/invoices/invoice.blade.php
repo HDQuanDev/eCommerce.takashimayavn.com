@@ -64,12 +64,12 @@
 					<td>
 						<img src="{{ static_asset('assets/img/logo_pdf.png') }}" height="50" style="display:inline-block;">
 					</td>
-					<td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td>
+					{{-- <td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td> --}}
 				</tr>
 			</table>
 			<table>
 				<tr>
-					<td style="font-size: 1rem;" class="strong">{{ get_setting('site_name') }}</td>
+					{{-- <td style="font-size: 1rem;" class="strong">{{ get_setting('site_name') }}</td> --}}
 					<td class="text-right"></td>
 				</tr>
 				<tr>
