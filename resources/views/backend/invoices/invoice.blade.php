@@ -62,7 +62,7 @@
 			<table>
 				<tr>
 					<td>
-						<img src="{{ static_asset('assets/img/logo_pdf.png') }}" height="30" style="display:inline-block;">
+						<img src="{{ asset('assets/img/logo_pdf.png') }}" height="30" style="display:inline-block;">
 					</td>
 					<td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td>
 				</tr>
