@@ -82,7 +82,7 @@
                     </ul>
                 </div>
 
-                <div class="col-6 text-right d-none d-lg-block">
+                <div class="col-md-6 text-right">
                     <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center">
                         @if (get_setting('vendor_system_activation') == 1)
                             <!-- Become a Seller -->
