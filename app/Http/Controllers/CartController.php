@@ -108,7 +108,7 @@ class CartController extends Controller
             return array(
                 'status' => 1,
                 'cart_count' => count($carts),
-                'modal_view' => view('frontend.partials.minQtyNotSatisfied', ['min_qty' => $product->min_qty])->render(),
+                'modal_view' => view('frontend.partials.cantFindProductSock')->render(),
                 'nav_cart_view' => view('frontend.partials.cart.cart')->render(),
             );
         }
