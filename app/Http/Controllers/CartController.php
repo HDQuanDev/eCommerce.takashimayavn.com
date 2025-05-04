@@ -103,6 +103,7 @@ class CartController extends Controller
         $str = CartUtility::create_cart_variant($product, $request->all());
         Log::info("str: " . $str);
         $product_stock = $product->stocks->where('variant', $str)->first();
+        Log::info(json_encode($product->stocks));
         Log::info("product_stock: " . $product_stock);
         if($authUser != null) {
             $user_id = $authUser->id;
