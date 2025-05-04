@@ -101,6 +101,7 @@ class CartController extends Controller
 
         //check the color enabled or disabled for the product
         $str = CartUtility::create_cart_variant($product, $request->all());
+        Log::info("str: " . $str);
         $product_stock = $product->stocks->where('variant', $str)->first();
 
         if($authUser != null) {
