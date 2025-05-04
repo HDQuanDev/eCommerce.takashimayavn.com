@@ -103,6 +103,7 @@ class CartController extends Controller
         $str = CartUtility::create_cart_variant($product, $request->all());
         Log::info("str: " . $str);
         $product_stock = $product->stocks->where('variant', $str)->first();
+        Log::info("product_stock: " . json_encode($product_stock));
         if($product_stock == null) {
             return array(
                 'status' => 1,
