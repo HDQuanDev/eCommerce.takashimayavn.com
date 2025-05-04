@@ -603,7 +603,7 @@
     </section>
 
     <!-- Top Sellers -->
-    @if (get_setting('vendor_system_activation') == 1)
+    {{-- @if (get_setting('vendor_system_activation') == 1)
         @php
             $best_selers = get_best_sellers(10);
         @endphp
@@ -704,7 +704,7 @@
             </div>
         </section>
         @endif
-    @endif
+    @endif --}}
 
     <!-- Top Brands -->
     @if (get_setting('top_brands') != null)

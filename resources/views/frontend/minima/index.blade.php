@@ -352,7 +352,7 @@
         <!-- Newest Preorder Products -->
         @include('preorder.frontend.home_page.newest_preorder')
     @endif
-        
+
 
     <!-- Classified Product -->
     @if (get_setting('classified_product') == 1)
@@ -505,7 +505,7 @@
         <div class="row">
             <div class="col-xl-6 py-3 py-xl-0">
                 <!-- Top Sellers -->
-                @if (get_setting('vendor_system_activation') == 1)
+                {{-- @if (get_setting('vendor_system_activation') == 1)
                     @php
                         $best_selers = get_best_sellers(10);
                     @endphp
@@ -565,7 +565,7 @@
                         </div>
                     </section>
                     @endif
-                @endif
+                @endif --}}
             </div>
 
             <div class="col-xl-6 py-3 py-xl-0">

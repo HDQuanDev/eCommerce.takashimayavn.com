@@ -602,7 +602,7 @@
     @endif
 
     <!-- Top Sellers -->
-    @if (get_setting('vendor_system_activation') == 1)
+    {{-- @if (get_setting('vendor_system_activation') == 1)
         @php
             $best_selers = get_best_sellers(6);
             $sellers_section_bg = get_setting('sellers_section_bg_color');
@@ -703,7 +703,7 @@
             </div>
         </section>
         @endif
-    @endif
+    @endif --}}
 
     <!-- Top Brands -->
     @if (get_setting('top_brands') != null)

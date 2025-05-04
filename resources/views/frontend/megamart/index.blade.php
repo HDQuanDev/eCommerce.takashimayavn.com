@@ -264,7 +264,7 @@
 
     </div>
     @endif
- 
+
 
     <!-- Banner section 2 -->
     @php $homeBanner2Images = get_setting('home_banner2_images', null, $lang);   @endphp
@@ -399,7 +399,7 @@
                     @endif
 
                     <!-- Top Sellers -->
-                    <div class="col mb-2 mb-md-3 mt-2 mt-md-3">
+                    {{-- <div class="col mb-2 mb-md-3 mt-2 mt-md-3">
                         <div class="h-100" id="section_top_sellers">
                             <div class="border px-3 py-2rem">
                                 <!-- Top Section -->
@@ -454,7 +454,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
