@@ -11,6 +11,7 @@ use App\Models\Cart;
 use App\Models\Country;
 use Auth;
 use App\Utility\CartUtility;
+use Illuminate\Support\Facades\Log;
 use Session;
 use Cookie;
 
@@ -127,6 +128,8 @@ class CartController extends Controller
                     'nav_cart_view' => view('frontend.partials.cart.cart')->render(),
                 );
             }
+            Log::info($product_stock);
+            $product_stock->qty = $product_stock?->qty ?? $product->qty;
             if ($product_stock->qty < $cart->quantity + $request['quantity']) {
                 return array(
                     'status' => 0,

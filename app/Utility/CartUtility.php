@@ -30,7 +30,7 @@ class CartUtility
 
     public static function get_price($product, $product_stock, $quantity)
     {
-        $price = $product_stock?->price ?? home_price($product);
+        $price = $product_stock?->price ?? home_price($product, false);
         if ($product->auction_product == 1) {
             $price = $product->bids->max('amount');
         }
