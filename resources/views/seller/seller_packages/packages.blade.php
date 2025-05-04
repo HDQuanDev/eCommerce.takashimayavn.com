@@ -54,7 +54,7 @@
                             @endphp
                             @if($seller_package->amount > $admin_to_pay)
                                 <div class="mt-2">
-                                    <span class="text-danger">{{ translate('Số dư không đủ') }}</span>
+                                    <span class="text-danger">{{ translate('Số dư không đủ') . ' ' . format_price($admin_to_pay) }}</span>
                                 </div>
                             @endif
                         @endif
