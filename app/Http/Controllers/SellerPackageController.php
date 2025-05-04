@@ -144,15 +144,16 @@ class SellerPackageController extends Controller
     {
         $shop = Shop::where('user_id', Auth::user()->id)->first();
         $seller_package = SellerPackage::findOrFail($request->seller_package_id);
+        $user = Auth::user();
 
         // Kiểm tra số dư người bán có đủ để mua gói không
-        if ($seller_package->amount > $shop->admin_to_pay) {
+        if ($seller_package->amount > $user->balance) {
             flash(translate('Bạn không đủ số dư để mua gói này!'))->error();
             return back();
         }
 
         // Trừ số tiền từ tài khoản người bán
-        $shop->admin_to_pay -= $seller_package->amount;
+        $user->balance -= $seller_package->amount;
 
         // Cập nhật gói người bán
         $shop->seller_package_id = $seller_package->id;
@@ -188,13 +189,14 @@ class SellerPackageController extends Controller
             'package_expire_at' => $shop->package_invalid_at
         ]);
         $payment->save();
+        $user->save();
 
         // Tạo lịch sử giao dịch gói
         $seller_package_payment = new SellerPackagePayment;
         $seller_package_payment->user_id = Auth::user()->id;
         $seller_package_payment->seller_package_id = $seller_package->id;
         $seller_package_payment->payment_method = 'wallet';
-        $seller_package_payment->payment_details = 'Đã thanh toán từ số dư admin_to_pay';
+        $seller_package_payment->payment_details = 'Đã thanh toán từ số dư balance';
         $seller_package_payment->txn_code = $txn_code;  // Lưu cùng mã giao dịch để có thể liên kết
         $seller_package_payment->approval = 1; // Đã được chấp nhận tự động
         $seller_package_payment->offline_payment = 0;
