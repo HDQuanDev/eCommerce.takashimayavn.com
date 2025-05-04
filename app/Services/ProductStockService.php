@@ -6,6 +6,7 @@ use AizPackages\CombinationGenerate\Services\CombinationService;
 use App\Models\ProductStock;
 use App\Models\ProductStockPos;
 use App\Utility\ProductUtility;
+use Illuminate\Support\Facades\Log;
 
 class ProductStockService
 {
@@ -24,6 +25,7 @@ class ProductStockService
             $product->save();
             foreach ($combinations as $key => $combination) {
                 $str = ProductUtility::get_combination_string($combination, $collection);
+                Log::info("str stock: " . $str);
                 $product_stock = new ProductStock();
                 $product_stock->product_id = $product->id;
                 $product_stock->variant = $str;
