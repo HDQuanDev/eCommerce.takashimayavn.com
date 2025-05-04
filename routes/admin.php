@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddonController;
 use App\Http\Controllers\Admin\Report\EarningReportController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdsPackageController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\BlogCategoryController;
@@ -80,15 +81,15 @@ Route::controller(UpdateController::class)->group(function () {
     Route::get('/update/step3', 'step3')->name('update.step3');
     Route::post('/purchase_code', 'purchase_code')->name('update.code');
 });
-Route::get('/run-migrate', function () {
-    // Chạy file 1
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2025_04_19_180944_add_payment_fields_to_users_table.php',
-        '--force' => true
-    ]);
+// Route::get('/run-migrate', function () {
+//     // Chạy file 1
+//     Artisan::call('migrate', [
+//         '--path' => 'database/migrations/2025_04_19_180944_add_payment_fields_to_users_table.php',
+//         '--force' => true
+//     ]);
 
-    return 'Đã migrate 2 file commission package xong rồi nha!';
-});
+//     return 'Đã migrate 2 file commission package xong rồi nha!';
+// });
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin', 'prevent-back-history']);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-back-history']], function () {
 
@@ -670,6 +671,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/commission-packages/destroy/{id}', 'destroy')->name('commission-packages.destroy');
         Route::post('/commission-packages/update-status', 'updateStatus')->name('commission-packages.update_status');
         Route::post('/commission-packages/bulk-delete', 'bulkDelete')->name('commission-packages.bulk_delete');
+    });
+
+    Route::controller(AdsPackageController::class)->group(function () {
+        Route::get('/ads-packages', 'index')->name('ads-packages.index');
+        Route::get('/ads-packages/create', 'create')->name('ads-packages.create');
+        Route::get('/ads-package-history', 'adsPackageHistory')->name('ads-package.history');
+        Route::post('/ads-packages/create', 'store')->name('ads-packages.store');
+        Route::get('/ads-packages/edit/{id}', 'edit')->name('ads-packages.edit');
+        Route::post('/ads-packages/update/{id}', 'update')->name('ads-packages.update');
+        Route::get('/ads-packages/destroy/{id}', 'destroy')->name('ads-packages.destroy');
+        Route::post('/ads-packages/update-status', 'updateStatus')->name('ads-packages.update_status');
+        Route::post('/ads-packages/bulk-delete', 'bulkDelete')->name('ads-packages.bulk_delete');
     });
  // Referral Codes
  Route::resource('referral-codes', ReferralCodeController::class);

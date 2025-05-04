@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\Seller\AdsPackageController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\CommisionPackageController;
 use App\Http\Controllers\Seller\PosController;
@@ -50,7 +51,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     Route::controller(ProductBulkUploadController::class)->group(function () {
         Route::get('/product-bulk-upload/index', 'index')->name('product_bulk_upload.index');
         Route::post('/product-bulk-upload/store', 'bulk_upload')->name('bulk_product_upload');
-        Route::group(['prefix' => 'bulk-upload/download'], function() {
+        Route::group(['prefix' => 'bulk-upload/download'], function () {
             Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
             Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
         });
@@ -101,7 +102,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     Route::controller(ReviewController::class)->group(function () {
         Route::get('/product-reviews', 'index')->name('product-reviews');
         Route::get('/product/detail-reviews/{id}', 'detailReviews')->name('detail-reviews');
-
     });
 
     //Shop
@@ -149,6 +149,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/commission-history', 'index')->name('commission-history.index');
     });
 
+    // Ads History
+    Route::controller(AdsHistoryController::class)->group(function () {
+        Route::get('/ads-history', 'index')->name('ads-history.index');
+    });
+
     //Conversations
     Route::controller(ConversationController::class)->group(function () {
         Route::get('/conversations', 'index')->name('conversations.index');
@@ -177,7 +182,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/all-notification', 'index')->name('all-notification');
         Route::post('/notifications/bulk-delete', 'bulkDelete')->name('notifications.bulk_delete');
         Route::get('/notification/read-and-redirect/{id}', 'readAndRedirect')->name('notification.read-and-redirect');
-
     });
 
     // Seller Package Purchase
@@ -198,10 +202,15 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     });
 
 
- //Commision Package
- Route::prefix('commission-packages')->group(function () {
-    Route::get('/', [CommisionPackageController::class, 'index'])->name('commission-packages.index');
-    Route::get('/register/{id}', [CommisionPackageController::class, 'register'])->name('commission-packages.register');
-});
+    //Commision Package
+    Route::prefix('commission-packages')->group(function () {
+        Route::get('/', [CommisionPackageController::class, 'index'])->name('commission-packages.index');
+        Route::get('/register/{id}', [CommisionPackageController::class, 'register'])->name('commission-packages.register');
+    });
 
+    //Ads Package
+    Route::prefix('ads-packages')->group(function () {
+        Route::get('/', [AdsPackageController::class, 'index'])->name('ads-packages.index');
+        Route::get('/register/{id}', [AdsPackageController::class, 'register'])->name('ads-packages.register');
+    });
 });

@@ -191,4 +191,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(CommissionPackage::class, 'commission_package_user', 'user_id', 'commission_package_id')->withPivot('price', 'start_date', 'end_date');
     }
 
+    public function seller_ads_packages()
+    {
+        return $this->belongsToMany(AdsPackage::class, SellerAdsPackage::class, 'user_id', 'ads_package_id')->withPivot('price', 'reach');
+    }
 }

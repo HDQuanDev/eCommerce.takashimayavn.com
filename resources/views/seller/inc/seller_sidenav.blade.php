@@ -341,6 +341,14 @@
                     </a>
                 </li>
 
+                {{-- Ads Package --}}
+                <li class="aiz-side-nav-item sl-ads-package">
+                    <a href="{{ route('seller.ads-packages.index') }}" class="aiz-side-nav-link">
+                        <i class="las la-trophy aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Ads Packages') }}</span>
+                    </a>
+                </li>
+
                 {{-- POS System --}}
                 <li class="aiz-side-nav-item sl-pos-system">
                     <a href="{{ route('seller.pos.index') }}"

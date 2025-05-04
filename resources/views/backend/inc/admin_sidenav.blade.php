@@ -1151,6 +1151,16 @@
                                 <span class="aiz-side-nav-text">{{ translate('Commission Packages History') }}</span>
                             </a>
                         </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('ads-packages.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Ads Packages') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('ads-package.history') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Ads Packages History') }}</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
