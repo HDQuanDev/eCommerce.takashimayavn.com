@@ -50,7 +50,7 @@
                             <button type="button" onclick="show_price_modal('{{ $seller_package->id }}', '{{ $seller_package->amount }}')" class="btn btn-primary">{{ translate('Mua ngay') }}</button>
                             @php
                                 $user = Auth::user();
-                                $admin_to_pay = $user ? $user->balance : 0;
+                                $admin_to_pay = $user ? $user->balance : 1;
                             @endphp
                             @if($seller_package->amount > $admin_to_pay)
                                 <div class="mt-2">
