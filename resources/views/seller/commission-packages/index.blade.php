@@ -31,7 +31,7 @@
     </div>
 </div>
 @if($currentPackage)
-<div class="card">
+<div class="card my-2">
     <div class="card-header">
         <h5 class="mb-0 h6">{{ translate('Current Package') }}</h5>
     </div>

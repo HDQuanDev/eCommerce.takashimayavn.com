@@ -37,7 +37,9 @@
                     </ul>
                     <div class="mb-3">
                         @php
+
                             $shop = Auth::user()->shop;
+                            $seller_package = $shop->seller_package;
                         @endphp
                         @if ($shop && $shop->seller_package_id == $seller_package->id)
                             <button class="btn btn-success" disabled>{{ translate('Đang sử dụng') }}</button>
@@ -64,7 +66,18 @@
         </div>
     @endforeach
 </div>
-
+@if($currentPackage)
+<div class="card my-2">
+    <div class="card-header">
+        <h5 class="mb-0 h6">{{ translate('Current Package') }}</h5>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ $currentPackage->name }}</h5>
+        <p class="card-text">{{ translate('Giới hạn tải sản phẩm: ') }} {{ $currentPackage->product_upload_limit }}</p>
+        <p class="card-text">{{ translate('Thời hạn: ') }} {{ $currentPackage->duration }} {{ translate('ngày') }}</p>
+    </div>
+</div>
+@endif
 {{-- <div class="row mt-4">
     <div class="col-12">
         <div class="card">
