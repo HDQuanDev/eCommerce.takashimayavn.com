@@ -27,7 +27,21 @@
         </div>
     </div>
 </div>
-    <div class="card">
+@php
+    $currentPackage = Auth::user()->seller_ads_packages()->wherePivot('end_date', '>=', now())->orderBy('reach', 'desc')->first();
+@endphp
+@if($currentPackage)
+<div class="card my-2">
+    <div class="card-header">
+        <h5 class="mb-0 h6">{{ translate('Current Package') }}</h5>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ $currentPackage->name }}</h5>
+        <p class="card-text">{{ translate('Reach: ') }} {{ number_format($currentPackage->reach) }}</p>
+    </div>
+</div>
+@endif
+<div class="card">
         <form class="" action="" id="sort_ads_history" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
