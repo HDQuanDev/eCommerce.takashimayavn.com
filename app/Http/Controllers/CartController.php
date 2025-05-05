@@ -101,9 +101,8 @@ class CartController extends Controller
 
         //check the color enabled or disabled for the product
         $str = CartUtility::create_cart_variant($product, $request->all());
-        Log::info("str: " . $str);
         $product_stock = $product->stocks->where('variant', $str)->first();
-        Log::info("product_stock: " . json_encode($product_stock));
+
         if($product_stock == null) {
             return array(
                 'status' => 1,
@@ -137,7 +136,6 @@ class CartController extends Controller
                     'nav_cart_view' => view('frontend.partials.cart.cart')->render(),
                 );
             }
-            Log::info($product_stock);
             $product_stock->qty = $product_stock?->qty ?? $product->qty;
             if ($product_stock->qty < $cart->quantity + $request['quantity']) {
                 return array(
