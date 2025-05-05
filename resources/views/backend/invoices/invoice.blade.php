@@ -77,7 +77,7 @@
 					<td class="text-right"></td>
 				</tr>
                 <tr>
-                    <td class="gry-color small">{{ translate('Email') }}: takashimayavietnam@gmail.com</td>
+                    <td class="gry-color small">{{ translate('Email') }}: vietnamtakashimayaa@gmail.com</td>
                     <td class="text-right small"><span class="gry-color small">{{ translate('Order ID') }}:</span> <span
                             class="strong">{{ $order->code }}</span></td>
                 </tr>
