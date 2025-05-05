@@ -66,15 +66,15 @@
         </div>
     @endforeach
 </div>
-@if($currentPackage)
+@if($seller_package)
 <div class="card my-2">
     <div class="card-header">
         <h5 class="mb-0 h6">{{ translate('Current Package') }}</h5>
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ $currentPackage->name }}</h5>
-        <p class="card-text">{{ translate('Giới hạn tải sản phẩm: ') }} {{ $currentPackage->product_upload_limit }}</p>
-        <p class="card-text">{{ translate('Thời hạn: ') }} {{ $currentPackage->duration }} {{ translate('ngày') }}</p>
+        <h5 class="card-title">{{ $seller_package->name }}</h5>
+        <p class="card-text">{{ translate('Giới hạn tải sản phẩm: ') }} {{ $seller_package->product_upload_limit }}</p>
+        <p class="card-text">{{ translate('Thời hạn: ') }} {{ $seller_package->duration }} {{ translate('ngày') }}</p>
     </div>
 </div>
 @endif
