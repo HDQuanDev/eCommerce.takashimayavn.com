@@ -193,6 +193,7 @@
                                         @php
                                             $product = get_single_product($product_id);
                                             $cartItem = $carts->toQuery()->where('product_id', $product_id)->where('variation', $seller_product_variation[$key2])->first();
+                                            logger($cartItem);
                                             $product_stock = $product->stocks->where('variant', $cartItem->variation)->first();
                                             $total = $total + cart_product_price($cartItem, $product, false) * $cartItem->quantity;
                                         @endphp
