@@ -66,6 +66,8 @@ class FixProductStockJob implements ShouldQueue
 
             $variant = '';
             if (count($combinations) > 0) {
+                $product->variant_product = 1;
+                $product->save();
                 foreach ($combinations as $key => $combination) {
                     $str = ProductUtility::get_combination_string($combination, $collection);
                     $product_stock = new ProductStock();

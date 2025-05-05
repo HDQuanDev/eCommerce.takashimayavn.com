@@ -66,6 +66,8 @@ class FixPOSJob implements ShouldQueue
 
             $variant = '';
             if (count($combinations) > 0) {
+                $productPos->variant_product = 1;
+                $productPos->save();
                 foreach ($combinations as $key => $combination) {
                     $str = ProductUtility::get_combination_string($combination, $collection);
                     $product_stock = new ProductStockPos();
