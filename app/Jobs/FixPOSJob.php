@@ -5,7 +5,6 @@ namespace App\Jobs;
 use AizPackages\CombinationGenerate\Services\CombinationService;
 use App\Models\ProductPos;
 use App\Models\ProductStockPos;
-use App\Services\ProductStockService;
 use App\Utility\ProductUtility;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,7 +32,7 @@ class FixPOSJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ProductStockService $productStockService): void
+    public function handle(): void
     {
         try {
             $oldProductStockPos = $this->productStockPos;

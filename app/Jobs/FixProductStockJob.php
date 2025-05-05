@@ -3,9 +3,8 @@
 namespace App\Jobs;
 
 use AizPackages\CombinationGenerate\Services\CombinationService;
-use App\Models\ProductPos;
-use App\Models\ProductStockPos;
-use App\Services\ProductStockService;
+use App\Models\Product;
+use App\Models\ProductStock;
 use App\Utility\ProductUtility;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,14 +32,14 @@ class FixProductStockJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ProductStockService $productStockService): void
+    public function handle(): void
     {
         try {
             $oldProductStock = $this->productStock;
-            $productPos = ProductPos::where('id', $oldProductStock->product_id)->first();
-            $attributes = json_decode($productPos->attributes, true);
-            $colors = json_decode($productPos->colors, true);
-            $choice_options = json_decode($productPos->choice_options, true);
+            $product = Product::where('id', $oldProductStock->product_id)->first();
+            $attributes = json_decode($product->attributes, true);
+            $colors = json_decode($product->colors, true);
+            $choice_options = json_decode($product->choice_options, true);
 
             $data = [
                 'colors_active' => count($colors) > 0 ? 1 : 0,
@@ -69,8 +68,8 @@ class FixProductStockJob implements ShouldQueue
             if (count($combinations) > 0) {
                 foreach ($combinations as $key => $combination) {
                     $str = ProductUtility::get_combination_string($combination, $collection);
-                    $product_stock = new ProductStockPos();
-                    $product_stock->product_id = $productPos->id;
+                    $product_stock = new ProductStock();
+                    $product_stock->product_id = $product->id;
                     $product_stock->variant = $str;
                     $product_stock->price = $data['unit_price'];
                     $product_stock->sku = $data['sku'];
@@ -86,10 +85,10 @@ class FixProductStockJob implements ShouldQueue
 
                 $data = $collection->merge(compact('variant', 'qty', 'price'))->toArray();
 
-                ProductStockPos::create($data);
+                ProductStock::create($data);
             }
 
-            ProductStockPos::where('id', $oldProductStock->id)->delete();
+            ProductStock::where('id', $oldProductStock->id)->delete();
         } catch (\Throwable $th) {
             Log::error($th);
         }
