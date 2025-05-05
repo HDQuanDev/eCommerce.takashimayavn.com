@@ -28,7 +28,7 @@
     </div>
 </div>
 @php
-    $currentPackage = Auth::user()->seller_ads_packages()->wherePivot('end_date', '>=', now())->orderBy('reach', 'desc')->first();
+    $currentPackage = Auth::user()->seller_ads_packages()->orderBy('reach', 'desc')->first();
 @endphp
 @if($currentPackage)
 <div class="card my-2">
