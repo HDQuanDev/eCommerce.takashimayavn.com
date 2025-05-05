@@ -88,9 +88,7 @@ class FixPOSJob implements ShouldQueue
                 ProductStockPos::create($data);
             }
 
-            if (count($combinations) > 0) {
-                ProductStockPos::where('id', $oldProductStockPos->id)->delete();
-            }
+            ProductStockPos::where('id', $oldProductStockPos->id)->delete();
         } catch (\Throwable $th) {
             Log::error($th);
         }
