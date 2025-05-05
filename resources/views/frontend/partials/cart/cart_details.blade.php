@@ -170,7 +170,7 @@
                             @endif
 
                             <!-- Seller Products -->
-                            @if (!empty($seller_products))
+                            {{-- @if (!empty($seller_products))
                                 @foreach ($seller_products as $key => $seller_product)
                                     @php
                                         $all_seller_products = true;
@@ -278,7 +278,7 @@
                                         </li>
                                     @endforeach
                                 @endforeach
-                            @endif
+                            @endif --}}
                         </ul>
                     </div>
                 </div>
