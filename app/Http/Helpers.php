@@ -285,7 +285,7 @@ if (!function_exists('cart_product_price')) {
     {
         if ($product->auction_product == 0) {
             $str = '';
-            if ($cart_product['variation'] != null) {
+            if (isset($cart_product['variation'])) {
                 $str = $cart_product['variation'];
             }
             $price = 0;
