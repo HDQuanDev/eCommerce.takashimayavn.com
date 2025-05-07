@@ -48,7 +48,7 @@
                                   <div class="block-body-inner pb-3">
                                       <div class="row no-gutters">
                                           <div class="col">
-                                              <h6 class="mt-0">n.
+                                              <h6 class="mt-0">
                                                   <a href="{{ route('seller.conversations.show', encrypt($conversation->id)) }}" class=" fw-600 @if($has_unread) text-danger @else text-dark @endif">
                                                       {{ $conversation->title }}
                                                   </a>
