@@ -22,7 +22,7 @@ class ConversationController extends Controller
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
             $user_id = Auth::user()->id;
             $conversations = Conversation::where('sender_id', $user_id)->orWhere('receiver_id', $user_id)->orderBy('updated_at', 'desc')->paginate(5);
-            Log::info('Conversations: ' . $conversations->count());
+
             return view('seller.conversations.index', compact('conversations'));
         } else {
             flash(translate('Conversation is disabled at this moment'))->warning();
