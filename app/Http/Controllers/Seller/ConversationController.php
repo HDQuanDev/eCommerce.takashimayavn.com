@@ -66,6 +66,9 @@ class ConversationController extends Controller
             $conversation->receiver_viewed = 1;
             $conversation->save();
         }
+        Message::where('conversation_id', $conversation->id)->where('user_id','!=', Auth::user()->id)->update([
+            'is_read' => 1,
+        ]);
         return view('frontend.partials.messages', compact('conversation'));
     }
 
