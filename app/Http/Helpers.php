@@ -3022,7 +3022,7 @@ if (!function_exists('get_seller_message_count')) {
     function get_seller_message_count()
     {
         $message_count = Conversation::where('receiver_id', auth()->id())->whereHas('messages', function ($query) {
-            $query->where('is_read', 0);
+            $query->where('is_read', 0)->where('user_id','!=', auth()->id());
         })->count();
         return $message_count;
     }
