@@ -14,6 +14,9 @@
         <ul class="list-group list-group-flush">
           @foreach ($conversations as $key => $conversation)
               @if ($conversation->receiver != null && $conversation->sender != null)
+              @php
+                  $has_unread = $conversation->messages->last()->is_read == 0 && $conversation->messages->last()->user_id != Auth::user()->id;
+              @endphp
                     <li class="list-group-item px-0">
                       <div class="row gutters-10">
                           <div class="col-auto">
@@ -46,7 +49,7 @@
                                       <div class="row no-gutters">
                                           <div class="col">
                                               <h6 class="mt-0">n.
-                                                  <a href="{{ route('seller.conversations.show', encrypt($conversation->id)) }}" class="text-dark fw-600">
+                                                  <a href="{{ route('seller.conversations.show', encrypt($conversation->id)) }}" class="text-dark fw-600 @if($has_unread) text-danger @endif">
                                                       {{ $conversation->title }}
                                                   </a>
                                                   @if ((Auth::user()->id == $conversation->sender_id && $conversation->sender_viewed == 0) || (Auth::user()->id == $conversation->receiver_id && $conversation->receiver_viewed == 0))
@@ -55,7 +58,7 @@
                                               </h6>
                                           </div>
                                       </div>
-                                      <p class="mb-0 opacity-50 @if($conversation->messages->last()->is_read == 0 && $conversation->messages->last()->user_id != Auth::user()->id) bold @endif">
+                                      <p class="mb-0 opacity-50 @if($has_unread) bold text-danger @endif">
                                           {{ $conversation->messages->last()->message }}
                                       </p>
                                   </div>
