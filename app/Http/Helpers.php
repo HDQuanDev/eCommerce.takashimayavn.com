@@ -3024,7 +3024,9 @@ if (!function_exists('get_seller_message_count')) {
         \Log::info('Checking seller message count for user: ' . auth()->id());
 
         $messages = Message::whereHas('conversation', function ($query) {
-            $query->where('receiver_id', auth()->id());
+            $query->where('receiver_id', auth()->id())
+                  ->whereHas('receiver')
+                  ->whereHas('sender');
         })
             ->where('is_read', 0)
             ->where('user_id','!=', auth()->id())
