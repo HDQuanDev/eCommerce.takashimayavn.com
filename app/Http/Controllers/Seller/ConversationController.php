@@ -19,7 +19,8 @@ class ConversationController extends Controller
     public function index()
     {
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
-            $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('updated_at', 'desc')->paginate(5);
+            $user_id = Auth::user()->id;
+            $conversations = Conversation::where('sender_id', $user_id)->orWhere('receiver_id', $user_id)->orderBy('updated_at', 'desc')->paginate(5);
             return view('seller.conversations.index', compact('conversations'));
         } else {
             flash(translate('Conversation is disabled at this moment'))->warning();

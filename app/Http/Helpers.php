@@ -3023,15 +3023,16 @@ if (!function_exists('get_seller_message_count')) {
     {
         \Log::info('Checking seller message count for user: ' . auth()->id());
 
-        $conversations = Conversation::where('receiver_id', auth()->id())
-            ->whereHas('messages', function ($query) {
-                $query->where('is_read', 0)->where('user_id','!=', auth()->id());
-            })
+        $messages = Message::whereHas('conversation', function ($query) {
+            $query->where('receiver_id', auth()->id());
+        })
+            ->where('is_read', 0)
+            ->where('user_id','!=', auth()->id())
             ->get();
 
-        \Log::info('Found conversations: ' . $conversations->count());
-        \Log::info('Conversation data: ' . json_encode($conversations->toArray()));
+        \Log::info('Found messages: ' . $messages->count());
+        \Log::info('Message data: ' . json_encode($messages->toArray()));
 
-        return $conversations->count();
+        return $messages->count();
     }
 }
