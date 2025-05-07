@@ -445,9 +445,7 @@
                 {{-- Conversation --}}
                 @if (get_setting('conversation_system') == 1)
                     @php
-                        $conversation = \App\Models\Conversation::where('sender_id', Auth::user()->id)
-                            ->where('sender_viewed', 0)
-                            ->get();
+                        $conversation = get_seller_message_count();
                     @endphp
                     <li class="aiz-side-nav-item sl-conversation">
                         <a href="{{ route('seller.conversations.index') }}"

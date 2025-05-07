@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Message;
 use Carbon\Carbon;
 use App\Models\PreorderProductReview;
 use App\Models\Tax;
@@ -3016,4 +3017,13 @@ function filter_single_preorder_product($product)
 
     // If vendor system is not activated, return the product directly
     return $product;
+}
+if (!function_exists('get_seller_message_count')) {
+    function get_seller_message_count()
+    {
+        $message_count = Conversation::where('receiver_id', auth()->id())->whereHas('messages', function ($query) {
+            $query->where('is_read', 0);
+        })->count();
+        return $message_count;
+    }
 }
