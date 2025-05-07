@@ -452,8 +452,8 @@
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
                             <i class="las la-comment aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Notification and messages') }}</span>
-                            @if (count($conversation) > 0)
-                                <span class="badge badge-success">({{ count($conversation) }})</span>
+                            @if ($conversation > 0)
+                                <span class="badge badge-success">({{ $conversation }})</span>
                             @endif
                         </a>
                     </li>
