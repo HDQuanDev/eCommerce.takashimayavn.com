@@ -3021,7 +3021,6 @@ function filter_single_preorder_product($product)
 if (!function_exists('get_seller_message_count')) {
     function get_seller_message_count()
     {
-        \Log::info('Checking seller message count for user: ' . auth()->id());
 
         $messages = Message::whereHas('conversation', function ($query) {
             $query->where('receiver_id', auth()->id())
@@ -3032,8 +3031,6 @@ if (!function_exists('get_seller_message_count')) {
             ->where('user_id','!=', auth()->id())
             ->get();
 
-        \Log::info('Found messages: ' . $messages->count());
-        \Log::info('Message data: ' . json_encode($messages->toArray()));
 
         return $messages->count();
     }

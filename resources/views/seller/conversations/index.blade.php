@@ -55,7 +55,7 @@
                                               </h6>
                                           </div>
                                       </div>
-                                      <p class="mb-0 opacity-50">
+                                      <p class="mb-0 opacity-50 @if($conversation->messages->last()->is_read == 0 && $conversation->messages->last()->user_id != Auth::user()->id) text-primary @endif">
                                           {{ $conversation->messages->last()->message }}
                                       </p>
                                   </div>
