@@ -439,7 +439,7 @@
 
                     <li class="aiz-side-nav-item sl-conversation">
                         <a href="{{ route('seller.conversations.index') }}"
-                            class="aiz-side-nav-link {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
+                            class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
                             <i class="las la-comment aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Notification and messages') }}</span>
                             <span id="conversation-badge" class="badge badge-danger  rounded-pill position-absolute"
