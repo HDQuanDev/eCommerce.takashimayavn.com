@@ -3021,9 +3021,17 @@ function filter_single_preorder_product($product)
 if (!function_exists('get_seller_message_count')) {
     function get_seller_message_count()
     {
-        $message_count = Conversation::where('receiver_id', auth()->id())->whereHas('messages', function ($query) {
-            $query->where('is_read', 0)->where('user_id','!=', auth()->id());
-        })->count();
-        return $message_count;
+        \Log::info('Checking seller message count for user: ' . auth()->id());
+
+        $conversations = Conversation::where('receiver_id', auth()->id())
+            ->whereHas('messages', function ($query) {
+                $query->where('is_read', 0)->where('user_id','!=', auth()->id());
+            })
+            ->get();
+
+        \Log::info('Found conversations: ' . $conversations->count());
+        \Log::info('Conversation data: ' . json_encode($conversations->toArray()));
+
+        return $conversations->count();
     }
 }
