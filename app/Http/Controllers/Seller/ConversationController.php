@@ -8,6 +8,7 @@ use App\Models\BusinessSetting;
 use App\Models\Message;
 use App\Models\ProductQuery;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
