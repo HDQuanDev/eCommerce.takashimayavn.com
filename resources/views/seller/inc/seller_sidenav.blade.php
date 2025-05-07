@@ -359,13 +359,6 @@
                 </li>
 
                 {{-- Order --}}
-                @php
-                    $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)
-                        ->where('seller_process_status', 0)
-                        ->where('payment_type', 'cash_on_delivery')
-                        ->count();
-                    $total_orders = $total_orders < 10 ? $total_orders : '9+';
-                @endphp
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.orders.index') }}"
                         class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
@@ -373,8 +366,7 @@
                         <span class="aiz-side-nav-text" >
                             {{ translate('Orders') }}
                             <span id="order-badge" class="badge badge-danger  rounded-pill position-absolute"
-                                style="top: 10px; right: 10px; font-size: 12px;">
-                                {{ $total_orders }}
+                                style="top: 10px; right: 10px; font-size: 12px; display: none;">
                             </span>
                         </span>
                     </a>
@@ -444,17 +436,16 @@
 
                 {{-- Conversation --}}
                 @if (get_setting('conversation_system') == 1)
-                    @php
-                        $conversation = get_seller_message_count();
-                    @endphp
+
                     <li class="aiz-side-nav-item sl-conversation">
                         <a href="{{ route('seller.conversations.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['seller.conversations.index', 'seller.conversations.show']) }}">
                             <i class="las la-comment aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Notification and messages') }}</span>
-                            @if ($conversation > 0)
-                                <span class="badge badge-success">({{ $conversation }})</span>
-                            @endif
+                            <span id="conversation-badge" class="badge badge-danger  rounded-pill position-absolute"
+                            style="top: 10px; right: 10px; font-size: 12px; display: none;">
+
+                        </span>
                         </a>
                     </li>
                 @endif
@@ -483,11 +474,27 @@
             .then(data => {
                 const badge = document.getElementById('order-badge');
                 if (badge) {
-                    badge.textContent = data.total_orders;
+                    badge.textContent = data.total_orders > 10 ? '9+' : data.total_orders;
                     badge.style.display = data.total_orders > 0 ? 'inline-block' : 'none';
+                }
+
+            });
+    }
+    function updateConversationBadge() {
+        fetch('{{ route('seller.conversations.count') }}')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('conversation-badge');
+                if (badge) {
+                    badge.textContent = data.conversations > 10 ? '9+' : data.conversations;
+                    badge.style.display = data.conversations > 0 ? 'inline-block' : 'none';
                 }
             });
     }
+    updateConversationBadge();
+    updateOrderBadge();
     setInterval(updateOrderBadge, 5000);
+    setInterval(updateConversationBadge, 5000);
     document.addEventListener('DOMContentLoaded', updateOrderBadge);
+    document.addEventListener('DOMContentLoaded', updateConversationBadge);
     </script>

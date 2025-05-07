@@ -23,6 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/dashboard', 'index')->name('dashboard');
     });
     Route::get('/orders/count', [App\Http\Controllers\Seller\OrderController::class, 'countOrders'])->name('orders.count');
+    Route::get('/conversations/count', [App\Http\Controllers\Seller\ConversationController::class, 'countConversations'])->name('conversations.count');
 
     // Product
     Route::controller(ProductController::class)->group(function () {

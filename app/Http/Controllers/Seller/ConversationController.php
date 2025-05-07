@@ -42,6 +42,9 @@ class ConversationController extends Controller
         } elseif ($conversation->receiver_id == Auth::user()->id) {
             $conversation->receiver_viewed = 1;
         }
+         Message::where('conversation_id', $conversation->id)->update([
+           'is_read' => 1
+        ]);
         $conversation->save();
         return view('seller.conversations.show', compact('conversation'));
     }
@@ -87,6 +90,13 @@ class ConversationController extends Controller
         $conversation->save();
 
         return back();
+    }
+    public function countConversations()
+    {
+        $conversations = get_seller_message_count();
+        return response()->json([
+            'conversations' => $conversations
+        ]);
     }
 
 }
