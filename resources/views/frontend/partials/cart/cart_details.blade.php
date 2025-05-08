@@ -280,6 +280,7 @@
                                                 </div>
                                             </div>
                                         </li>
+                                        @endif
                                     @endforeach
                                 @endforeach
                             @endif
