@@ -60,7 +60,7 @@
                     </td>
                     <td>{{ $product->rating }}</td>
                     <td>
-                        {{ $product->reviews->count()}} 
+                        {{ $product->reviews->count()}}
                         @if($product->reviews()->where('viewed',0)->count() > 0)
                             <span class="badge badge-inline badge-danger">{{ translate('new') }}</span>
                         @endif
@@ -68,6 +68,7 @@
                     <td>
                         <div class="form-group mb-0 text-right">
                             <a href="{{ route('seller.detail-reviews', $product->id) }}" class="btn btn-primary btn-sm rounded-2">{{ translate('View Reviews') }}</a>
+                            <a target="_blank" href="{{ route('product', $product->slug) }}" class="btn btn-secondary btn-sm rounded-2">{{ translate('View Product Page') }}</a>
                         </div>
                     </td>
                 </tr>
