@@ -104,7 +104,7 @@ class DashboardController extends Controller
         return response()->json([
             'conversations' => $conversations,
             'total_orders' => $total_orders,
-            'reviews_count' => $reviews_count
+            'total_reviews' => $reviews_count
         ]);
     }
 }
