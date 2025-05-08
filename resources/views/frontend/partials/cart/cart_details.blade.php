@@ -193,28 +193,35 @@
                                         @php
                                             $product = get_single_product($product_id);
                                             $cartItem = $carts->toQuery()->where('product_id', $product_id)->where('variation', $seller_product_variation[$key2])->first();
-                                            if ($cartItem) {
-                                                $product_stock = $product->stocks->where('variant', $cartItem->variation)?->first();
-                                                $total = $total + cart_product_price($cartItem, $product, false) * $cartItem->quantity;
-                                            }
+                                            $product_stock = $product->stocks->where('variant', $cartItem->variation)?->first();
+                                            $total = $total + cart_product_price($cartItem, $product, false) * $cartItem->quantity;
                                         @endphp
-                                        <li class="list-group-item px-0 border-md-0">
-                                            <div class="row gutters-5 align-items-center">
-                                                <!-- select -->
-                                                <div class="col-auto">
-                                                    <div class="aiz-checkbox pl-0">
-                                                        <label class="aiz-checkbox">
-                                                            <input type="checkbox" class="check-one check-one-seller-{{ $key }}" name="id[]" value="{{$product_id}}" @if($cartItem->status == 1) checked @endif>
-                                                            <span class="aiz-square-check"></span>
-                                                        </label>
+                                        @if($cartItem)
+                                            <li class="list-group-item px-0 border-md-0">
+                                                <div class="row gutters-5 align-items-center">
+                                                    <!-- select -->
+                                                    <div class="col-auto">
+                                                        <div class="aiz-checkbox pl-0">
+                                                            <label class="aiz-checkbox">
+                                                                <input type="checkbox" class="check-one check-one-seller-{{ $key }}" name="id[]" value="{{ $product_id }}" @if($cartItem->status == 1) checked @endif>
+                                                                <span class="aiz-square-check"></span>
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <!-- Product Image & name -->
-                                                <div class="col-md-5 col-10 d-flex align-items-center mb-2 mb-md-0">
-                                                    <span class="mr-2 ml-0">
-                                                        <img src="{{ uploaded_asset($product->thumbnail_img) }}"
-                                                            class="img-fit size-64px"
-                                                            alt="{{ $product->getTranslation('name')  }}"
+                                                    <!-- Product Image & name -->
+                                                    <div class="col-md-5 col-10 d-flex align-items-center mb-2 mb-md-0">
+                                                        <span class="mr-2 ml-0">
+                                                            <img src="{{ uploaded_asset($product->thumbnail_img) }}"
+                                                                class="img-fit size-64px"
+                                                                alt="{{ $product->getTranslation('name')  }}"
+                                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        </span>
+                                                        <span>
+                                                            <span class="fs-14 fw-400 text-dark text-truncate-2 mb-2">{{ $product->getTranslation('name') }}</span>
+                                                            @if ($seller_product_variation[$key2] != '')
+                                                                <span class="fs-12 text-secondary">{{ translate('Variation') }}: {{ $seller_product_variation[$key2] }}</span>
+                                                            @endif
+                                                        </span>
                                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                                     </span>
                                                     <span>
