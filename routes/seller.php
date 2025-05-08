@@ -24,6 +24,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     });
     Route::get('/orders/count', [App\Http\Controllers\Seller\OrderController::class, 'countOrders'])->name('orders.count');
     Route::get('/conversations/count', [App\Http\Controllers\Seller\ConversationController::class, 'countConversations'])->name('conversations.count');
+    Route::get('/dashboard/count', [App\Http\Controllers\Seller\DashboardController::class, 'countSidebarNotification'])->name('dashboard.count');
 
     // Product
     Route::controller(ProductController::class)->group(function () {

@@ -6,6 +6,7 @@ use App\Models\CommissionHistory;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\Review;
 use Auth;
 use Carbon\Carbon;
 use DB;
@@ -86,5 +87,24 @@ class DashboardController extends Controller
         $data['commission_this_month'] = $commission_this_month;
         $data['total_sales'] = $total_sales;
         return view('seller.dashboard', $data);
+    }
+
+    public function countSidebarNotification() {
+        $conversations = get_seller_message_count();
+        $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)
+        ->where('seller_process_status', 0)
+        ->where('payment_type', 'cash_on_delivery')
+        ->count();
+    $total_orders = $total_orders < 10 ? $total_orders : '9+';
+
+    $reviews_count = Review::whereHas('product', function ($query) {
+        $query->where('user_id', auth()->user()->id);
+    })->where('viewed', 0)->count();
+    $reviews_count = $reviews_count < 10 ? $reviews_count : '9+';
+        return response()->json([
+            'conversations' => $conversations,
+            'total_orders' => $total_orders,
+            'reviews_count' => $reviews_count
+        ]);
     }
 }

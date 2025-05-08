@@ -62,8 +62,10 @@
                         </li>
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller.product-reviews') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.product-reviews', 'seller.detail-reviews']) }}">
+                                class="aiz-side-nav-link position-relative {{ areActiveRoutes(['seller.product-reviews', 'seller.detail-reviews']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Product Reviews') }}</span>
+                                <span id="review-badge" class="badge badge-danger  rounded-pill position-absolute"
+                                style="top: 10px; right: 10px; font-size: 12px; display: none;"></span>
                             </a>
                         </li>
                     </ul>
@@ -443,9 +445,7 @@
                             <i class="las la-comment aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Notification and messages') }}</span>
                             <span id="conversation-badge" class="badge badge-danger  rounded-pill position-absolute"
-                            style="top: 10px; right: 10px; font-size: 12px; display: none;">
-
-                        </span>
+                            style="top: 10px; right: 10px; font-size: 12px; display: none;"></span>
                         </a>
                     </li>
                 @endif
@@ -467,34 +467,29 @@
     <div class="aiz-sidebar-overlay"></div>
 </div><!-- .aiz-sidebar -->
 <script>
-    function updateOrderBadge() {
 
-        fetch('{{ route('seller.orders.count') }}')
-            .then(response => response.json())
-            .then(data => {
-                const badge = document.getElementById('order-badge');
-                if (badge) {
-                    badge.textContent = data.total_orders > 10 ? '9+' : data.total_orders;
-                    badge.style.display = data.total_orders > 0 ? 'inline-block' : 'none';
-                }
-
-            });
-    }
     function updateConversationBadge() {
-        fetch('{{ route('seller.conversations.count') }}')
+        fetch('{{ route('seller.dashboard.count') }}')
             .then(response => response.json())
             .then(data => {
-                const badge = document.getElementById('conversation-badge');
-                if (badge) {
-                    badge.textContent = data.conversations > 10 ? '9+' : data.conversations;
-                    badge.style.display = data.conversations > 0 ? 'inline-block' : 'none';
+                const conversationBadge = document.getElementById('conversation-badge');
+                if (conversationBadge) {
+                    conversationBadge.textContent = data.conversations > 10 ? '9+' : data.conversations;
+                    conversationBadge.style.display = data.conversations > 0 ? 'inline-block' : 'none';
+                }
+                const orderBadge = document.getElementById('order-badge');
+                if (orderBadge) {
+                    orderBadge.textContent = data.total_orders;
+                    orderBadge.style.display = data.total_orders > 0 ? 'inline-block' : 'none';
+                }
+                const reviewBadge = document.getElementById('review-badge');
+                if (reviewBadge) {
+                    reviewBadge.textContent = data.total_reviews;
+                    reviewBadge.style.display = data.total_reviews > 0 ? 'inline-block' : 'none';
                 }
             });
     }
     updateConversationBadge();
-    updateOrderBadge();
-    setInterval(updateOrderBadge, 5000);
     setInterval(updateConversationBadge, 5000);
-    document.addEventListener('DOMContentLoaded', updateOrderBadge);
     document.addEventListener('DOMContentLoaded', updateConversationBadge);
     </script>
