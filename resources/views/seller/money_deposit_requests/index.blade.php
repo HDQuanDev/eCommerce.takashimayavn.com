@@ -134,7 +134,7 @@
                             </div>
                             <div class="col-md-9">
                                 <input type="number" lang="en" class="form-control mb-3" name="amount"
-                                    min="{{ get_setting('minimum_seller_amount_deposit') }}"
+                                    min="{{ get_setting('minimum_seller_amount_deposit') }}" step="0.01"
                                     placeholder="{{ translate('Amount') }}" required>
                             </div>
                         </div>
