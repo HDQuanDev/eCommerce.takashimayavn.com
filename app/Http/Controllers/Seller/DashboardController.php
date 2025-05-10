@@ -58,28 +58,24 @@ class DashboardController extends Controller
 
         $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
         // doanh số
-        $orders_commission_this_month = Order::where('seller_id', $authUserId)
-            ->where('delivery_status', 'delivered')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->with('commissionHistory')
-            ->get();
+        $commission_this_month = CommissionHistory::whereHas('order', function ($q) use ($authUserId) {
+            $q->where('seller_id', $authUserId)
+                ->where('delivery_status', 'delivered')
+                ->whereYear('created_at', Carbon::now()->year)
+                ->whereMonth('created_at', Carbon::now()->month);
+        })->sum('admin_commission');
+
         $orders_commission = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
             ->with('commissionHistory')
             ->get();
 
-        $commission_this_month = 0;
         $total_sales = 0;
-        foreach ($orders_commission_this_month as $order) {
-            $value = CommissionHistory::where('order_id', $order->id)->sum('admin_commission');
-            $commission_this_month += $value;
 
-        }
         foreach ($orders_commission as $order) {
-            if($order->payment_type == 'cash_on_delivery') {
+            if ($order->payment_type == 'cash_on_delivery') {
                 $total_sales += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
-            }else {
+            } else {
                 $total_sales += $order->commissionHistory?->admin_commission ?? 0;
             }
         }
@@ -88,18 +84,19 @@ class DashboardController extends Controller
         return view('seller.dashboard', $data);
     }
 
-    public function countSidebarNotification() {
+    public function countSidebarNotification()
+    {
         $conversations = get_seller_message_count();
         $total_orders = \App\Models\Order::where('seller_id', auth()->user()->id)
-        ->where('seller_process_status', 0)
-        ->where('payment_type', 'cash_on_delivery')
-        ->count();
-    $total_orders = $total_orders < 10 ? $total_orders : '9+';
+            ->where('seller_process_status', 0)
+            ->where('payment_type', 'cash_on_delivery')
+            ->count();
+        $total_orders = $total_orders < 10 ? $total_orders : '9+';
 
-    $reviews_count = Review::whereHas('product', function ($query) {
-        $query->where('user_id', auth()->user()->id);
-    })->where('viewed', 0)->count();
-    $reviews_count = $reviews_count < 10 ? $reviews_count : '9+';
+        $reviews_count = Review::whereHas('product', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->where('viewed', 0)->count();
+        $reviews_count = $reviews_count < 10 ? $reviews_count : '9+';
         return response()->json([
             'conversations' => $conversations,
             'total_orders' => $total_orders,
