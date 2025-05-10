@@ -36,16 +36,19 @@ class DashboardController extends Controller
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
 
-        $data['this_month_sold_amount'] = Order::where('seller_id', Auth::user()->id)
-            ->wherePaymentStatus('paid')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->sum('grand_total');
-        $data['previous_month_sold_amount'] = Order::where('seller_id', Auth::user()->id)
-            ->wherePaymentStatus('paid')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', (Carbon::now()->month - 1))
-            ->sum('grand_total');
+        $data['this_month_commission'] = CommissionHistory::whereHas('order', function ($q) use ($authUserId) {
+            $q->where('seller_id', $authUserId)
+                ->where('delivery_status', 'delivered')
+                ->whereYear('created_at', Carbon::now()->year)
+                ->whereMonth('created_at', Carbon::now()->month);
+        })->sum('admin_commission');
+
+        $data['previous_month_commission'] = CommissionHistory::whereHas('order', function ($q) use ($authUserId) {
+            $q->where('seller_id', $authUserId)
+                ->where('delivery_status', 'delivered')
+                ->whereYear('created_at', Carbon::now()->year)
+                ->whereMonth('created_at', Carbon::now()->month - 1);
+        })->sum('admin_commission');
 
         $data['products'] = filter_products(ProductPos::where('user_id', Auth::user()->id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
         $data['last_7_days_sales'] = Order::where('created_at', '>=', Carbon::now()->subDays(7))
@@ -55,31 +58,11 @@ class DashboardController extends Controller
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
             ->get()->pluck('total', 'date');
 
-
         $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
-        // doanh số
-        $commission_this_month = CommissionHistory::whereHas('order', function ($q) use ($authUserId) {
-            $q->where('seller_id', $authUserId)
-                ->where('delivery_status', 'delivered')
-                ->whereYear('created_at', Carbon::now()->year)
-                ->whereMonth('created_at', Carbon::now()->month);
-        })->sum('admin_commission');
 
-        $orders_commission = Order::where('seller_id', $authUserId)
+        $total_sales = Order::where('seller_id', $authUserId)
             ->where('delivery_status', 'delivered')
-            ->with('commissionHistory')
-            ->get();
-
-        $total_sales = 0;
-
-        foreach ($orders_commission as $order) {
-            if ($order->payment_type == 'cash_on_delivery') {
-                $total_sales += $order->commissionHistory?->admin_commission + $order->commissionHistory?->seller_earning ?? 0;
-            } else {
-                $total_sales += $order->commissionHistory?->admin_commission ?? 0;
-            }
-        }
-        $data['commission_this_month'] = $commission_this_month;
+            ->sum('grand_total');
         $data['total_sales'] = $total_sales;
         return view('seller.dashboard', $data);
     }

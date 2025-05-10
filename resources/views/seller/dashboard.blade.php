@@ -203,10 +203,10 @@
                     </div>
                     <p>{{ translate('Your Commission Amount (Current month)') }}</p>
                     <h3 class="text-primary fw-600 fs-30">
-                        {{ single_price($commission_this_month) }}
+                        {{ single_price($this_month_commission) }}
                     </h3>
                     <p class="mt-4">
-                        {{ translate('Last Month') }}: {{ single_price($previous_month_sold_amount) }}
+                        {{ translate('Last Month') }}: {{ single_price($previous_month_commission) }}
                     </p>
                 </div>
             </div>
