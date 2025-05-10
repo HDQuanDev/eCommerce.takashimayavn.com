@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Models\CommissionHistory;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\ProductPos;
 use App\Models\Review;
 use Auth;
@@ -60,9 +61,13 @@ class DashboardController extends Controller
 
         $data['total_order'] = Order::where('seller_id', Auth::user()->id)->count();
 
-        $total_sales = Order::where('seller_id', $authUserId)
-            ->where('delivery_status', 'delivered')
-            ->sum('grand_total');
+        $total_sales = OrderDetail::whereHas('order', function ($q) use ($authUserId) {
+            $q->where('seller_id', $authUserId)
+                ->where('delivery_status', 'delivered');
+        })
+            ->selectRaw('SUM(price * quantity) as total')
+            ->value('total');
+
         $data['total_sales'] = $total_sales;
         return view('seller.dashboard', $data);
     }
