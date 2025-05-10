@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Models\CommissionHistory;
 use App\Models\Order;
-use App\Models\OrderDetail;
-use App\Models\Product;
+use App\Models\ProductPos;
 use App\Models\Review;
 use Auth;
 use Carbon\Carbon;
@@ -48,7 +47,7 @@ class DashboardController extends Controller
             ->whereMonth('created_at', (Carbon::now()->month - 1))
             ->sum('grand_total');
 
-        $data['products'] = filter_products(Product::where('user_id', Auth::user()->id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
+        $data['products'] = filter_products(ProductPos::where('user_id', Auth::user()->id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
         $data['last_7_days_sales'] = Order::where('created_at', '>=', Carbon::now()->subDays(7))
             ->where('seller_id', '=', Auth::user()->id)
             ->where('delivery_status', '=', 'delivered')
