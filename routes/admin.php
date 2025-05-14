@@ -156,6 +156,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/products/destroy/{id}', 'destroy')->name('products.destroy');
         Route::get('/products/destroypos/{id}', 'destroy_pos')->name('products.destroypos');
         Route::post('/bulk-product-delete', 'bulk_product_delete')->name('bulk-product-delete');
+        Route::post('/bulk-product-pos-change-ratting', 'bulk_product_pos_change_ratting')->name('bulk-product-pos-change-ratting');
         Route::post('/bulk-product-change-ratting', 'bulk_product_change_ratting')->name('bulk-product-change-ratting');
 
         Route::post('/products/sku_combination', 'sku_combination')->name('products.sku_combination');

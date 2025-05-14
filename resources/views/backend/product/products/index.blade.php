@@ -34,6 +34,8 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item confirm-alert" href="javascript:void(0)"  data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
+                    <a class="dropdown-item confirm-alert"  href="javascript:void(0)" data-target="#bulk-change-ratting">{{ translate('Change Ratting') }}</a>
+
                     </div>
                 </div>
             @endcan
@@ -387,6 +389,7 @@
     @include('modals.delete_modal')
     <!-- Bulk Delete modal -->
     @include('modals.bulk_delete_modal')
+    @include('modals.bulk_change_ratting_modal')
 @endsection
 
 
@@ -525,6 +528,34 @@
                 success: function (response) {
                     if(response == 1) {
                         location.reload();
+                    }
+                }
+            });
+        }
+        function bulk_change_ratting() {
+            var rating = $('#rating').val();
+            $('#rating').val('');
+            var data = new FormData($('#sort_products')[0]);
+            data.append('rating', rating);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('bulk-product-change-ratting')}}",
+                type: 'POST',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if(response == 1) {
+                        AIZ.plugins.notify('success', '{{ translate('Product Rating Updated Successfully') }}');
+                        location.reload();
+                    }else if(response == -1) {
+                        AIZ.plugins.notify('danger', '{{ translate('Product Rating Update Failed, Rating value is not valid') }}');
+                    }
+                    else {
+                        AIZ.plugins.notify('danger', '{{ translate('Some Product Rating Update Failed') }}');
                     }
                 }
             });

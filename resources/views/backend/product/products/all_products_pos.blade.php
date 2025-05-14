@@ -382,7 +382,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{route('bulk-product-change-ratting')}}",
+                url: "{{route('bulk-product-pos-change-ratting')}}",
                 type: 'POST',
                 data: data,
                 cache: false,
