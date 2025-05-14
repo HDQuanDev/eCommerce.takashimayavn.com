@@ -34,6 +34,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item confirm-alert" href="javascript:void(0)" data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
+                    <div class="dropdown-item" data-target="#bulk-change-ratting" onclick="changeRating()">{{ translate('Change Ratting') }}</div>
                 </div>
             </div>
             @endcan
@@ -228,6 +229,8 @@
 @include('modals.delete_modal')
 <!-- Bulk Delete modal -->
 @include('modals.bulk_delete_modal')
+<!-- Bulk Change Ratting modal -->
+@include('modals.bulk_change_ratting_modal')
 @endsection
 
 @section('script')
@@ -365,6 +368,32 @@
                 success: function (response) {
                     if(response == 1) {
                         location.reload();
+                    }
+                }
+            });
+        }
+
+        function bulk_change_ratting() {
+            var rating = $('#rating').val();
+            $('#rating').val('');
+            var data = new FormData($('#sort_products')[0]);
+            data.append('rating', rating);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('bulk-product-change-ratting')}}",
+                type: 'POST',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if(response == 1) {
+                        AIZ.plugins.notify('success', '{{ translate('Product Ratting Updated Successfully') }}');
+                        location.reload();
+                    }else {
+                        AIZ.plugins.notify('danger', '{{ translate('Some Product Ratting Update Failed') }}');
                     }
                 }
             });

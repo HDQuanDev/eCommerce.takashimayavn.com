@@ -639,6 +639,23 @@ class ProductController extends Controller
         return 1;
     }
 
+    public function bulk_product_change_ratting(Request $request){
+        $status = 1;
+        if ($request->id) {
+            foreach ($request->id as $product_id) {
+                $product = Product::find($product_id);
+                if(!$product){
+                    $status = 0;
+                    continue;
+                }
+                $product->rating = $request->rating;
+                $product->save();
+            }
+        }
+
+        return $status;
+    }
+
     /**
      * Duplicates the specified resource from storage.
      *
