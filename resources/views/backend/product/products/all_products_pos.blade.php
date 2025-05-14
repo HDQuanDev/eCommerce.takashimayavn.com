@@ -34,7 +34,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item confirm-alert" href="javascript:void(0)" data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
-                    <div class="dropdown-item" data-target="#bulk-change-ratting" onclick="changeRating()">{{ translate('Change Ratting') }}</div>
+                    <a class="dropdown-item"  href="javascript:void(0)" data-target="#bulk-change-ratting">{{ translate('Change Ratting') }}</a>
                 </div>
             </div>
             @endcan
