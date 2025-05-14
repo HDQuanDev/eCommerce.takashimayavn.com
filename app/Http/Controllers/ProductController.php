@@ -29,6 +29,7 @@ use App\Services\FrequentlyBoughtProductService;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -639,29 +640,30 @@ class ProductController extends Controller
         return 1;
     }
 
-    public function bulk_product_change_ratting(Request $request){
-        $validate = $request->validate([
-            'id' => 'required',
-            'rating' => 'required',
-        ]);
-        $status = 1;
-        if ($validate->fails()) {
-            return -1;
-        }
-        if ($request->id) {
-            foreach ($request->id as $product_id) {
-                $product = Product::find($product_id);
-                if(!$product){
-                    $status = 0;
-                    continue;
-                }
-                $product->rating = $request->rating;
-                $product->save();
-            }
-        }
+    public function bulk_product_change_ratting(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|array',
+        'rating' => 'required',
+    ]);
 
-        return $status;
+    if ($validator->fails()) {
+        return -1;
     }
+
+    $status = 1;
+    foreach ($request->id as $product_id) {
+        $product = Product::find($product_id);
+        if (!$product) {
+            $status = 0;
+            continue;
+        }
+        $product->rating = $request->rating;
+        $product->save();
+    }
+
+    return $status;
+}
 
     /**
      * Duplicates the specified resource from storage.
