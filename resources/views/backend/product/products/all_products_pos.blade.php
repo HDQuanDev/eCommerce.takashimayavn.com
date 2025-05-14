@@ -34,7 +34,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item confirm-alert" href="javascript:void(0)" data-target="#bulk-delete-modal"> {{translate('Delete selection')}}</a>
-                    <a class="dropdown-item"  href="javascript:void(0)" data-target="#bulk-change-ratting">{{ translate('Change Ratting') }}</a>
+                    <a class="dropdown-item confirm-alert"  href="javascript:void(0)" data-target="#bulk-change-ratting">{{ translate('Change Ratting') }}</a>
                 </div>
             </div>
             @endcan
@@ -390,10 +390,13 @@
                 processData: false,
                 success: function (response) {
                     if(response == 1) {
-                        AIZ.plugins.notify('success', '{{ translate('Product Ratting Updated Successfully') }}');
+                        AIZ.plugins.notify('success', '{{ translate('Product Rating Updated Successfully') }}');
                         location.reload();
-                    }else {
-                        AIZ.plugins.notify('danger', '{{ translate('Some Product Ratting Update Failed') }}');
+                    }else if(response == -1) {
+                        AIZ.plugins.notify('danger', '{{ translate('Product Rating Update Failed, Rating value is not valid') }}');
+                    }
+                    else {
+                        AIZ.plugins.notify('danger', '{{ translate('Some Product Rating Update Failed') }}');
                     }
                 }
             });

@@ -640,7 +640,14 @@ class ProductController extends Controller
     }
 
     public function bulk_product_change_ratting(Request $request){
+        $validate = $request->validate([
+            'id' => 'required',
+            'rating' => 'required',
+        ]);
         $status = 1;
+        if ($validate->fails()) {
+            return -1;
+        }
         if ($request->id) {
             foreach ($request->id as $product_id) {
                 $product = Product::find($product_id);

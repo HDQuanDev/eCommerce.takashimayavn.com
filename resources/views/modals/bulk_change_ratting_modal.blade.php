@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title h6">{{ translate('Change Ratting Confirmation') }}</h4>
+                <h4 class="modal-title h6">{{ translate('Change Rating Confirmation') }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body text-center">
